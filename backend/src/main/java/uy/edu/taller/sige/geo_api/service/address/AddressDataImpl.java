@@ -35,6 +35,18 @@ public class AddressDataImpl implements AddressDataService {
 
         return new ArrayList<>(repository.findStreetNumber());
     }
+    private List<Address> getStreetNumberLocality() {
+
+        List<Address> result = new ArrayList<>(repository.findStreetNumberLocality());
+
+        return result;
+    }
+    private List<Address> getStreetNumberDepartament() {
+
+        List<Address> result = new ArrayList<>(repository.findStreetNumberDepartament());
+
+        return result;
+    }
     private List<Address> getStreetNumberDepartamentlocality() {
 
         return new ArrayList<>(repository.findStreetNumberDepartamentlocality());
@@ -44,6 +56,19 @@ public class AddressDataImpl implements AddressDataService {
     }
     private List<Address>getInterestPoint(){
         return new ArrayList<>(repository.findInterestPoint());
+    }
+    private List<Address> getLotBlock() {
+
+        List<Address> result = new ArrayList<>(repository.findLotBlock());
+
+        return result;
+    }
+
+    private List<Address> getbyWkt() {
+
+        List<Address> result = new ArrayList<>(repository.findByWkb());
+
+        return result;
     }
 
 
