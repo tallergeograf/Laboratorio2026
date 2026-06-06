@@ -2,7 +2,6 @@ package uy.edu.taller.sige.geo_api.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
-import org.locationtech.jts.geom.Point;
 @Entity
 @Table(name = "vista_uruguay")
 public class Address {

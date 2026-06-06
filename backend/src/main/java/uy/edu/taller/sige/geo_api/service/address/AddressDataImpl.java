@@ -20,7 +20,10 @@ public class AddressDataImpl implements AddressDataService {
     public List<Address> processAddress() {
 
         List<Address> street=getStreetNumbers();
-        return street;
+        List<Address> streetNumberDepartamentlocality=getStreetNumberDepartamentlocality();
+        List<Address> routeKilometer=getRouteKilometer();
+        List<Address> interestPoint=getInterestPoint();
+        return interestPoint;
         // 1) Traer las direcciones por cateogrias (criterico de eleccion)
         // 1.1) Generar las variaciones, permutacion, error, abreviacion
         // 1.2) Guardar direcciones en la tabla
@@ -30,9 +33,19 @@ public class AddressDataImpl implements AddressDataService {
     }
     private List<Address> getStreetNumbers() {
 
-        List<Address> result = new ArrayList<>(repository.findStreetNumber());
-
-        return result;
+        return new ArrayList<>(repository.findStreetNumber());
     }
+    private List<Address> getStreetNumberDepartamentlocality() {
+
+        return new ArrayList<>(repository.findStreetNumberDepartamentlocality());
+    }
+    private List<Address> getRouteKilometer() {
+        return new ArrayList<>(repository.findRouteKilometer());
+    }
+    private List<Address>getInterestPoint(){
+        return new ArrayList<>(repository.findInterestPoint());
+    }
+
+
 
 }
