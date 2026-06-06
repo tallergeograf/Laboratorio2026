@@ -1,8 +1,8 @@
 package uy.edu.taller.sige.geo_api.model;
 
 import jakarta.persistence.*;
-import uy.edu.taller.sige.geo_api.emun.AddressCategory;
-import uy.edu.taller.sige.geo_api.emun.AddressType;
+import uy.edu.taller.sige.geo_api.model.enums.AddressCategory;
+import uy.edu.taller.sige.geo_api.model.enums.AddressType;
 
 @Entity
 @Table(name = "direcciones")
@@ -23,7 +23,7 @@ public class SpecificAddress {
     private AddressCategory categoria;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_direccion")
+    @Column(name = "tipodireccion")
     private AddressType tipoDireccion;
 
     public SpecificAddress() {}
