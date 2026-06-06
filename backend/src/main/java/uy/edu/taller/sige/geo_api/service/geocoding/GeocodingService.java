@@ -1,5 +1,13 @@
 package uy.edu.taller.sige.geo_api.service.geocoding;
 
+import java.util.List;
+
+import uy.edu.taller.sige.geo_api.enums.GeocoderProvider;
+import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestReverse;
+import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestSearch;
+import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
+
 public interface GeocodingService {
-    //GeocodeResponse geocode(GeocodeRequest request);
+    List<GeocodeResponse> search(GeocoderProvider provider, GeocodeRequestSearch request);
+    List<GeocodeResponse> reverse(GeocoderProvider provider, GeocodeRequestReverse request);
 }
