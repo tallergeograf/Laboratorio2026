@@ -19,7 +19,7 @@ public class AddressDataImpl implements AddressDataService {
     @Override
     public List<Address> processAddress() {
 
-        List<Address> street=getStreetNumbers();
+        List<Address> street=getLotBlock();
         return street;
         // 1) Traer las direcciones por cateogrias (criterico de eleccion)
         // 1.1) Generar las variaciones, permutacion, error, abreviacion
@@ -31,6 +31,34 @@ public class AddressDataImpl implements AddressDataService {
     private List<Address> getStreetNumbers() {
 
         List<Address> result = new ArrayList<>(repository.findStreetNumber());
+
+        return result;
+    }
+
+    private List<Address> getStreetNumberLocality() {
+
+        List<Address> result = new ArrayList<>(repository.findStreetNumberLocality());
+
+        return result;
+    }
+
+    private List<Address> getStreetNumberDepartament() {
+
+        List<Address> result = new ArrayList<>(repository.findStreetNumberDepartament());
+
+        return result;
+    }
+
+    private List<Address> getLotBlock() {
+
+        List<Address> result = new ArrayList<>(repository.findLotBlock());
+
+        return result;
+    }
+
+    private List<Address> getbyWkt() {
+
+        List<Address> result = new ArrayList<>(repository.findByWkb());
 
         return result;
     }
