@@ -18,7 +18,6 @@ public class AddressDataController {
     }
 
     @GetMapping("/process")
-    //dto
     public List<String> processAddress() {
 
         return this.addressDataService.processAddress();

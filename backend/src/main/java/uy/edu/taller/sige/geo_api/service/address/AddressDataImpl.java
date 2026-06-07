@@ -1,6 +1,10 @@
 package uy.edu.taller.sige.geo_api.service.address;
 
 import org.springframework.stereotype.Service;
+import uy.edu.taller.sige.geo_api.client.GeoCoderFactory;
+import uy.edu.taller.sige.geo_api.client.IGeoCoder;
+import uy.edu.taller.sige.geo_api.dto.request.GeoCodeRequestSearchv2;
+import uy.edu.taller.sige.geo_api.model.enums.GeocoderProvider;
 import uy.edu.taller.sige.geo_api.model.Address;
 import uy.edu.taller.sige.geo_api.model.SpecificAddress;
 import uy.edu.taller.sige.geo_api.model.enums.AddressCategory;
@@ -19,10 +23,12 @@ public class AddressDataImpl implements AddressDataService {
     private final AddressJpaRepository addresRepository;
     private final SpecificAddressJPARepository specificAddressRepository;
     private List<String> initialAddresses;
-    public AddressDataImpl(AddressJpaRepository repository,SpecificAddressJPARepository specificAddressRepository) {
+    private final GeoCoderFactory geoCoderFactory;
+    public AddressDataImpl(AddressJpaRepository repository,SpecificAddressJPARepository specificAddressRepository,GeoCoderFactory geoCoderFactory) {
 
         this.addresRepository = repository;
         this.specificAddressRepository=specificAddressRepository;
+        this.geoCoderFactory=geoCoderFactory;
         this.initialAddresses = new ArrayList<>(List.of(
                 "842|MONTEVIDEO",
                 "9060|MONTEVIDEO",
@@ -250,14 +256,30 @@ public class AddressDataImpl implements AddressDataService {
                 }
         );
         addIdPoints(lotBlock);
-
+        geocoderProcces();
         return this.initialAddresses;
 
-        //
-        // 1.1) Generar las variaciones, permutacion, error, abreviacion
-        // 1.2) Guardar direcciones en la tabla
         // 2) Llamar a cada geocoder con las direcciones yobtener resultado
         // 3) Guardar en la tabla
+
+    }
+    private void geocoderProcces(){
+        IGeoCoder geoPhoton = geoCoderFactory.getGeoCoder(GeocoderProvider.PHOTON);
+        IGeoCoder geoSudir = geoCoderFactory.getGeoCoder(GeocoderProvider.SUDIR);
+        IGeoCoder geoNominatim = geoCoderFactory.getGeoCoder(GeocoderProvider.NOMINATIM);
+        List<GeoCodeRequestSearchv2> address =
+                specificAddressRepository.findByCategoriaAndTipoDireccion(AddressCategory.CALLE_NUMERO,AddressType.COMUN)
+                .stream().map(x-> new GeoCodeRequestSearchv2(x.getId(),x.getFullAddress(), x.getDepartamento(),x.getTipoDireccion(),x.getCategoria()))
+                        .toList();
+
+        for (GeoCodeRequestSearchv2 oneAddress :address){
+
+            //geoPhoton.search(oneAddress);
+            //geoSudir.search(oneAddress);
+            //geoNominatim.search(oneAddress);
+
+
+        }
 
     }
     private List<Address> getStreetNumbers(List<String> initialAddresses) {
@@ -270,9 +292,7 @@ public class AddressDataImpl implements AddressDataService {
     }
     private List<Address> getStreetNumberDepartament(List<String> initialAddresses) {
 
-        List<Address> result = new ArrayList<>(addresRepository.findStreetNumberDepartament(initialAddresses));
-
-        return result;
+        return new ArrayList<>(addresRepository.findStreetNumberDepartament(initialAddresses));
     }
     private List<Address> getStreetNumberDepartamentlocality(List<String> initialAddresses) {
 
@@ -316,6 +336,8 @@ public class AddressDataImpl implements AddressDataService {
                 d.setFullAddress(addressBuilder.apply(a));
                 d.setCategoria(categoria);
                 d.setTipoDireccion(tipoDireccion);
+                d.setLatitud(a.getLatitud());
+                d.setLongitud(a.getLongitud());
                 return d;
             })
             .toList();

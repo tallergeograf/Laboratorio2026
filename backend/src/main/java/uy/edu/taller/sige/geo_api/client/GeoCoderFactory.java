@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import uy.edu.taller.sige.geo_api.client.nominatim.NominatimClient;
 import uy.edu.taller.sige.geo_api.client.photon.PhotonClient;
 import uy.edu.taller.sige.geo_api.client.sudir.SudirClient;
-import uy.edu.taller.sige.geo_api.enums.GeocoderProvider;
+import uy.edu.taller.sige.geo_api.model.enums.GeocoderProvider;
 
 @Component
 public class GeoCoderFactory {

@@ -26,9 +26,27 @@ public class SpecificAddress {
     @Column(name = "tipodireccion")
     private AddressType tipoDireccion;
 
+    @Column(name = "latitud")
+    private Double latitud;
+
+    @Column(name = "longitud")
+    private Double longitud;
+
     public SpecificAddress() {}
 
     // getters y setters
+
+    public String getDireccionCompleta() {
+        return direccionCompleta;
+    }
+
+    public Double getLatitud() {
+        return latitud;
+    }
+
+    public Double getLongitud() {
+        return longitud;
+    }
 
     public Long getId() {
         return id;
@@ -64,5 +82,21 @@ public class SpecificAddress {
 
     public void setTipoDireccion(AddressType tipoDireccion) {
         this.tipoDireccion = tipoDireccion;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setDireccionCompleta(String direccionCompleta) {
+        this.direccionCompleta = direccionCompleta;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
     }
 }
