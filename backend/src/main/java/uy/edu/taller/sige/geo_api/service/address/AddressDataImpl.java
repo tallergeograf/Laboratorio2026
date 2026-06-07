@@ -11,7 +11,6 @@ import uy.edu.taller.sige.geo_api.utils.StreetMutator;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Function;
 
 @Service
@@ -19,50 +18,50 @@ public class AddressDataImpl implements AddressDataService {
 
     private final AddressJpaRepository addresRepository;
     private final SpecificAddressJPARepository specificAddressRepository;
-    private  List<String>initialWKBPoint;
+    private List<String> initialAddresses;
     public AddressDataImpl(AddressJpaRepository repository,SpecificAddressJPARepository specificAddressRepository) {
 
         this.addresRepository = repository;
         this.specificAddressRepository=specificAddressRepository;
-        this.initialWKBPoint = new ArrayList<>(List.of(
-                "0101000020D17F000085EB51B8CFA32141E17A14BE53735741",
-                "0101000020D17F000085EB51B8D2A3214185EB51C850735741",
-                "0101000020D17F00001F85EB511593214185EB5148026E5741",
-                "0101000020D17F0000E6652AED59AD2141FEA141E2EE725741",
-                "0101000020D17F00000AD7A3F05FA92141E17A14CED2725741",
-                "0101000020D17F00000AD7A3709FA921410AD7A3D0FC725741",
-                "0101000020D17F0000C3F528DC98AA21415C8FC2557A735741",
-                "0101000020D17F00005C8FC2F5D4A32141295C8F924E735741",
-                "0101000020D17F000052B81E05DBA321419A99999948735741",
-                "0101000020D17F000005F6F6B5ACDE21417B03A14F2F6A5741",
-                "0101000020D17F0000EC51B89EDE912141C3F528DCF7685741",
-                "0101000020D17F0000EC51B81EDBCF214185EB5198B26A5741",
-                "0101000020D17F00004EC3C3FF7CD221414B4B1638D26B5741",
-                "0101000020D17F0000A4703D8A5B8C214100000050056F5741",
-                "0101000020D17F0000A4703D8A60C721417B14AE57746A5741",
-                "0101000020D17F000000000000AFDC2141CDCCCC2C8A6A5741",
-                "0101000020D17F00004670DC05C5C321416C641ED6E66A5741",
-                "0101000020D17F00002CDA30C9E5C62141176F393BD76A5741",
-                "0101000020D17F0000CDCCCC4CCEC921413D0AD7A3896A5741",
-                "0101000020D17F00004185507B729521411407B3ECE6675741",
-                "0101000020D17F00005C8FC2750A972141AE47E11A17695741",
-                "0101000020D17F000048E17A1464932141B81E85AB7D6D5741",
-                "0101000020D17F00001F85EB51DA7C2141D7A370BD4F6F5741",
-                "0101000020D17F0000F6285C0F877B2141D7A370AD816F5741",
-                "0101000020D17F0000E17A14AE617F214185EB51D8136F5741",
-                "0101000020D17F00007B14AEC77D812141713D0A67E46A5741",
-                "0101000020D17F00000AD7A37013A92141E17A142ECA685741",
-                "0101000020D17F000066666666D7AB2141F6285C1F88695741",
-                "0101000020D17F0000997DE92919B8214110142CAE326B5741"
+        this.initialAddresses = new ArrayList<>(List.of(
+                "842|MONTEVIDEO",
+                "9060|MONTEVIDEO",
+                "9207|MONTEVIDEO",
+                "19422|MONTEVIDEO",
+                "39938|MONTEVIDEO",
+                "51401|MONTEVIDEO",
+                "59872|MONTEVIDEO",
+                "77020|MONTEVIDEO",
+                "96701|MONTEVIDEO",
+                "104355|MONTEVIDEO",
+                "105791|MONTEVIDEO",
+                "112328|MONTEVIDEO",
+                "146479|MONTEVIDEO",
+                "206917|MONTEVIDEO",
+                "232980|MONTEVIDEO",
+                "234205|MONTEVIDEO",
+                "240991|MONTEVIDEO",
+                "272552|MONTEVIDEO",
+                "272559|MONTEVIDEO",
+                "272561|MONTEVIDEO",
+                "272586|MONTEVIDEO",
+                "301217|MONTEVIDEO",
+                "301718|MONTEVIDEO",
+                "325264|MONTEVIDEO",
+                "325289|MONTEVIDEO",
+                "350121|MONTEVIDEO",
+                "351510|MONTEVIDEO",
+                "351762|MONTEVIDEO",
+                "377415|MONTEVIDEO",
+                "382686|MONTEVIDEO"
         ));
-
     }
     @Override
     public List<String> processAddress() {
         specificAddressRepository.deleteAll();
         // TODO: resolve abreviacion
         // TODO: RESOLVER DIRECCIONES REPETIDAS
-        List<Address> accuracyAddress = getbyWkt(this.initialWKBPoint);
+        List<Address> accuracyAddress = getbyId(this.initialAddresses);
         generateAndSave(
                 accuracyAddress,
                 AddressCategory.CALLE_NUMERO,
@@ -85,8 +84,7 @@ public class AddressDataImpl implements AddressDataService {
         );
 
 
-
-        List<Address> street = getStreetNumbers(this.initialWKBPoint);
+        List<Address> street = getStreetNumbers(this.initialAddresses);
         generateAndSave(
                 street,
                 AddressCategory.CALLE_NUMERO,
@@ -107,9 +105,9 @@ public class AddressDataImpl implements AddressDataService {
                 AddressType.ERROR,
                 a ->  StreetMutator.mutate(a.getNombreVia()) + " " +a.getNumPuerta()
         );
-        addWkbPoints(street);
+        addIdPoints(street);
 
-        List<Address> streetNumberLocality = getStreetNumberLocality(this.initialWKBPoint);
+        List<Address> streetNumberLocality = getStreetNumberLocality(this.initialAddresses);
 
         generateAndSave(
                 streetNumberLocality,
@@ -131,9 +129,9 @@ public class AddressDataImpl implements AddressDataService {
                 AddressType.ERROR,
                 a -> StreetMutator.mutate(a.getNombreVia()) + " " + a.getNumPuerta()+ "," +a.getLocalidad()
         );
-        addWkbPoints(streetNumberLocality);
+        addIdPoints(streetNumberLocality);
 
-        List<Address> streetNumberDepartament = getStreetNumberDepartament(this.initialWKBPoint);
+        List<Address> streetNumberDepartament = getStreetNumberDepartament(this.initialAddresses);
         generateAndSave(
                 streetNumberDepartament,
                 AddressCategory.CALLE_NUMERO_DEPARTAMENTO,
@@ -154,8 +152,8 @@ public class AddressDataImpl implements AddressDataService {
                 AddressType.ERROR,
                 a -> StreetMutator.mutate(a.getNombreVia()) + " " + a.getNumPuerta()+ "," +a.getDepartamento()
         );
-        addWkbPoints(streetNumberDepartament);
-        List<Address> streetNumberlocalityDepartament = getStreetNumberDepartamentlocality(this.initialWKBPoint);
+        addIdPoints(streetNumberDepartament);
+        List<Address> streetNumberlocalityDepartament = getStreetNumberDepartamentlocality(this.initialAddresses);
         generateAndSave(
                 streetNumberlocalityDepartament,
                 AddressCategory.CALLE_NUMERO_LOCALIDAD_DEPARTAMENTO,
@@ -176,8 +174,8 @@ public class AddressDataImpl implements AddressDataService {
                 AddressType.ERROR,
                 a -> StreetMutator.mutate(a.getNombreVia()) + " " + a.getNumPuerta()+ ","+a.getLocalidad()+"," +a.getDepartamento()
         );
-        addWkbPoints(streetNumberlocalityDepartament);
-        List<Address> routeKilometer = getRouteKilometer(this.initialWKBPoint);
+        addIdPoints(streetNumberlocalityDepartament);
+        List<Address> routeKilometer = getRouteKilometer(this.initialAddresses);
         generateAndSave(
                 routeKilometer,
                 AddressCategory.RUTA_KILOMETRO,
@@ -197,9 +195,9 @@ public class AddressDataImpl implements AddressDataService {
                 AddressType.ERROR,
                 a -> StreetMutator.mutate(a.getNombreVia()) + " " + a.getKm()
         );
-        addWkbPoints(routeKilometer);
+        addIdPoints(routeKilometer);
 
-        List<Address> interestPoint = getInterestPoint(this.initialWKBPoint);
+        List<Address> interestPoint = getInterestPoint(this.initialAddresses);
         generateAndSave(
                 interestPoint,
                 AddressCategory.PUNTO_DE_INTERES,
@@ -219,9 +217,9 @@ public class AddressDataImpl implements AddressDataService {
                 AddressType.ERROR,
                 a -> StreetMutator.mutate(a.getNombreInmueble())
         );
-        addWkbPoints(interestPoint);
+        addIdPoints(interestPoint);
 
-        List<Address> lotBlock = getLotBlock(this.initialWKBPoint);
+        List<Address> lotBlock = getLotBlock(this.initialAddresses);
         generateAndSave(
                 lotBlock,
                 AddressCategory.SOLAR_MANZANA,
@@ -251,9 +249,9 @@ public class AddressDataImpl implements AddressDataService {
                             + " " + a.getManzana();
                 }
         );
-        addWkbPoints(lotBlock);
+        addIdPoints(lotBlock);
 
-        return this.initialWKBPoint;
+        return this.initialAddresses;
 
         //
         // 1.1) Generar las variaciones, permutacion, error, abreviacion
@@ -262,46 +260,46 @@ public class AddressDataImpl implements AddressDataService {
         // 3) Guardar en la tabla
 
     }
-    private List<Address> getStreetNumbers(List<String> initialWKBPoint) {
+    private List<Address> getStreetNumbers(List<String> initialAddresses) {
 
-        return new ArrayList<>(addresRepository.findStreetNumber(initialWKBPoint));
+        return new ArrayList<>(addresRepository.findStreetNumber(initialAddresses));
     }
-    private List<Address> getStreetNumberLocality(List<String> initialWKBPoint) {
+    private List<Address> getStreetNumberLocality(List<String> initialAddresses) {
 
-        return new ArrayList<>(addresRepository.findStreetNumberLocality(initialWKBPoint));
+        return new ArrayList<>(addresRepository.findStreetNumberLocality(initialAddresses));
     }
-    private List<Address> getStreetNumberDepartament(List<String> initialWKBPoint) {
+    private List<Address> getStreetNumberDepartament(List<String> initialAddresses) {
 
-        List<Address> result = new ArrayList<>(addresRepository.findStreetNumberDepartament(initialWKBPoint));
+        List<Address> result = new ArrayList<>(addresRepository.findStreetNumberDepartament(initialAddresses));
 
         return result;
     }
-    private List<Address> getStreetNumberDepartamentlocality(List<String> initialWKBPoint) {
+    private List<Address> getStreetNumberDepartamentlocality(List<String> initialAddresses) {
 
-        return new ArrayList<>(addresRepository.findStreetNumberDepartamentlocality(initialWKBPoint));
+        return new ArrayList<>(addresRepository.findStreetNumberDepartamentlocality(initialAddresses));
     }
-    private List<Address> getRouteKilometer(List<String> initialWKBPoint) {
-        return new ArrayList<>(addresRepository.findRouteKilometer(initialWKBPoint));
+    private List<Address> getRouteKilometer(List<String> initialAddresses) {
+        return new ArrayList<>(addresRepository.findRouteKilometer(initialAddresses));
     }
-    private List<Address>getInterestPoint(List<String> initialWKBPoint){
-        return new ArrayList<>(addresRepository.findInterestPoint(initialWKBPoint));
+    private List<Address>getInterestPoint(List<String> initialAddresses){
+        return new ArrayList<>(addresRepository.findInterestPoint(initialAddresses));
     }
-    private List<Address> getLotBlock(List<String> initialWKBPoint) {
+    private List<Address> getLotBlock(List<String> initialAddresses) {
 
-        return new ArrayList<>(addresRepository.findLotBlock(initialWKBPoint));
+        return new ArrayList<>(addresRepository.findLotBlock(initialAddresses));
     }
 
-    private List<Address> getbyWkt( List<String> accuracyAddress) {
+    private List<Address> getbyId( List<String> initialAddresses) {
 
-        return new ArrayList<>(addresRepository.findByWkb(accuracyAddress));
+        return new ArrayList<>(addresRepository.findAllById(initialAddresses));
     }
     /*
     HELPERS
     */
-    private void addWkbPoints(List<Address> addresses) {
-        this.initialWKBPoint.addAll(
+    private void addIdPoints(List<Address> addresses) {
+        this.initialAddresses.addAll(
                 addresses.stream()
-                        .map(Address::getPuntoWkb)
+                        .map(Address::getAddressId)
                         .toList()
         );
     }

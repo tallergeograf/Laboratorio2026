@@ -2,14 +2,19 @@ package uy.edu.taller.sige.geo_api.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Immutable;
+
 @Entity
+@Immutable
 @Table(name = "vista_uruguay")
 public class Address {
 
     @Id
+    @Column(name = "address_key")
+    private String addressId;
+
     @Column(name = "punto_wkb")
     private String puntoWkb;
-
     /*@Column(name = "geom", columnDefinition = "geometry(Point,4326)")
     @Transient
     private Point geom;*/
@@ -37,6 +42,7 @@ public class Address {
 
     @Column(name = "nombre_inmueble")
     private String nombreInmueble;
+
 
     @Column(name = "localidad")
     private String localidad;
@@ -96,6 +102,9 @@ public class Address {
     public String getDepartamento() {
         return departamento;
     }
+    public String getAddressId() {
+        return addressId;
+    }
 
 
     /*public void setGeom(Point geom) {
@@ -145,6 +154,10 @@ public class Address {
 
     public void setDepartamento(String departamento) {
         this.departamento = departamento;
+    }
+
+    public void setAddressId(String addressId) {
+        this.addressId = addressId;
     }
 
 }

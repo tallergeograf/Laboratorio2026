@@ -1,4 +1,4 @@
-package uy.edu.taller.sige.geo_api.client.subdir;
+package uy.edu.taller.sige.geo_api.client.sudir;
 
 import java.util.List;
 
