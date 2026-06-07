@@ -1,11 +1,11 @@
-package uy.edu.taller.sige.geo_api.properties;
+package uy.edu.taller.sige.geo_api.client.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 @Component
-@ConfigurationProperties(prefix = "geocoder.photon")
-public class PhotonProperties {
+@ConfigurationProperties(prefix = "geocoder.sudir")
+public class SudirProperties {
     private String baseUrl;
     private String userAgent;
     private Endpoints endpoints;

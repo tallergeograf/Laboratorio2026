@@ -1,4 +1,4 @@
-package uy.edu.taller.sige.geo_api.mapper;
+package uy.edu.taller.sige.geo_api.client.nominatim;
 
 import java.util.List;
 

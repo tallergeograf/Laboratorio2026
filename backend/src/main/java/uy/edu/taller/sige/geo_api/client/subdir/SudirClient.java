@@ -7,13 +7,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import uy.edu.taller.sige.geo_api.client.IGeoCoder;
+import uy.edu.taller.sige.geo_api.client.properties.SudirProperties;
 import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestReverse;
 import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestSearch;
 import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
 import uy.edu.taller.sige.geo_api.dto.sudir.response.SudirGeocodeResultDTO;
 import uy.edu.taller.sige.geo_api.dto.sudir.response.SudirReverseResultDTO;
-import uy.edu.taller.sige.geo_api.mapper.SudirMapper;
-import uy.edu.taller.sige.geo_api.properties.SudirProperties;
 import uy.edu.taller.sige.geo_api.utils.RestClient;
 import uy.edu.taller.sige.geo_api.utils.UrlBuilder;
 

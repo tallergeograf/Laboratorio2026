@@ -7,12 +7,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import uy.edu.taller.sige.geo_api.client.IGeoCoder;
+import uy.edu.taller.sige.geo_api.client.properties.NominatimProperties;
 import uy.edu.taller.sige.geo_api.dto.nominatim.response.NominatimPlaceDTO;
 import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestReverse;
 import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestSearch;
 import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
-import uy.edu.taller.sige.geo_api.mapper.NominatimMapper;
-import uy.edu.taller.sige.geo_api.properties.NominatimProperties;
 import uy.edu.taller.sige.geo_api.utils.RestClient;
 import uy.edu.taller.sige.geo_api.utils.UrlBuilder;
 

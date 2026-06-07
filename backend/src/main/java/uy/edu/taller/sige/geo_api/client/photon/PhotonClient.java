@@ -6,14 +6,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import uy.edu.taller.sige.geo_api.client.IGeoCoder;
+import uy.edu.taller.sige.geo_api.client.properties.PhotonProperties;
 import uy.edu.taller.sige.geo_api.dto.photon.request.PhotonReverseParamsDTO;
 import uy.edu.taller.sige.geo_api.dto.photon.request.PhotonSearchParamsDTO;
 import uy.edu.taller.sige.geo_api.dto.photon.response.PhotonResponseDTO;
 import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestReverse;
 import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestSearch;
 import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
-import uy.edu.taller.sige.geo_api.mapper.PhotonMapper;
-import uy.edu.taller.sige.geo_api.properties.PhotonProperties;
 import uy.edu.taller.sige.geo_api.utils.RestClient;
 import uy.edu.taller.sige.geo_api.utils.UrlBuilder;
 
