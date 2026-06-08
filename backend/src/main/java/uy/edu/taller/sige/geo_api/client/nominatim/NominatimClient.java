@@ -39,7 +39,10 @@ public class NominatimClient implements IGeoCoder {
             .path(properties.getEndpoints().getSearch())
             .params(mapper.toNominatimSearchParamsDTO(request).toMap())
             .build();
-        return mapper.toGeocodeResponseList(restClient.get(url, new ParameterizedTypeReference<List<NominatimPlaceDTO>>() {}, headers));
+        long start = System.nanoTime();
+        List<NominatimPlaceDTO> raw = restClient.get(url, new ParameterizedTypeReference<List<NominatimPlaceDTO>>() {}, headers);
+        double latencyMs = (System.nanoTime() - start) / 1_000_000.0;
+        return mapper.toGeocodeResponseList(raw, latencyMs);
     }
 
     @Override
@@ -49,6 +52,9 @@ public class NominatimClient implements IGeoCoder {
             .path(properties.getEndpoints().getReverse())
             .params(mapper.toNominatimReverseParamsDTO(request).toMap())
             .build();
-        return List.of(mapper.toGeocodeResponse(restClient.get(url, NominatimPlaceDTO.class, headers)));
+        long start = System.nanoTime();
+        NominatimPlaceDTO raw = restClient.get(url, NominatimPlaceDTO.class, headers);
+        double latencyMs = (System.nanoTime() - start) / 1_000_000.0;
+        return List.of(mapper.toGeocodeResponse(raw, latencyMs));
     }
 }

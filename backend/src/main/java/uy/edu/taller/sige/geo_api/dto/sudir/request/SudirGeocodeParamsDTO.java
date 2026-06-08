@@ -11,9 +11,9 @@ public record SudirGeocodeParamsDTO(
 ) {
     public Map<String, String> toMap() {
         Map<String, String> params = new LinkedHashMap<>();
-        params.put("calle", calle);
-        params.put("departamento", departamento);
-        params.put("localidad", localidad);
+        if (calle != null)  params.put("calle", calle);
+        if (departamento != null) params.put("departamento", departamento);
+        if (localidad != null) params.put("localidad", localidad);
         return params;
     }
 

@@ -10,6 +10,7 @@ public class SpecificAddressResult {
     private SpecificAddressResultId id;
 
     @ManyToOne
+    @MapsId("direccionId")
     @JoinColumn(name = "direccion_id")
     private SpecificAddress direccion;
 

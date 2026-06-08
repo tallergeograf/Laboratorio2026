@@ -10,7 +10,7 @@ import uy.edu.taller.sige.geo_api.model.enums.AddressType;
 import java.util.List;
 
 @Repository
-public interface SpecificAddressJPARepository extends JpaRepository<SpecificAddress, String> {
+public interface SpecificAddressJPARepository extends JpaRepository<SpecificAddress, Long> {
 
     List<SpecificAddress> findByCategoriaAndTipoDireccion(
             AddressCategory categoria,

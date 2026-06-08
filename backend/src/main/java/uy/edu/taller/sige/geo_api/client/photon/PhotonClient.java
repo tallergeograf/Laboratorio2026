@@ -41,9 +41,13 @@ public class PhotonClient implements IGeoCoder {
             .baseUrl(properties.getBaseUrl())
             .path(properties.getEndpoints().getSearch())
             .params(searchParams.toMap())
+            .multiParams(searchParams.toMultiMap())
             .build();
 
-        return mapper.toGeocodeResponseList(restClient.get(url, PhotonResponseDTO.class, headers));
+        long start = System.nanoTime();
+        PhotonResponseDTO raw = restClient.get(url, PhotonResponseDTO.class, headers);
+        double latencyMs = (System.nanoTime() - start) / 1_000_000.0;
+        return mapper.toGeocodeResponseList(raw, latencyMs);
     }
 
     @Override
@@ -54,8 +58,12 @@ public class PhotonClient implements IGeoCoder {
             .baseUrl(properties.getBaseUrl())
             .path(properties.getEndpoints().getReverse())
             .params(reverseParams.toMap())
+            .multiParams(reverseParams.toMultiMap())
             .build();
 
-        return mapper.toGeocodeResponseList(restClient.get(url, PhotonResponseDTO.class, headers));
+        long start = System.nanoTime();
+        PhotonResponseDTO raw = restClient.get(url, PhotonResponseDTO.class, headers);
+        double latencyMs = (System.nanoTime() - start) / 1_000_000.0;
+        return mapper.toGeocodeResponseList(raw, latencyMs);
     }
 }

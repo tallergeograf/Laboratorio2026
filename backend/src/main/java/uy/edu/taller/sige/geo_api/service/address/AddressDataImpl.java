@@ -3,14 +3,18 @@ package uy.edu.taller.sige.geo_api.service.address;
 import org.springframework.stereotype.Service;
 import uy.edu.taller.sige.geo_api.client.GeoCoderFactory;
 import uy.edu.taller.sige.geo_api.client.IGeoCoder;
-import uy.edu.taller.sige.geo_api.dto.request.GeoCodeRequestSearchv2;
+import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestSearch;
+import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
 import uy.edu.taller.sige.geo_api.model.enums.GeocoderProvider;
 import uy.edu.taller.sige.geo_api.model.Address;
 import uy.edu.taller.sige.geo_api.model.SpecificAddress;
+import uy.edu.taller.sige.geo_api.model.SpecificAddressResult;
+import uy.edu.taller.sige.geo_api.model.SpecificAddressResultId;
 import uy.edu.taller.sige.geo_api.model.enums.AddressCategory;
 import uy.edu.taller.sige.geo_api.model.enums.AddressType;
 import uy.edu.taller.sige.geo_api.repository.AddressJpaRepository;
 import uy.edu.taller.sige.geo_api.repository.SpecificAddressJPARepository;
+import uy.edu.taller.sige.geo_api.repository.SpecificAddressResultRepository;
 import uy.edu.taller.sige.geo_api.utils.StreetMutator;
 
 import java.util.ArrayList;
@@ -22,12 +26,15 @@ public class AddressDataImpl implements AddressDataService {
 
     private final AddressJpaRepository addresRepository;
     private final SpecificAddressJPARepository specificAddressRepository;
+    private final SpecificAddressResultRepository specificAddressResultRepository;
+
     private List<String> initialAddresses;
     private final GeoCoderFactory geoCoderFactory;
-    public AddressDataImpl(AddressJpaRepository repository,SpecificAddressJPARepository specificAddressRepository,GeoCoderFactory geoCoderFactory) {
+    public AddressDataImpl(AddressJpaRepository repository,SpecificAddressJPARepository specificAddressRepository,SpecificAddressResultRepository specificAddressResultRepository,GeoCoderFactory geoCoderFactory) {
 
         this.addresRepository = repository;
         this.specificAddressRepository=specificAddressRepository;
+        this.specificAddressResultRepository=specificAddressResultRepository;
         this.geoCoderFactory=geoCoderFactory;
         this.initialAddresses = new ArrayList<>(List.of(
                 "842|MONTEVIDEO",
@@ -64,6 +71,7 @@ public class AddressDataImpl implements AddressDataService {
     }
     @Override
     public List<String> processAddress() {
+        specificAddressResultRepository.deleteAll();
         specificAddressRepository.deleteAll();
         // TODO: resolve abreviacion
         // TODO: RESOLVER DIRECCIONES REPETIDAS
@@ -267,20 +275,29 @@ public class AddressDataImpl implements AddressDataService {
         IGeoCoder geoPhoton = geoCoderFactory.getGeoCoder(GeocoderProvider.PHOTON);
         IGeoCoder geoSudir = geoCoderFactory.getGeoCoder(GeocoderProvider.SUDIR);
         IGeoCoder geoNominatim = geoCoderFactory.getGeoCoder(GeocoderProvider.NOMINATIM);
-        List<GeoCodeRequestSearchv2> address =
+        List<GeocodeRequestSearch> address =
                 specificAddressRepository.findByCategoriaAndTipoDireccion(AddressCategory.CALLE_NUMERO,AddressType.COMUN)
-                .stream().map(x-> new GeoCodeRequestSearchv2(x.getId(),x.getFullAddress(), x.getDepartamento(),x.getTipoDireccion(),x.getCategoria()))
+                .stream().map(x-> new GeocodeRequestSearch(x.getId(),x.getFullAddress(), x.getDepartamento(),x.getTipoDireccion(),x.getCategoria()))
                         .toList();
 
-        for (GeoCodeRequestSearchv2 oneAddress :address){
-
-            //geoPhoton.search(oneAddress);
-            //geoSudir.search(oneAddress);
-            //geoNominatim.search(oneAddress);
-
-
+        for (GeocodeRequestSearch oneAddress : address) {
+            saveFirstResult(geoPhoton.search(oneAddress), oneAddress);
+            saveFirstResult(geoSudir.search(oneAddress), oneAddress);
+            saveFirstResult(geoNominatim.search(oneAddress), oneAddress);
         }
+    }
 
+    private void saveFirstResult(List<GeocodeResponse> results, GeocodeRequestSearch oneAddress) {
+        if (results.isEmpty()) return;
+        GeocodeResponse first = results.get(0);
+        SpecificAddressResult entity = new SpecificAddressResult();
+        entity.setId(new SpecificAddressResultId(oneAddress.id(), first.source()));
+        entity.setDireccion(specificAddressRepository.getReferenceById(oneAddress.id()));
+        entity.setLatitud(first.lat());
+        entity.setLongitud(first.lon());
+        entity.setIsResult(true);
+        entity.setLatencia(first.latencyMs());
+        specificAddressResultRepository.save(entity);
     }
     private List<Address> getStreetNumbers(List<String> initialAddresses) {
 

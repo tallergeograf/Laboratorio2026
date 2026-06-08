@@ -11,5 +11,9 @@ public record GeocodeResponse(
     String country,
     String countryCode,
     String postcode,
-    String source
+    String source,
+    String neighbourhood,
+    Double confidence,
+    Boolean approximate,
+    Double latencyMs
 ) {}

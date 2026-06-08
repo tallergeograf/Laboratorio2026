@@ -1,5 +1,6 @@
 package uy.edu.taller.sige.geo_api.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
@@ -8,7 +9,10 @@ import java.util.Objects;
 @Embeddable
 public class SpecificAddressResultId implements Serializable {
 
-    private Long  direccionId;
+    @Column(name = "direccion_id")
+    private Long direccionId;
+
+    @Column(name = "geocoder_id")
     private String geocoderId;
 
     public SpecificAddressResultId() {}

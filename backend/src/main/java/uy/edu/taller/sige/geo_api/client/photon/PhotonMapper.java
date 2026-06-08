@@ -17,10 +17,10 @@ import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
 
 @Component
 public class PhotonMapper {
-    
+
     public PhotonSearchParamsDTO toPhotonSearchParamsDTO(GeocodeRequestSearch request) {
         return new PhotonSearchParamsDTO(
-            request.query(), null, null, request.limit(), null, null, null, null, null, null, null
+            request.full_address(), null, null, 5, null, null, 0.5, null, null, null, null
         );
     }
 
@@ -28,7 +28,7 @@ public class PhotonMapper {
         return new PhotonReverseParamsDTO(request.lat(), request.lon(), null, null, null, null);
     }
 
-    public GeocodeResponse toGeocodeResponse(PhotonFeatureDTO feature) {
+    public GeocodeResponse toGeocodeResponse(PhotonFeatureDTO feature, double latencyMs) {
         PhotonPropertiesDTO props = feature.properties();
         // GeoJSON coordinates order: [lon, lat]
         List<Object> coords = feature.geometry() != null ? feature.geometry().coordinates() : null;
@@ -46,13 +46,17 @@ public class PhotonMapper {
             props != null ? props.country() : null,
             props != null ? props.countrycode() : null,
             props != null ? props.postcode() : null,
-            "photon"
+            "photon",
+            props != null ? props.district() : null,
+            null,
+            false,
+            latencyMs
         );
     }
 
-    public List<GeocodeResponse> toGeocodeResponseList(PhotonResponseDTO response) {
+    public List<GeocodeResponse> toGeocodeResponseList(PhotonResponseDTO response, double latencyMs) {
         if (response == null || response.features() == null) return List.of();
-        return response.features().stream().map(this::toGeocodeResponse).toList();
+        return response.features().stream().map(f -> toGeocodeResponse(f, latencyMs)).toList();
     }
 
     private String buildDisplayName(PhotonPropertiesDTO props) {

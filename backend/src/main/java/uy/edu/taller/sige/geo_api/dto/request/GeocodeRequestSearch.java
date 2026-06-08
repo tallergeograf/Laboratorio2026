@@ -1,10 +1,12 @@
 package uy.edu.taller.sige.geo_api.dto.request;
 
+import uy.edu.taller.sige.geo_api.model.enums.AddressCategory;
+import uy.edu.taller.sige.geo_api.model.enums.AddressType;
+
 public record GeocodeRequestSearch(
-    String query,
-    Integer limit,
-    String street,
-    String houseNumber,
-    String city,
-    String state
+    Long id,
+    String full_address,
+    String department,
+    AddressType type,
+    AddressCategory category
 ) {}
