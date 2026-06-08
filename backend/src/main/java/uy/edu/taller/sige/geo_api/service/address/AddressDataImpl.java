@@ -284,30 +284,36 @@ public class AddressDataImpl implements AddressDataService {
                 .stream().map(x-> new GeocodeRequestSearch(x.getId(),x.getFullAddress(), x.getDepartamento(),x.getTipoDireccion(),x.getCategoria()))
                         .toList();
         for (GeocodeRequestSearch oneAddress : address) {
-            trySearch(geoPhoton, oneAddress);
-            trySearch(geoSudir, oneAddress);
-            trySearch(geoNominatim, oneAddress);
+            trySearch(geoPhoton, "photon", oneAddress);
+            trySearch(geoSudir, "sudir", oneAddress);
+            trySearch(geoNominatim, "nominatim", oneAddress);
         }
     }
 
-    private void trySearch(IGeoCoder geocoder, GeocodeRequestSearch oneAddress) {
+    private void trySearch(IGeoCoder geocoder, String providerId, GeocodeRequestSearch oneAddress) {
         try {
-            saveFirstResult(geocoder.search(oneAddress), oneAddress);
+            saveFirstResult(providerId, geocoder.search(oneAddress), oneAddress);
         } catch (Exception e) {
-            log.warn("Geocoder {} failed for address id={}: {}", geocoder.getClass().getSimpleName(), oneAddress.id(), e.getMessage());
+            log.warn("Geocoder {} failed for address id={}: {}", providerId, oneAddress.id(), e.getMessage());
         }
     }
 
-    private void saveFirstResult(List<GeocodeResponse> results, GeocodeRequestSearch oneAddress) {
-        if (results.isEmpty()) return;
-        GeocodeResponse first = results.get(0);
+    private void saveFirstResult(String providerId, List<GeocodeResponse> results, GeocodeRequestSearch oneAddress) {
         SpecificAddressResult entity = new SpecificAddressResult();
-        entity.setId(new SpecificAddressResultId(oneAddress.id(), first.source()));
         entity.setDireccion(specificAddressRepository.getReferenceById(oneAddress.id()));
-        entity.setLatitud(first.lat());
-        entity.setLongitud(first.lon());
-        entity.setIsResult(true);
-        entity.setLatencia(first.latencyMs());
+
+        if (results.isEmpty()) {
+            entity.setId(new SpecificAddressResultId(oneAddress.id(), providerId));
+            entity.setIsResult(false);
+        } else {
+            GeocodeResponse first = results.get(0);
+            entity.setId(new SpecificAddressResultId(oneAddress.id(), first.source()));
+            entity.setLatitud(first.lat());
+            entity.setLongitud(first.lon());
+            entity.setIsResult(true);
+            entity.setLatencia(first.latencyMs());
+        }
+
         specificAddressResultRepository.save(entity);
     }
     private List<Address> getStreetNumbers(List<String> initialAddresses) {
