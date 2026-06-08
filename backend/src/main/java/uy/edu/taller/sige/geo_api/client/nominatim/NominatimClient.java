@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
-
 import uy.edu.taller.sige.geo_api.client.IGeoCoder;
 import uy.edu.taller.sige.geo_api.client.properties.NominatimProperties;
 import uy.edu.taller.sige.geo_api.dto.nominatim.response.NominatimPlaceDTO;
@@ -21,19 +20,22 @@ public class NominatimClient implements IGeoCoder {
     private final RestClient restClient;
     private final NominatimProperties properties;
     private final NominatimMapper mapper;
+    private final NominatimRateLimiter rateLimiter;
 
     private final HttpHeaders headers;
 
-    public NominatimClient(RestClient restClient, NominatimProperties properties, NominatimMapper mapper) {
+    public NominatimClient(RestClient restClient, NominatimProperties properties, NominatimMapper mapper, NominatimRateLimiter rateLimiter) {
         this.restClient = restClient;
         this.properties = properties;
         this.mapper = mapper;
+        this.rateLimiter = rateLimiter;
         this.headers = new HttpHeaders();
         this.headers.set(HttpHeaders.USER_AGENT, properties.getUserAgent());
     }
 
     @Override
     public List<GeocodeResponse> search(GeocodeRequestSearch request) {
+        rateLimiter.acquire();
         String url = new UrlBuilder()
             .baseUrl(properties.getBaseUrl())
             .path(properties.getEndpoints().getSearch())
@@ -47,6 +49,7 @@ public class NominatimClient implements IGeoCoder {
 
     @Override
     public List<GeocodeResponse> reverse(GeocodeRequestReverse request) {
+        rateLimiter.acquire();
         String url = new UrlBuilder()
             .baseUrl(properties.getBaseUrl())
             .path(properties.getEndpoints().getReverse())
