@@ -1,5 +1,7 @@
 package uy.edu.taller.sige.geo_api.service.address;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import uy.edu.taller.sige.geo_api.client.GeoCoderFactory;
 import uy.edu.taller.sige.geo_api.client.IGeoCoder;
@@ -23,6 +25,8 @@ import java.util.function.Function;
 
 @Service
 public class AddressDataImpl implements AddressDataService {
+
+    private static final Logger log = LoggerFactory.getLogger(AddressDataImpl.class);
 
     private final AddressJpaRepository addresRepository;
     private final SpecificAddressJPARepository specificAddressRepository;
@@ -279,11 +283,18 @@ public class AddressDataImpl implements AddressDataService {
                 specificAddressRepository.findByCategoriaAndTipoDireccion(AddressCategory.CALLE_NUMERO,AddressType.COMUN)
                 .stream().map(x-> new GeocodeRequestSearch(x.getId(),x.getFullAddress(), x.getDepartamento(),x.getTipoDireccion(),x.getCategoria()))
                         .toList();
-
         for (GeocodeRequestSearch oneAddress : address) {
-            saveFirstResult(geoPhoton.search(oneAddress), oneAddress);
-            saveFirstResult(geoSudir.search(oneAddress), oneAddress);
-            saveFirstResult(geoNominatim.search(oneAddress), oneAddress);
+            trySearch(geoPhoton, oneAddress);
+            trySearch(geoSudir, oneAddress);
+            trySearch(geoNominatim, oneAddress);
+        }
+    }
+
+    private void trySearch(IGeoCoder geocoder, GeocodeRequestSearch oneAddress) {
+        try {
+            saveFirstResult(geocoder.search(oneAddress), oneAddress);
+        } catch (Exception e) {
+            log.warn("Geocoder {} failed for address id={}: {}", geocoder.getClass().getSimpleName(), oneAddress.id(), e.getMessage());
         }
     }
 

@@ -16,12 +16,15 @@ import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
 public class NominatimMapper {
 
     public NominatimSearchParamsDTO toNominatimSearchParamsDTO(GeocodeRequestSearch request) {
-        String q = request.department() != null
-            ? request.full_address() + ", " + request.department() + ", Uruguay"
-            : request.full_address() + ", Uruguay";
         return new NominatimSearchParamsDTO(
-            q, null, null, null, null, null, null,
-            "jsonv2", 5, "uy", 1, null, null, null, null, null
+            null,
+            request.full_address(),
+            request.department(),
+            null,
+            null,
+            "Uruguay",
+            null,
+            "jsonv2", 5, "uy", 1, null, null, null, null, "es"
         );
     }
 
@@ -56,6 +59,7 @@ public class NominatimMapper {
     }
 
     public List<GeocodeResponse> toGeocodeResponseList(List<NominatimPlaceDTO> places, double latencyMs) {
+        if (places == null) return List.of();
         return places.stream().map(p -> toGeocodeResponse(p, latencyMs)).toList();
     }
 }
