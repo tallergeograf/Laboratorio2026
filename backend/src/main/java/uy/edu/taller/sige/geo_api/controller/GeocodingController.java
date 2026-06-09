@@ -15,7 +15,7 @@ import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
 import uy.edu.taller.sige.geo_api.service.geocoding.GeocodingService;
 
 @RestController
-@RequestMapping("/api/geocoding")
+@RequestMapping("/api/gis")
 public class GeocodingController {
 
     private final GeocodingService geocodingService;
