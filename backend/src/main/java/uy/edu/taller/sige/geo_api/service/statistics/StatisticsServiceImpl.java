@@ -66,6 +66,10 @@ public class StatisticsServiceImpl implements StatisticsService {
         double median = errors.size() % 2 == 1
                 ? errors.get(errors.size() / 2)
                 : (errors.get(errors.size() / 2 - 1) + errors.get(errors.size() / 2)) / 2.0;
+        
+        double porcentageErrors = (double) errors.stream().
+                filter(e -> e > 13).count() / errors.size() * 100.0;
+
 
         int coverage = entries.size();
 
@@ -89,7 +93,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         return new StatsResponse(
                 provider, 
                 results.size(), 
-                new StatsAccuracyResponse(avg, max, median, 0.0), 
+                new StatsAccuracyResponse(avg, max, median, porcentageErrors), 
                 new StatsCoverageResponse(coverage), 
                 new StatsReliabilityResponse(totalErrorsTypographic, totalErrorsPermutation, totalErrorsRural, totalErrorsUrban), 
                 entries
