@@ -70,18 +70,7 @@ public class AddressDataImpl implements AddressDataService {
                 "351510|MONTEVIDEO",
                 "351762|MONTEVIDEO",
                 "377415|MONTEVIDEO",
-                "382686|MONTEVIDEO",
-                "329490|MONTEVIDEO",
-                "61626|MONTEVIDEO",
-                "130891|MONTEVIDEO",
-                "155406|MONTEVIDEO",
-                "67158|MONTEVIDEO",
-                "122719|MONTEVIDEO",
-                "166677|MONTEVIDEO",
-                "77717|MONTEVIDEO",
-                "129011|MONTEVIDEO",
-                "11920|MONTEVIDEO"
-
+                "382686|MONTEVIDEO"
         ));
     }
     @Override
