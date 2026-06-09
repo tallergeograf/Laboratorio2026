@@ -21,6 +21,8 @@ import uy.edu.taller.sige.geo_api.utils.StreetMutator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Function;
 
 @Service
@@ -286,20 +288,29 @@ public class AddressDataImpl implements AddressDataService {
         // 3) Guardar en la tabla
 
     }
-    private void geocoderProcces(){
-        IGeoCoder geoPhoton = geoCoderFactory.getGeoCoder(GeocoderProvider.PHOTON);
-        IGeoCoder geoSudir = geoCoderFactory.getGeoCoder(GeocoderProvider.SUDIR);
+    private void geocoderProcces() {
+        IGeoCoder geoPhoton    = geoCoderFactory.getGeoCoder(GeocoderProvider.PHOTON);
+        IGeoCoder geoSudir     = geoCoderFactory.getGeoCoder(GeocoderProvider.SUDIR);
         IGeoCoder geoNominatim = geoCoderFactory.getGeoCoder(GeocoderProvider.NOMINATIM);
-        List<GeocodeRequestSearch> address =
-                specificAddressRepository.findByCategoriaAndTipoDireccion(AddressCategory.CALLE_NUMERO,AddressType.COMUN)
-                .stream().map(x-> new GeocodeRequestSearch(x.getId(),x.getFullAddress(), x.getDepartamento(),x.getTipoDireccion(),x.getCategoria()))
-                        .toList();
-        for (GeocodeRequestSearch oneAddress : address) {
-            trySearch(geoPhoton, "photon", oneAddress);
-            trySearch(geoSudir, "sudir", oneAddress);
-            trySearch(geoNominatim, "nominatim", oneAddress);
+
+        List<GeocodeRequestSearch> addresses = specificAddressRepository.findAll()
+                .stream()
+                .map(x -> new GeocodeRequestSearch(
+                        x.getId(),
+                        x.getFullAddress(),
+                        x.getDepartamento(),
+                        x.getTipoDireccion(),
+                        x.getCategoria()))
+                .toList();
+
+        try (ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor()) {
+                for (GeocodeRequestSearch oneAddress : addresses) {
+                executor.submit(() -> trySearch(geoPhoton,    "photon",    oneAddress));
+                executor.submit(() -> trySearch(geoSudir,     "sudir",     oneAddress));
+                executor.submit(() -> trySearch(geoNominatim, "nominatim", oneAddress));
+                }
+        } // acá el try-with-resources espera que terminen todos los hilos antes de seguir
         }
-    }
 
     private void trySearch(IGeoCoder geocoder, String providerId, GeocodeRequestSearch oneAddress) {
         try {
