@@ -21,6 +21,9 @@ import uy.edu.taller.sige.geo_api.utils.StreetMutator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.function.Function;
 
 @Service
@@ -285,19 +288,48 @@ public class AddressDataImpl implements AddressDataService {
         // 3) Guardar en la tabla
 
     }
-    private void geocoderProcces(){
-        IGeoCoder geoPhoton = geoCoderFactory.getGeoCoder(GeocoderProvider.PHOTON);
-        IGeoCoder geoSudir = geoCoderFactory.getGeoCoder(GeocoderProvider.SUDIR);
+    private void geocoderProcces() {
+        IGeoCoder geoPhoton    = geoCoderFactory.getGeoCoder(GeocoderProvider.PHOTON);
+        IGeoCoder geoSudir     = geoCoderFactory.getGeoCoder(GeocoderProvider.SUDIR);
         IGeoCoder geoNominatim = geoCoderFactory.getGeoCoder(GeocoderProvider.NOMINATIM);
-        List<GeocodeRequestSearch> address =
-                specificAddressRepository.findByCategoriaAndTipoDireccion(AddressCategory.CALLE_NUMERO,AddressType.COMUN)
-                .stream().map(x-> new GeocodeRequestSearch(x.getId(),x.getFullAddress(), x.getDepartamento(),x.getTipoDireccion(),x.getCategoria()))
-                        .toList();
-        for (GeocodeRequestSearch oneAddress : address) {
-            trySearch(geoPhoton, "photon", oneAddress);
-            trySearch(geoSudir, "sudir", oneAddress);
-            trySearch(geoNominatim, "nominatim", oneAddress);
-        }
+
+        List<GeocodeRequestSearch> addresses = specificAddressRepository.findAll()
+                .stream()
+                .map(x -> new GeocodeRequestSearch(
+                        x.getId(),
+                        x.getFullAddress(),
+                        x.getDepartamento(),
+                        x.getTipoDireccion(),
+                        x.getCategoria()))
+                .toList();
+
+        ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
+
+        Future<?> f1 = executor.submit(() -> {
+                for (GeocodeRequestSearch oneAddress : addresses) {
+                trySearch(geoPhoton, "photon", oneAddress);
+                try { Thread.sleep(1000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                }
+        });
+
+        Future<?> f2 = executor.submit(() -> {
+                for (GeocodeRequestSearch oneAddress : addresses) {
+                trySearch(geoSudir, "sudir", oneAddress);
+                }
+        });
+
+        Future<?> f3 = executor.submit(() -> {
+                for (GeocodeRequestSearch oneAddress : addresses) {
+                trySearch(geoNominatim, "nominatim", oneAddress);
+                try { Thread.sleep(1100); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                }
+        });
+
+        try { f1.get(); } catch (Exception e) { log.error("photon error: {}", e.getMessage()); }
+        try { f2.get(); } catch (Exception e) { log.error("sudir error: {}", e.getMessage()); }
+        try { f3.get(); } catch (Exception e) { log.error("nominatim error: {}", e.getMessage()); }
+
+        executor.shutdown();
     }
 
     private void trySearch(IGeoCoder geocoder, String providerId, GeocodeRequestSearch oneAddress) {
