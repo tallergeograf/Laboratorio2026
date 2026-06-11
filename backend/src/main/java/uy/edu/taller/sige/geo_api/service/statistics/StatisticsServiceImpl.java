@@ -10,6 +10,7 @@ import uy.edu.taller.sige.geo_api.dto.stats.StatsResponse;
 import uy.edu.taller.sige.geo_api.model.SpecificAddressResult;
 import uy.edu.taller.sige.geo_api.model.enums.AddressType;
 import uy.edu.taller.sige.geo_api.repository.SpecificAddressResultRepository;
+import uy.edu.taller.sige.geo_api.utils.HaversineCalculator;
 
 import java.util.List;
 import java.util.Map;
@@ -52,7 +53,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                         r.getDireccion().getLongitud(),
                         r.getLatitud(),
                         r.getLongitud(),
-                        haversine(r.getDireccion().getLatitud(), r.getDireccion().getLongitud(),r.getLatitud(), r.getLongitud())
+                        HaversineCalculator.distanceMeters(r.getDireccion().getLatitud(), r.getDireccion().getLongitud(), r.getLatitud(), r.getLongitud())
                 ))
                 .toList();
 
@@ -100,14 +101,5 @@ public class StatisticsServiceImpl implements StatisticsService {
         );
     }
 
-    // Haversine formula — non-obvious algorithm, included intentionally
-    private double haversine(double lat1, double lon1, double lat2, double lon2) {
-        final double R = 6371000.0;
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    }
+
 }
