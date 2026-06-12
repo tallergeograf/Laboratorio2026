@@ -1,4 +1,4 @@
-package uy.edu.taller.sige.geo_api.client.subdir;
+package uy.edu.taller.sige.geo_api.client.sudir;
 
 import java.util.List;
 
@@ -40,7 +40,10 @@ public class SudirClient implements IGeoCoder {
             .path(properties.getEndpoints().getSearch())
             .params(mapper.toSudirGeocodeParamsDTO(request).toMap())
             .build();
-        return mapper.fromGeocodeList(restClient.get(url, new ParameterizedTypeReference<List<SudirGeocodeResultDTO>>() {}, headers));
+        long start = System.nanoTime();
+        List<SudirGeocodeResultDTO> raw = restClient.get(url, new ParameterizedTypeReference<List<SudirGeocodeResultDTO>>() {}, headers);
+        double latencyMs = (System.nanoTime() - start) / 1_000_000.0;
+        return mapper.fromGeocodeList(raw, latencyMs);
     }
 
     @Override
@@ -50,6 +53,9 @@ public class SudirClient implements IGeoCoder {
             .path(properties.getEndpoints().getReverse())
             .params(mapper.toSudirReverseParamsDTO(request).toMap())
             .build();
-        return mapper.fromReverseList(restClient.get(url, new ParameterizedTypeReference<List<SudirReverseResultDTO>>() {}, headers));
+        long start = System.nanoTime();
+        List<SudirReverseResultDTO> raw = restClient.get(url, new ParameterizedTypeReference<List<SudirReverseResultDTO>>() {}, headers);
+        double latencyMs = (System.nanoTime() - start) / 1_000_000.0;
+        return mapper.fromReverseList(raw, latencyMs);
     }
 }

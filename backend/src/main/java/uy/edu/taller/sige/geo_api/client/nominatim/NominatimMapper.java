@@ -17,8 +17,14 @@ public class NominatimMapper {
 
     public NominatimSearchParamsDTO toNominatimSearchParamsDTO(GeocodeRequestSearch request) {
         return new NominatimSearchParamsDTO(
-            request.query(), null, null, null, null, null, null,
-            "jsonv2", request.limit(), null, 1, null, null, null, null, null
+            null,
+            request.full_address(),
+            request.department(),
+            null,
+            null,
+            "Uruguay",
+            null,
+            "jsonv2", 5, "uy", 1, null, null, null, null, "es"
         );
     }
 
@@ -26,7 +32,7 @@ public class NominatimMapper {
         return new NominatimReverseParamsDTO(request.lat(), request.lon(), "jsonv2", null, 1, null);
     }
 
-    public GeocodeResponse toGeocodeResponse(NominatimPlaceDTO place) {
+    public GeocodeResponse toGeocodeResponse(NominatimPlaceDTO place, double latencyMs) {
         NominatimAddressDTO addr = place.address();
         String city = addr != null
             ? (addr.city() != null ? addr.city()
@@ -44,11 +50,16 @@ public class NominatimMapper {
             addr != null ? addr.country() : null,
             addr != null ? addr.countryCode() : null,
             addr != null ? addr.postcode() : null,
-            "nominatim"
+            "nominatim",
+            addr != null ? addr.suburb() : null,
+            place.importance(),
+            false,
+            latencyMs
         );
     }
 
-    public List<GeocodeResponse> toGeocodeResponseList(List<NominatimPlaceDTO> places) {
-        return places.stream().map(this::toGeocodeResponse).toList();
+    public List<GeocodeResponse> toGeocodeResponseList(List<NominatimPlaceDTO> places, double latencyMs) {
+        if (places == null) return List.of();
+        return places.stream().map(p -> toGeocodeResponse(p, latencyMs)).toList();
     }
 }

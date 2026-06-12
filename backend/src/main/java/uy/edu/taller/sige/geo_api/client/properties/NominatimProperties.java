@@ -9,6 +9,7 @@ public class NominatimProperties {
     private String baseUrl;
     private String userAgent;
     private Endpoints endpoints;
+    private long minIntervalMs = 1100;
 
     public String getBaseUrl() { return baseUrl; }
     public void setBaseUrl(String baseUrl) { this.baseUrl = baseUrl; }
@@ -18,6 +19,9 @@ public class NominatimProperties {
 
     public Endpoints getEndpoints() { return endpoints; }
     public void setEndpoints(Endpoints endpoints) { this.endpoints = endpoints; }
+
+    public long getMinIntervalMs() { return minIntervalMs; }
+    public void setMinIntervalMs(long minIntervalMs) { this.minIntervalMs = minIntervalMs; }
 
     public static class Endpoints {
         private String search;

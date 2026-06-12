@@ -1,4 +1,4 @@
-package uy.edu.taller.sige.geo_api.client.subdir;
+package uy.edu.taller.sige.geo_api.client.sudir;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,15 +19,16 @@ import uy.edu.taller.sige.geo_api.dto.sudir.response.SudirReverseResultDTO;
 public class SudirMapper {
 
     public SudirGeocodeParamsDTO toSudirGeocodeParamsDTO(GeocodeRequestSearch request) {
-        return new SudirGeocodeParamsDTO(request.street(), request.state(), request.city());
+        return new SudirGeocodeParamsDTO(request.full_address(), request.department(), null);
     }
 
     public SudirReverseParamsDTO toSudirReverseParamsDTO(GeocodeRequestReverse request) {
         return new SudirReverseParamsDTO(request.lat(), request.lon(), null);
     }
 
-    public GeocodeResponse fromGeocode(SudirGeocodeResultDTO result) {
+    public GeocodeResponse fromGeocode(SudirGeocodeResultDTO result, double latencyMs) {
         SudirDireccionDTO dir = result.direccion();
+        String inmuebleName = dir != null && dir.inmueble() != null ? dir.inmueble().nombre() : null;
         String street      = dir != null && dir.calle() != null ? dir.calle().nombreNormalizado() : null;
         String houseNumber = dir != null && dir.numero() != null && dir.numero().nroPuerta() != null
             ? dir.numero().nroPuerta().toString() : null;
@@ -36,7 +37,7 @@ public class SudirMapper {
         String postcode    = result.codigoPostal() != null ? result.codigoPostal().toString() : null;
 
         return new GeocodeResponse(
-            buildDisplayName(street, houseNumber, city, state),
+            buildDisplayName(inmuebleName, street, houseNumber, city, state),
             result.puntoY(),
             result.puntoX(),
             street,
@@ -46,11 +47,15 @@ public class SudirMapper {
             "Uruguay",
             "UY",
             postcode,
-            "sudir"
+            "sudir",
+            null,
+            null,
+            result.error() != null && !result.error().isBlank(),
+            latencyMs
         );
     }
 
-    public GeocodeResponse fromReverse(SudirReverseResultDTO result) {
+    public GeocodeResponse fromReverse(SudirReverseResultDTO result, double latencyMs) {
         String houseNumber = result.portalNumber() != null ? result.portalNumber().toString() : null;
         return new GeocodeResponse(
             result.address(),
@@ -63,21 +68,25 @@ public class SudirMapper {
             "Uruguay",
             "UY",
             result.postalCode(),
-            "sudir"
+            "sudir",
+            null,
+            null,
+            false,
+            latencyMs
         );
     }
 
-    public List<GeocodeResponse> fromGeocodeList(List<SudirGeocodeResultDTO> results) {
-        return results.stream().map(this::fromGeocode).toList();
+    public List<GeocodeResponse> fromGeocodeList(List<SudirGeocodeResultDTO> results, double latencyMs) {
+        return results.stream().map(r -> fromGeocode(r, latencyMs)).toList();
     }
 
-    public List<GeocodeResponse> fromReverseList(List<SudirReverseResultDTO> results) {
-        return results.stream().map(this::fromReverse).toList();
+    public List<GeocodeResponse> fromReverseList(List<SudirReverseResultDTO> results, double latencyMs) {
+        return results.stream().map(r -> fromReverse(r, latencyMs)).toList();
     }
 
-    private String buildDisplayName(String street, String houseNumber, String city, String state) {
+    private String buildDisplayName(String inmuebleName, String street, String houseNumber, String city, String state) {
         String streetWithNumber = street != null && houseNumber != null ? street + " " + houseNumber : street;
-        return Stream.of(streetWithNumber, city, state, "Uruguay")
+        return Stream.of(inmuebleName, streetWithNumber, city, state, "Uruguay")
             .filter(s -> s != null && !s.isBlank())
             .collect(Collectors.joining(", "));
     }

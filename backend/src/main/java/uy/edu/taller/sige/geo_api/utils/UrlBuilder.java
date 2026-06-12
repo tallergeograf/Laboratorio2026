@@ -3,6 +3,7 @@ package uy.edu.taller.sige.geo_api.utils;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -10,6 +11,7 @@ public class UrlBuilder {
     private String baseUrl;
     private String path;
     private Map<String, String> queryParams = new LinkedHashMap<>();
+    private Map<String, List<String>> multiParams = new LinkedHashMap<>();
 
     public UrlBuilder baseUrl(String baseUrl) {
         this.baseUrl = baseUrl;
@@ -31,19 +33,24 @@ public class UrlBuilder {
         return this;
     }
 
+    public UrlBuilder multiParams(Map<String, List<String>> params) {
+        this.multiParams.putAll(params);
+        return this;
+    }
+
     public String build() {
         if (baseUrl == null || baseUrl.isBlank()) {
             throw new IllegalStateException("La URL base es obligatoria");
         }
-        
+
         StringBuilder url = new StringBuilder();
-        
         url.append(baseUrl);
 
         if (path != null && !path.isEmpty()) {
             url.append(path);
         }
 
+        boolean hasQuery = false;
         if (!queryParams.isEmpty()) {
             String query = queryParams.entrySet().stream()
                 .filter(e -> e.getValue() != null)
@@ -51,8 +58,20 @@ public class UrlBuilder {
                 .collect(Collectors.joining("&"));
             if (!query.isBlank()) {
                 url.append("?").append(query);
+                hasQuery = true;
             }
         }
+
+        for (Map.Entry<String, List<String>> entry : multiParams.entrySet()) {
+            if (entry.getValue() == null || entry.getValue().isEmpty()) continue;
+            for (String value : entry.getValue()) {
+                if (value == null) continue;
+                url.append(hasQuery ? "&" : "?");
+                url.append(encode(entry.getKey())).append("=").append(encode(value));
+                hasQuery = true;
+            }
+        }
+
         return url.toString();
     }
 

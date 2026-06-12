@@ -20,9 +20,14 @@ public record PhotonReverseParamsDTO(
         if (lon != null) params.put("lon", lon.toString());
         if (radius != null) params.put("radius", radius.toString());
         if (limit != null) params.put("limit", limit.toString());
-        if (osmTag != null && !osmTag.isEmpty()) params.put("osm_tag", String.join(",", osmTag));
         if (lang != null) params.put("lang", lang);
         return params;
+    }
+
+    public Map<String, List<String>> toMultiMap() {
+        Map<String, List<String>> multi = new LinkedHashMap<>();
+        if (osmTag != null && !osmTag.isEmpty()) multi.put("osm_tag", osmTag);
+        return multi;
     }
 
 }

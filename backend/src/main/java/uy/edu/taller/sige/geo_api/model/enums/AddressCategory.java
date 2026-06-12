@@ -1,0 +1,12 @@
+package uy.edu.taller.sige.geo_api.model.enums;
+
+public enum AddressCategory {
+
+    CALLE_NUMERO,
+    CALLE_NUMERO_LOCALIDAD,
+    CALLE_NUMERO_LOCALIDAD_DEPARTAMENTO,
+    CALLE_NUMERO_DEPARTAMENTO,
+    RUTA_KILOMETRO,
+    SOLAR_MANZANA,
+    PUNTO_DE_INTERES,
+}
