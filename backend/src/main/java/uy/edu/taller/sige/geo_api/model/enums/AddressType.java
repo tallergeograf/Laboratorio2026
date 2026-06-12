@@ -1,7 +1,7 @@
 package uy.edu.taller.sige.geo_api.model.enums;
 
 public enum AddressType {
-    ABREVIADA,
+    ABREVIACION,
     ERROR,
     COMUN, 
     PERMUTACION,

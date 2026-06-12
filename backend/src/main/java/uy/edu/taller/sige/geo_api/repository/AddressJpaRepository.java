@@ -21,7 +21,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND departamento IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) urban
 
     UNION ALL
@@ -35,7 +35,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND departamento NOT IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) other_departments
     """, nativeQuery = true)
     List<Address> findStreetNumber(@Param("ids") List<String> pointWKB);
@@ -51,7 +51,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND departamento IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) urban
     UNION ALL
     SELECT *
@@ -65,7 +65,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND departamento NOT IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) other_departments
     """, nativeQuery = true)
     List<Address> findStreetNumberDepartamentlocality(@Param("ids") List<String> pointWKB);
@@ -79,7 +79,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND departamento IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) urban
     UNION ALL
     SELECT *
@@ -91,7 +91,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND departamento NOT IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) other_departments
     """, nativeQuery = true)
     List<Address> findRouteKilometer(@Param("ids") List<String> pointWKB);
@@ -104,7 +104,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND departamento IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) urban
     UNION ALL
     SELECT *
@@ -115,7 +115,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND departamento NOT IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) other_departments
     """, nativeQuery = true)
     List<Address> findInterestPoint(@Param("ids") List<String> pointWKB);
@@ -132,7 +132,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND localidad  ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) urban
 
     UNION ALL
@@ -149,7 +149,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND localidad  ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) other_departments
     """, nativeQuery = true)
     List<Address> findStreetNumberLocality(@Param("ids") List<String> pointWKB);
@@ -166,7 +166,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND departamento  ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) urban
 
     UNION ALL
@@ -183,7 +183,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND departamento  ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) other_departments
     """, nativeQuery = true)
     List<Address> findStreetNumberDepartament(@Param("ids") List<String> pointWKB);
@@ -200,7 +200,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND manzana ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) urban
 
     UNION ALL
@@ -216,7 +216,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND manzana ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
             AND address_key NOT IN (:ids)
         ORDER BY md5(punto_wkb)
-        LIMIT 200
+        LIMIT 50
     ) other_departments
     """, nativeQuery = true)
     List<Address> findLotBlock(@Param("ids") List<String> pointWKB);

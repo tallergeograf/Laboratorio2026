@@ -17,6 +17,7 @@ import uy.edu.taller.sige.geo_api.model.enums.AddressType;
 import uy.edu.taller.sige.geo_api.repository.AddressJpaRepository;
 import uy.edu.taller.sige.geo_api.repository.SpecificAddressJPARepository;
 import uy.edu.taller.sige.geo_api.repository.SpecificAddressResultRepository;
+import uy.edu.taller.sige.geo_api.utils.StreetAbbreviator;
 import uy.edu.taller.sige.geo_api.utils.StreetMutator;
 
 import java.util.ArrayList;
@@ -91,13 +92,19 @@ public class AddressDataImpl implements AddressDataService {
         specificAddressResultRepository.deleteAll();
         specificAddressRepository.deleteAll();
         // TODO: resolve abreviacion
-        // TODO: RESOLVER DIRECCIONES REPETIDAS
         List<Address> accuracyAddress = getbyId(this.initialAddresses);
         generateAndSave(
                 accuracyAddress,
                 AddressCategory.CALLE_NUMERO,
                 AddressType.COMUN,
                 a -> a.getNombreVia() + " " + a.getNumPuerta()
+        );
+        
+        generateAndSaveAbbreviations(
+                accuracyAddress,
+                AddressCategory.CALLE_NUMERO,
+                a -> StreetAbbreviator.abbreviate(a.getNombreVia())
+                        + " " + a.getNumPuerta()
         );
 
         generateAndSave(
@@ -136,6 +143,13 @@ public class AddressDataImpl implements AddressDataService {
                 AddressType.ERROR,
                 a ->  StreetMutator.mutate(a.getNombreVia()) + " " +a.getNumPuerta()
         );
+
+        generateAndSaveAbbreviations(
+                street,
+                AddressCategory.CALLE_NUMERO,
+                a -> StreetAbbreviator.abbreviate(a.getNombreVia())
+                        + " " + a.getNumPuerta()
+        );
         addIdPoints(street);
 
         List<Address> streetNumberLocality = getStreetNumberLocality(this.initialAddresses);
@@ -145,6 +159,14 @@ public class AddressDataImpl implements AddressDataService {
                 AddressCategory.CALLE_NUMERO_LOCALIDAD,
                 AddressType.COMUN,
                 a -> a.getNombreVia() + " " + a.getNumPuerta()+ "," +a.getLocalidad()
+        );
+
+        generateAndSaveAbbreviations(
+                streetNumberLocality,
+                AddressCategory.CALLE_NUMERO_LOCALIDAD,
+                a -> StreetAbbreviator.abbreviate(a.getNombreVia())
+                        + " " + a.getNumPuerta()
+                        + "," + a.getLocalidad()
         );
 
         generateAndSave(
@@ -170,6 +192,14 @@ public class AddressDataImpl implements AddressDataService {
                 a -> a.getNombreVia() + " " + a.getNumPuerta()+ "," +a.getDepartamento()
         );
 
+        generateAndSaveAbbreviations(
+                streetNumberDepartament,
+                AddressCategory.CALLE_NUMERO_DEPARTAMENTO,
+                a -> StreetAbbreviator.abbreviate(a.getNombreVia())
+                        + " " + a.getNumPuerta()
+                        + "," + a.getDepartamento()
+        );
+
         generateAndSave(
                 streetNumberDepartament,
                 AddressCategory.CALLE_NUMERO_DEPARTAMENTO,
@@ -190,6 +220,15 @@ public class AddressDataImpl implements AddressDataService {
                 AddressCategory.CALLE_NUMERO_LOCALIDAD_DEPARTAMENTO,
                 AddressType.COMUN,
                 a -> a.getNombreVia() + " " + a.getNumPuerta()+ ","+a.getLocalidad()+"," +a.getDepartamento()
+        );
+
+        generateAndSaveAbbreviations(
+                streetNumberlocalityDepartament,
+                AddressCategory.CALLE_NUMERO_LOCALIDAD_DEPARTAMENTO,
+                a -> StreetAbbreviator.abbreviate(a.getNombreVia())
+                        + " " + a.getNumPuerta()
+                        + "," + a.getLocalidad()
+                        + "," + a.getDepartamento()
         );
 
         generateAndSave(
@@ -213,13 +252,7 @@ public class AddressDataImpl implements AddressDataService {
                 AddressType.COMUN,
                 a -> a.getNombreVia() + " " + a.getKm()
         );
-        //TODO: CONSULTAR
-        /*generateAndSave(
-                routeKilometer,
-                AddressCategory.CALLE_NUMERO_LOCALIDAD_DEPARTAMENTO,
-                AddressType.PERMUTACION,
-                a -> a.getNumPuerta() + " " + a.getNombreVia()+ ","+a.getLocalidad()+"," +a.getDepartamento()
-        );*/
+       
         generateAndSave(
                 routeKilometer,
                 AddressCategory.RUTA_KILOMETRO,
@@ -235,13 +268,7 @@ public class AddressDataImpl implements AddressDataService {
                 AddressType.COMUN,
                 Address::getNombreInmueble
         );
-        //TODO: CONSULTAR
-        /*generateAndSave(
-                interestPoint,
-                AddressCategory.CALLE_NUMERO_LOCALIDAD_DEPARTAMENTO,
-                AddressType.PERMUTACION,
-                a -> a.getNumPuerta() + " " + a.getNombreVia()+ ","+a.getLocalidad()+"," +a.getDepartamento()
-        );*/
+        
         generateAndSave(
                 interestPoint,
                 AddressCategory.PUNTO_DE_INTERES,
@@ -257,10 +284,10 @@ public class AddressDataImpl implements AddressDataService {
                 AddressType.COMUN,
                 a -> "Solar "+a.getSolar()+" Manzana "+ a.getManzana()
         );
-        //TODO: CONSULTAR
+        
         generateAndSave(
                 lotBlock,
-                AddressCategory.CALLE_NUMERO_LOCALIDAD_DEPARTAMENTO,
+                AddressCategory.SOLAR_MANZANA,
                 AddressType.PERMUTACION,
                 a -> "Manzana "+ a.getManzana()+ " Solar "+a.getSolar()
         );
@@ -281,7 +308,7 @@ public class AddressDataImpl implements AddressDataService {
                 }
         );
         addIdPoints(lotBlock);
-        geocoderProcces();
+        //geocoderProcces();
         return this.initialAddresses;
 
         // 2) Llamar a cada geocoder con las direcciones yobtener resultado
@@ -433,4 +460,26 @@ public class AddressDataImpl implements AddressDataService {
 
         specificAddressRepository.saveAll(addresses);
     }
+
+    private void generateAndSaveAbbreviations(
+                List<Address> source,
+                AddressCategory category,
+                Function<Address, String> addressBuilder
+    ) {
+        List<SpecificAddress> addresses = source.stream()
+                .filter(a -> StreetAbbreviator.abbreviate(a.getNombreVia()) != null)
+                .map(a -> {
+                        SpecificAddress d = new SpecificAddress();
+                        d.setDepartamento(a.getDepartamento());
+                        d.setFullAddress(addressBuilder.apply(a));
+                        d.setCategoria(category);
+                        d.setTipoDireccion(AddressType.ABREVIACION);
+                        d.setLatitud(a.getLatitud());
+                        d.setLongitud(a.getLongitud());
+                        return d;
+                })
+                .toList();
+
+        specificAddressRepository.saveAll(addresses);
+      }
 }
