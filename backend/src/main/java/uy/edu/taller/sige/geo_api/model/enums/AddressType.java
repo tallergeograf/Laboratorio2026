@@ -5,5 +5,11 @@ public enum AddressType {
     ERROR,
     COMUN, 
     PERMUTACION,
+    ERR1_S,   
+    ERR1_B,  
+    ERR2_SS,    
+    ERR2_SB,    
+    ERR2_BS,    
+    ERR2_BB,    
 
 }
