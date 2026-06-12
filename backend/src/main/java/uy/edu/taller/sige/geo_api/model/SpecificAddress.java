@@ -26,6 +26,9 @@ public class SpecificAddress {
     @Column(name = "tipodireccion")
     private AddressType tipoDireccion;
 
+    @Column(name = "is_demo")
+    private Boolean isDemo;
+
     @Column(name = "latitud")
     private Double latitud;
 
@@ -90,6 +93,14 @@ public class SpecificAddress {
 
     public void setDireccionCompleta(String direccionCompleta) {
         this.direccionCompleta = direccionCompleta;
+    }
+
+    public Boolean getIsDemo() {
+        return isDemo;
+    }
+
+    public void setIsDemo(Boolean isDemo) {
+        this.isDemo = isDemo;
     }
 
     public void setLatitud(double latitud) {
