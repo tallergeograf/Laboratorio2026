@@ -15,6 +15,7 @@ import uy.edu.taller.sige.geo_api.utils.HaversineCalculator;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -43,7 +44,7 @@ public class MonumentoServiceImpl implements MonumentoService {
             while ((line = reader.readLine()) != null) {
                 if (firstLine) { firstLine = false; continue; }
 
-                String[] cols = line.split(",", -1);
+                String[] cols = parseCsvLine(line);
                 if (cols.length < 5) continue;
 
                 // columns: X(lon), Y(lat), GID, MHN, IDENTIFICA, RESOLUCION, DIRECCION, ...
@@ -128,6 +129,25 @@ public class MonumentoServiceImpl implements MonumentoService {
                 .filter(r -> r.distanceMeters() <= effectiveRadius)
                 .sorted(Comparator.comparingDouble(NearestMonumentoResponse::distanceMeters))
                 .toList();
+    }
+
+    private String[] parseCsvLine(String line) {
+        List<String> fields = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        boolean inQuotes = false;
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '"') {
+                inQuotes = !inQuotes;
+            } else if (c == ',' && !inQuotes) {
+                fields.add(sb.toString());
+                sb.setLength(0);
+            } else {
+                sb.append(c);
+            }
+        }
+        fields.add(sb.toString());
+        return fields.toArray(new String[0]);
     }
 
     private Double parseDouble(String s) {
