@@ -5,7 +5,9 @@ import org.springframework.stereotype.Service;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsAccuracyResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsAddressResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsCoverageResponse;
+import uy.edu.taller.sige.geo_api.dto.stats.StatsFilterRequest;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsReliabilityResponse;
+import uy.edu.taller.sige.geo_api.dto.stats.StatsRequest;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsResponse;
 import uy.edu.taller.sige.geo_api.model.SpecificAddressResult;
 import uy.edu.taller.sige.geo_api.model.enums.AddressType;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 @Service
 public class StatisticsServiceImpl implements StatisticsService {
 
+    private static final List<String> URBAN_DEPARTMENTS = List.of("MONTEVIDEO", "CANELONES", "MALDONADO");
+
     private final SpecificAddressResultRepository repository;
 
     public StatisticsServiceImpl(SpecificAddressResultRepository repository) {
@@ -26,24 +30,45 @@ public class StatisticsServiceImpl implements StatisticsService {
     }
 
     @Override
-    public List<StatsResponse> getAllProviderStats() {
-        List<SpecificAddressResult> results = repository.findAll();
+    public List<StatsResponse> getAllProviderStats(StatsRequest request) {
+        boolean isDemo = request != null && Boolean.TRUE.equals(request.demo());
 
-        Map<String, List<SpecificAddressResult>> grouped = results.stream()
+        List<SpecificAddressResult> allResults = repository.findAll().stream()
+                .filter(r -> isDemo == Boolean.TRUE.equals(r.getId().getIsDemo()))
+                .toList();
+
+        StatsFilterRequest filters = request != null ? request.filters() : null;
+
+        Map<String, List<SpecificAddressResult>> grouped = allResults.stream()
                 .collect(Collectors.groupingBy(r -> r.getId().getGeocoderId()));
 
         return grouped.entrySet().stream()
-                .map(e -> buildResponse(e.getKey(), e.getValue()))
+                .map(e -> buildResponse(e.getKey(), e.getValue(), filters))
                 .toList();
     }
 
-    private StatsResponse buildResponse(String provider, List<SpecificAddressResult> results) {
-        List<StatsAddressResponse> entries = results.stream()
-                .filter(r -> 
+    private List<SpecificAddressResult> applyFilters(List<SpecificAddressResult> results, StatsFilterRequest filters) {
+        if (filters == null) return results;
+
+        return results.stream()
+                .filter(r -> filters.departments() == null || filters.departments().isEmpty()
+                        || filters.departments().contains(r.getDireccion().getDepartamento()))
+                .filter(r -> filters.category() == null || filters.category().isEmpty()
+                        || filters.category().contains(r.getDireccion().getCategoria().name()))
+                .filter(r -> filters.variacion() == null || filters.variacion().isEmpty()
+                        || filters.variacion().contains(r.getDireccion().getTipoDireccion().name()))
+                .toList();
+    }
+
+    private StatsResponse buildResponse(String provider, List<SpecificAddressResult> allResults, StatsFilterRequest filters) {
+        List<SpecificAddressResult> filtered = applyFilters(allResults, filters);
+
+        List<StatsAddressResponse> entries = filtered.stream()
+                .filter(r ->
                         r.getIsResult() &&
-                        r.getLatitud() != null && 
-                        r.getLongitud() != null && 
-                        r.getDireccion().getLatitud() != null && 
+                        r.getLatitud() != null &&
+                        r.getLongitud() != null &&
+                        r.getDireccion().getLatitud() != null &&
                         r.getDireccion().getLongitud() != null
                 )
                 .map(r -> new StatsAddressResponse(
@@ -58,48 +83,46 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .toList();
 
         List<Double> errors = entries.stream()
-                .map(e -> e.errorMeters())
+                .map(StatsAddressResponse::errorMeters)
                 .sorted()
                 .toList();
 
         double avg = errors.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
         double max = errors.stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
-        double median = errors.size() % 2 == 1
-                ? errors.get(errors.size() / 2)
-                : (errors.get(errors.size() / 2 - 1) + errors.get(errors.size() / 2)) / 2.0;
-        
-        double porcentageErrors = (double) errors.stream().
-                filter(e -> e > 13).count() / errors.size() * 100.0;
+        double median = errors.isEmpty() ? 0.0
+                : errors.size() % 2 == 1
+                        ? errors.get(errors.size() / 2)
+                        : (errors.get(errors.size() / 2 - 1) + errors.get(errors.size() / 2)) / 2.0;
 
+        double porcentageErrors = errors.isEmpty() ? 0.0
+                : (double) errors.stream().filter(e -> e > 13).count() / errors.size() * 100.0;
 
         int coverage = entries.size();
 
+        int totalErrorsTypographic = (int) filtered.stream()
+                .filter(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.ERROR))
+                .count();
 
-        int totalErrorsTypographic = results.stream()
-                .map(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.ERROR) ? 1:0)
-                .reduce(0, Integer::sum);
-                
-        int totalErrorsPermutation = results.stream()
-                .map(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.PERMUTACION) ? 1:0)
-                .reduce(0, Integer::sum);
+        int totalErrorsPermutation = (int) filtered.stream()
+                .filter(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.PERMUTACION))
+                .count();
 
-        int totalErrorsRural = results.stream()
-                .map(r -> !r.getIsResult() && !List.of("MONTEVIDEO", "CANELONES").contains(r.getDireccion().getDepartamento()) ? 1:0)
-                .reduce(0, Integer::sum);
+        // Rural/urban siempre sobre el dataset completo (sin filtros)
+        int totalErrorsRural = (int) allResults.stream()
+                .filter(r -> !r.getIsResult() && !URBAN_DEPARTMENTS.contains(r.getDireccion().getDepartamento()))
+                .count();
 
-        int totalErrorsUrban = results.stream()
-                .map(r -> !r.getIsResult() && List.of("MONTEVIDEO", "CANELONES").contains(r.getDireccion().getDepartamento()) ? 1:0)
-                .reduce(0, Integer::sum);
+        int totalErrorsUrban = (int) allResults.stream()
+                .filter(r -> !r.getIsResult() && URBAN_DEPARTMENTS.contains(r.getDireccion().getDepartamento()))
+                .count();
 
         return new StatsResponse(
-                provider, 
-                results.size(), 
-                new StatsAccuracyResponse(avg, max, median, porcentageErrors), 
-                new StatsCoverageResponse(coverage), 
-                new StatsReliabilityResponse(totalErrorsTypographic, totalErrorsPermutation, totalErrorsRural, totalErrorsUrban), 
+                provider,
+                filtered.size(),
+                new StatsAccuracyResponse(avg, max, median, porcentageErrors),
+                new StatsCoverageResponse(coverage),
+                new StatsReliabilityResponse(totalErrorsTypographic, totalErrorsPermutation, totalErrorsRural, totalErrorsUrban),
                 entries
         );
     }
-
-
 }

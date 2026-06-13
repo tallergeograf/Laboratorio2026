@@ -16,4 +16,8 @@ public interface SpecificAddressJPARepository extends JpaRepository<SpecificAddr
             AddressCategory categoria,
             AddressType tipoDireccion
     );
+
+    List<SpecificAddress> findByIsDemo(boolean isDemo);
+
+    void deleteByIsDemo(boolean isDemo);
 }

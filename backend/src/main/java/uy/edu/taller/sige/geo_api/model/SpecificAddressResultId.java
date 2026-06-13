@@ -15,18 +15,22 @@ public class SpecificAddressResultId implements Serializable {
     @Column(name = "geocoder_id")
     private String geocoderId;
 
+    @Column(name = "is_demo")
+    private Boolean isDemo;
+
     public SpecificAddressResultId() {}
 
-    public SpecificAddressResultId(Long  direccionId, String geocoderId) {
+    public SpecificAddressResultId(Long direccionId, String geocoderId, boolean isDemo) {
         this.direccionId = direccionId;
         this.geocoderId = geocoderId;
+        this.isDemo = isDemo;
     }
 
-    public Long  getDireccionId() {
+    public Long getDireccionId() {
         return direccionId;
     }
 
-    public void setDireccionId(Long  direccionId) {
+    public void setDireccionId(Long direccionId) {
         this.direccionId = direccionId;
     }
 
@@ -38,17 +42,26 @@ public class SpecificAddressResultId implements Serializable {
         this.geocoderId = geocoderId;
     }
 
+    public Boolean getIsDemo() {
+        return isDemo;
+    }
+
+    public void setIsDemo(Boolean isDemo) {
+        this.isDemo = isDemo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof SpecificAddressResultId)) return false;
         SpecificAddressResultId that = (SpecificAddressResultId) o;
         return Objects.equals(direccionId, that.direccionId)
-                && Objects.equals(geocoderId, that.geocoderId);
+                && Objects.equals(geocoderId, that.geocoderId)
+                && Objects.equals(isDemo, that.isDemo);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(direccionId, geocoderId);
+        return Objects.hash(direccionId, geocoderId, isDemo);
     }
 }
