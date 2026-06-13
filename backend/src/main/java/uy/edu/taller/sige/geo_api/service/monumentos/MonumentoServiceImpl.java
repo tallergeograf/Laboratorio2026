@@ -105,6 +105,31 @@ public class MonumentoServiceImpl implements MonumentoService {
                 .toList();
     }
 
+    @Override
+    public List<NearestMonumentoResponse> findWithinRadius(String address, GeocoderProvider provider, double radiusMeters) {
+        double effectiveRadius = Math.min(radiusMeters, 5000.0);
+        GeocodeRequestSearch request = new GeocodeRequestSearch(null, address, null, null, null);
+        List<GeocodeResponse> geoResults = geocodingService.search(provider, request);
+        if (geoResults == null || geoResults.isEmpty()) {
+            return Collections.emptyList();
+        }
+        GeocodeResponse ref = geoResults.get(0);
+        return monumentoRepository.findAll().stream()
+                .filter(m -> m.getLat() != null && m.getLon() != null)
+                .map(m -> new NearestMonumentoResponse(
+                        m.getId(),
+                        m.getOsmId(),
+                        m.getName(),
+                        m.getLat(),
+                        m.getLon(),
+                        m.getStreet(),
+                        m.getCity(),
+                        HaversineCalculator.distanceMeters(ref.lat(), ref.lon(), m.getLat(), m.getLon())))
+                .filter(r -> r.distanceMeters() <= effectiveRadius)
+                .sorted(Comparator.comparingDouble(NearestMonumentoResponse::distanceMeters))
+                .toList();
+    }
+
     private Double parseDouble(String s) {
         try { return Double.parseDouble(s.trim()); } catch (Exception e) { return null; }
     }

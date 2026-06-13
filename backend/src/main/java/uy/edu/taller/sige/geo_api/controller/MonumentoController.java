@@ -42,4 +42,13 @@ public class MonumentoController {
         }
         return ResponseEntity.ok(results);
     }
+
+    @GetMapping("/within")
+    public ResponseEntity<List<NearestMonumentoResponse>> getMonumentosWithinRadius(
+            @RequestParam String address,
+            @RequestParam GeocoderProvider provider,
+            @RequestParam(defaultValue = "500") double radius) {
+        List<NearestMonumentoResponse> results = monumentoService.findWithinRadius(address, provider, radius);
+        return ResponseEntity.ok(results);
+    }
 }
