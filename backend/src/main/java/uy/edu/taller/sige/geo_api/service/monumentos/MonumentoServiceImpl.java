@@ -3,6 +3,7 @@ package uy.edu.taller.sige.geo_api.service.monumentos;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestSearch;
+import uy.edu.taller.sige.geo_api.model.enums.GeoScope;
 import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
 import uy.edu.taller.sige.geo_api.dto.response.MonumentoResponse;
 import uy.edu.taller.sige.geo_api.dto.response.NearestMonumentoResponse;
@@ -15,6 +16,7 @@ import uy.edu.taller.sige.geo_api.utils.HaversineCalculator;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -43,7 +45,7 @@ public class MonumentoServiceImpl implements MonumentoService {
             while ((line = reader.readLine()) != null) {
                 if (firstLine) { firstLine = false; continue; }
 
-                String[] cols = line.split(",", -1);
+                String[] cols = parseCsvLine(line);
                 if (cols.length < 5) continue;
 
                 // columns: X(lon), Y(lat), GID, MHN, IDENTIFICA, RESOLUCION, DIRECCION, ...
@@ -83,7 +85,7 @@ public class MonumentoServiceImpl implements MonumentoService {
     @Override
     public List<NearestMonumentoResponse> findNearest(String address, GeocoderProvider provider, int limit) {
         int effectiveLimit = Math.min(limit, 20);
-        GeocodeRequestSearch request = new GeocodeRequestSearch(null, address, null, null, null);
+        GeocodeRequestSearch request = new GeocodeRequestSearch(null, address, null, null, null, GeoScope.MONTEVIDEO);
         List<GeocodeResponse> geoResults = geocodingService.search(provider, request);
         if (geoResults == null || geoResults.isEmpty()) {
             return Collections.emptyList();
@@ -99,10 +101,57 @@ public class MonumentoServiceImpl implements MonumentoService {
                         m.getLon(),
                         m.getStreet(),
                         m.getCity(),
-                        HaversineCalculator.distanceMeters(ref.lat(), ref.lon(), m.getLat(), m.getLon())))
+                        HaversineCalculator.distanceMeters(ref.lat(), ref.lon(), m.getLat(), m.getLon()),
+                        ref.lat(),
+                        ref.lon()))
                 .sorted(Comparator.comparingDouble(NearestMonumentoResponse::distanceMeters))
                 .limit(effectiveLimit)
                 .toList();
+    }
+
+    @Override
+    public List<NearestMonumentoResponse> findWithinRadius(String address, GeocoderProvider provider, double radiusMeters) {
+        double effectiveRadius = Math.min(radiusMeters, 5000.0);
+        GeocodeRequestSearch request = new GeocodeRequestSearch(null, address, null, null, null, GeoScope.MONTEVIDEO);
+        List<GeocodeResponse> geoResults = geocodingService.search(provider, request);
+        if (geoResults == null || geoResults.isEmpty()) return Collections.emptyList();
+        GeocodeResponse ref = geoResults.get(0);
+        if (ref.lat() == null || ref.lon() == null) return Collections.emptyList();
+        return monumentoRepository.findAll().stream()
+                .filter(m -> m.getLat() != null && m.getLon() != null)
+                .map(m -> new NearestMonumentoResponse(
+                        m.getId(),
+                        m.getOsmId(),
+                        m.getName(),
+                        m.getLat(),
+                        m.getLon(),
+                        m.getStreet(),
+                        m.getCity(),
+                        HaversineCalculator.distanceMeters(ref.lat(), ref.lon(), m.getLat(), m.getLon()),
+                        ref.lat(),
+                        ref.lon()))
+                .filter(r -> r.distanceMeters() <= effectiveRadius)
+                .sorted(Comparator.comparingDouble(NearestMonumentoResponse::distanceMeters))
+                .toList();
+    }
+
+    private String[] parseCsvLine(String line) {
+        List<String> fields = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
+        boolean inQuotes = false;
+        for (int i = 0; i < line.length(); i++) {
+            char c = line.charAt(i);
+            if (c == '"') {
+                inQuotes = !inQuotes;
+            } else if (c == ',' && !inQuotes) {
+                fields.add(sb.toString());
+                sb.setLength(0);
+            } else {
+                sb.append(c);
+            }
+        }
+        fields.add(sb.toString());
+        return fields.toArray(new String[0]);
     }
 
     private Double parseDouble(String s) {

@@ -9,4 +9,5 @@ public interface MonumentoService {
     int importData();
     List<MonumentoResponse> findAll();
     List<NearestMonumentoResponse> findNearest(String address, GeocoderProvider provider, int limit);
+    List<NearestMonumentoResponse> findWithinRadius(String address, GeocoderProvider provider, double radiusMeters);
 }
