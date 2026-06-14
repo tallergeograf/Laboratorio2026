@@ -27,11 +27,16 @@ public record PhotonSearchParamsDTO(
         if (lon != null) params.put("lon", lon.toString());
         if (limit != null) params.put("limit", limit.toString());
         if (lang != null) params.put("lang", lang);
-        if (bbox != null) params.put("bbox", bbox);
         if (locationBiasScale != null) params.put("location_bias_scale", locationBiasScale.toString());
         if (dedupe != null) params.put("dedupe", dedupe.toString());
         if (debug != null) params.put("debug", debug.toString());
         return params;
+    }
+
+    public Map<String, String> toRawMap() {
+        Map<String, String> raw = new LinkedHashMap<>();
+        if (bbox != null && !bbox.isBlank()) raw.put("bbox", bbox);
+        return raw;
     }
 
     public Map<String, List<String>> toMultiMap() {

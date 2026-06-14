@@ -8,5 +8,7 @@ public record NearestMonumentoResponse(
     Double lon,
     String street,
     String city,
-    Double distanceMeters
+    Double distanceMeters,
+    Double queryLat,
+    Double queryLon
 ) {}

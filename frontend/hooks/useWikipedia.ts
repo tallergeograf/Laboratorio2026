@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import type { Monumento } from '@/lib/models/monumentos'
 import { fetchWikipediaSummary, type WikipediaSummary } from '@/lib/wikipedia'
 
@@ -7,18 +7,18 @@ export function useWikipedia() {
   const [wikiData, setWikiData] = useState<WikipediaSummary | null>(null)
   const [wikiLoading, setWikiLoading] = useState(false)
 
-  async function handleMarkerClick(m: Monumento) {
+  const handleMarkerClick = useCallback(async (m: Monumento) => {
     setSelectedMonumento(m)
     setWikiData(null)
     setWikiLoading(true)
     const data = await fetchWikipediaSummary(m.nombre)
     setWikiData(data)
     setWikiLoading(false)
-  }
+  }, [])
 
-  function clearSelection() {
+  const clearSelection = useCallback(() => {
     setSelectedMonumento(null)
-  }
+  }, [])
 
   return {
     selectedMonumento,

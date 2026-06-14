@@ -4,10 +4,16 @@ type ResultLabelProps = {
   count: number
   searchMode: SearchMode
   radius: number
+  searched: boolean
 }
 
-export default function ResultLabel({ count, searchMode, radius }: ResultLabelProps) {
-  if (count === 0) return null
+export default function ResultLabel({ count, searchMode, radius, searched }: ResultLabelProps) {
+  if (count === 0) {
+    if (searched && searchMode === 'radius') {
+      return <p className="text-sm text-zinc-500">No se encontraron monumentos a menos de {radius} m de tu dirección. Probá con un radio mayor.</p>
+    }
+    return null
+  }
 
   const label =
     searchMode === 'nearest'

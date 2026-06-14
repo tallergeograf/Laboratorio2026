@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestReverse;
 import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestSearch;
 import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
+import uy.edu.taller.sige.geo_api.model.enums.GeoScope;
 import uy.edu.taller.sige.geo_api.dto.sudir.request.SudirGeocodeParamsDTO;
 import uy.edu.taller.sige.geo_api.dto.sudir.request.SudirReverseParamsDTO;
 import uy.edu.taller.sige.geo_api.dto.sudir.response.SudirDireccionDTO;
@@ -19,7 +20,8 @@ import uy.edu.taller.sige.geo_api.dto.sudir.response.SudirReverseResultDTO;
 public class SudirMapper {
 
     public SudirGeocodeParamsDTO toSudirGeocodeParamsDTO(GeocodeRequestSearch request) {
-        return new SudirGeocodeParamsDTO(request.full_address(), request.department(), null);
+        String department = request.geoScope() == GeoScope.MONTEVIDEO ? "Montevideo" : request.department();
+        return new SudirGeocodeParamsDTO(request.full_address(), department, null);
     }
 
     public SudirReverseParamsDTO toSudirReverseParamsDTO(GeocodeRequestReverse request) {

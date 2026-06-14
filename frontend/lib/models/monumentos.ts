@@ -24,6 +24,8 @@ export const NearestMonumentoSchema = z.object({
   street: z.string().nullable().optional(),
   city: z.string().nullable().optional(),
   distanceMeters: z.number(),
+  queryLat: z.number(),
+  queryLon: z.number(),
 })
 
 export const NearestMonumentosSchema = z.array(NearestMonumentoSchema)

@@ -37,9 +37,6 @@ public class MonumentoController {
             @RequestParam GeocoderProvider provider,
             @RequestParam(defaultValue = "5") int limit) {
         List<NearestMonumentoResponse> results = monumentoService.findNearest(address, provider, limit);
-        if (results.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(results);
     }
 

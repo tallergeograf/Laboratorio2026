@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useMemo } from 'react'
+import { memo, useEffect, useMemo } from 'react'
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-markercluster'
 import 'leaflet/dist/leaflet.css'
@@ -90,7 +90,7 @@ function FlyTo({ location }: { location: [number, number] | null }) {
   return null
 }
 
-export default function MonumentoMap({ monumentos, nearestIds, searchedLocation, nearestMap, onMarkerClick }: MonumentoMapProps) {
+const MonumentoMap = memo(function MonumentoMap({ monumentos, nearestIds, searchedLocation, onMarkerClick }: MonumentoMapProps) {
   const { defaultIcon, highlightIcon, searchPinIcon } = useMemo(() => ({
     defaultIcon:   createDefaultIcon(),
     highlightIcon: createHighlightIcon(),
@@ -140,4 +140,6 @@ export default function MonumentoMap({ monumentos, nearestIds, searchedLocation,
       )}
     </MapContainer>
   )
-}
+})
+
+export default MonumentoMap

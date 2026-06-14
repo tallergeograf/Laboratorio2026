@@ -41,6 +41,7 @@ public class PhotonClient implements IGeoCoder {
             .baseUrl(properties.getBaseUrl())
             .path(properties.getEndpoints().getSearch())
             .params(searchParams.toMap())
+            .rawParams(searchParams.toRawMap())
             .multiParams(searchParams.toMultiMap())
             .build();
 

@@ -3,6 +3,7 @@ package uy.edu.taller.sige.geo_api.service.monumentos;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestSearch;
+import uy.edu.taller.sige.geo_api.model.enums.GeoScope;
 import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
 import uy.edu.taller.sige.geo_api.dto.response.MonumentoResponse;
 import uy.edu.taller.sige.geo_api.dto.response.NearestMonumentoResponse;
@@ -84,7 +85,7 @@ public class MonumentoServiceImpl implements MonumentoService {
     @Override
     public List<NearestMonumentoResponse> findNearest(String address, GeocoderProvider provider, int limit) {
         int effectiveLimit = Math.min(limit, 20);
-        GeocodeRequestSearch request = new GeocodeRequestSearch(null, address, null, null, null);
+        GeocodeRequestSearch request = new GeocodeRequestSearch(null, address, null, null, null, GeoScope.MONTEVIDEO);
         List<GeocodeResponse> geoResults = geocodingService.search(provider, request);
         if (geoResults == null || geoResults.isEmpty()) {
             return Collections.emptyList();
@@ -100,7 +101,9 @@ public class MonumentoServiceImpl implements MonumentoService {
                         m.getLon(),
                         m.getStreet(),
                         m.getCity(),
-                        HaversineCalculator.distanceMeters(ref.lat(), ref.lon(), m.getLat(), m.getLon())))
+                        HaversineCalculator.distanceMeters(ref.lat(), ref.lon(), m.getLat(), m.getLon()),
+                        ref.lat(),
+                        ref.lon()))
                 .sorted(Comparator.comparingDouble(NearestMonumentoResponse::distanceMeters))
                 .limit(effectiveLimit)
                 .toList();
@@ -109,12 +112,11 @@ public class MonumentoServiceImpl implements MonumentoService {
     @Override
     public List<NearestMonumentoResponse> findWithinRadius(String address, GeocoderProvider provider, double radiusMeters) {
         double effectiveRadius = Math.min(radiusMeters, 5000.0);
-        GeocodeRequestSearch request = new GeocodeRequestSearch(null, address, null, null, null);
+        GeocodeRequestSearch request = new GeocodeRequestSearch(null, address, null, null, null, GeoScope.MONTEVIDEO);
         List<GeocodeResponse> geoResults = geocodingService.search(provider, request);
-        if (geoResults == null || geoResults.isEmpty()) {
-            return Collections.emptyList();
-        }
+        if (geoResults == null || geoResults.isEmpty()) return Collections.emptyList();
         GeocodeResponse ref = geoResults.get(0);
+        if (ref.lat() == null || ref.lon() == null) return Collections.emptyList();
         return monumentoRepository.findAll().stream()
                 .filter(m -> m.getLat() != null && m.getLon() != null)
                 .map(m -> new NearestMonumentoResponse(
@@ -125,7 +127,9 @@ public class MonumentoServiceImpl implements MonumentoService {
                         m.getLon(),
                         m.getStreet(),
                         m.getCity(),
-                        HaversineCalculator.distanceMeters(ref.lat(), ref.lon(), m.getLat(), m.getLon())))
+                        HaversineCalculator.distanceMeters(ref.lat(), ref.lon(), m.getLat(), m.getLon()),
+                        ref.lat(),
+                        ref.lon()))
                 .filter(r -> r.distanceMeters() <= effectiveRadius)
                 .sorted(Comparator.comparingDouble(NearestMonumentoResponse::distanceMeters))
                 .toList();

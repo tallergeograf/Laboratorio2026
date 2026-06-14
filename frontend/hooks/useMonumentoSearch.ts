@@ -12,6 +12,7 @@ export function useMonumentoSearch() {
   const [nearestIds, setNearestIds] = useState<Set<number>>(new Set())
   const [nearestMap, setNearestMap] = useState<Map<number, NearestMonumento>>(new Map())
   const [searchedLocation, setSearchedLocation] = useState<[number, number] | null>(null)
+  const [searched, setSearched] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -20,6 +21,7 @@ export function useMonumentoSearch() {
     setNearestIds(new Set())
     setNearestMap(new Map())
     setSearchedLocation(null)
+    setSearched(false)
   }
 
   async function handleSearch(e: React.FormEvent) {
@@ -40,8 +42,9 @@ export function useMonumentoSearch() {
       const map = new Map(results.map((r) => [r.id, r]))
       setNearestIds(ids)
       setNearestMap(map)
+      setSearched(true)
       const first = results[0]
-      if (first) setSearchedLocation([first.lat, first.lon])
+      if (first) setSearchedLocation([first.queryLat, first.queryLon])
       else setSearchedLocation(null)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al buscar. Intentá de nuevo.')
@@ -63,6 +66,7 @@ export function useMonumentoSearch() {
     nearestIds,
     nearestMap,
     searchedLocation,
+    searched,
     loading,
     error,
     handleSearch,

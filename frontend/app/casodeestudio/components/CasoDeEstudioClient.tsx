@@ -29,6 +29,7 @@ export default function CasoDeEstudioClient({ initialMonumentos }: Props) {
     nearestIds,
     nearestMap,
     searchedLocation,
+    searched,
     loading,
     error,
     handleSearch,
@@ -59,7 +60,7 @@ export default function CasoDeEstudioClient({ initialMonumentos }: Props) {
         <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
       )}
 
-      <ResultLabel count={nearestIds.size} searchMode={searchMode} radius={radius} />
+      <ResultLabel count={nearestIds.size} searchMode={searchMode} radius={radius} searched={searched} />
 
       <MonumentoMap
         monumentos={initialMonumentos}
