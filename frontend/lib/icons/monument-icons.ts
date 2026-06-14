@@ -9,18 +9,18 @@ export function columnSvg(color: string, size: number): string {
 export function createDefaultIcon(): L.DivIcon {
   return L.divIcon({
     className: '',
-    html: columnSvg('#3b82f6', 24),
-    iconSize: [24, 24],
-    iconAnchor: [12, 24],
+    html: columnSvg('#C9952A', 20),
+    iconSize: [20, 20],
+    iconAnchor: [10, 20],
   })
 }
 
 export function createHighlightIcon(): L.DivIcon {
   return L.divIcon({
     className: '',
-    html: columnSvg('#ef4444', 28),
-    iconSize: [28, 28],
-    iconAnchor: [14, 28],
+    html: columnSvg('#ef4444', 24),
+    iconSize: [24, 24],
+    iconAnchor: [12, 24],
   })
 }
 
