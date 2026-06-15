@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic'
 import type { Monumento } from '@/lib/models/monumentos'
 import { useMonumentoSearch } from '@/hooks/useMonumentoSearch'
-import { useWikipedia } from '@/hooks/useWikipedia'
+import { useMonumentInfo } from '@/hooks/useMonumentInfo'
 import SearchModeToggle from './SearchModeToggle'
 import SearchForm from './SearchForm'
 import ResultLabel from './ResultLabel'
@@ -36,7 +36,7 @@ export default function CasoDeEstudioClient({ initialMonumentos }: Props) {
     handleModeChange,
   } = useMonumentoSearch()
 
-  const { selectedMonumento, wikiData, wikiLoading, handleMarkerClick, clearSelection } = useWikipedia()
+  const { selectedMonumento, info, infoLoading, handleMarkerClick, clearSelection } = useMonumentInfo()
 
   return (
     <div className="flex flex-col gap-4">
@@ -73,8 +73,8 @@ export default function CasoDeEstudioClient({ initialMonumentos }: Props) {
       {selectedMonumento && (
         <MonumentoModal
           monumento={selectedMonumento}
-          wikiData={wikiData}
-          loading={wikiLoading}
+          info={info}
+          loading={infoLoading}
           onClose={clearSelection}
         />
       )}

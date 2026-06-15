@@ -9,10 +9,8 @@ type ResultLabelProps = {
 
 export default function ResultLabel({ count, searchMode, radius, searched }: ResultLabelProps) {
   if (count === 0) {
-    if (searched && searchMode === 'radius') {
-      return <p className="text-sm text-zinc-500">No se encontraron monumentos a menos de {radius} m de tu dirección. Probá con un radio mayor.</p>
-    }
-    return null
+    if (!searched) return null
+    return <p className="text-sm text-amber-600 dark:text-amber-400">No se encontraron monumentos para los datos ingresados.</p>
   }
 
   const label =
