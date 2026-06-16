@@ -9,4 +9,5 @@ public enum AddressCategory {
     RUTA_KILOMETRO,
     SOLAR_MANZANA,
     PUNTO_DE_INTERES,
+    INTERSECCION_CALLE,
 }

@@ -2,6 +2,7 @@ package uy.edu.taller.sige.geo_api.service.address;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import uy.edu.taller.sige.geo_api.client.GeoCoderFactory;
 import uy.edu.taller.sige.geo_api.client.IGeoCoder;
@@ -129,7 +130,7 @@ public class AddressDataImpl implements AddressDataService {
         generateAndSave(street, AddressCategory.CALLE_NUMERO, AddressType.PERMUTACION,
                 a -> a.getNumPuerta() + " " + a.getNombreVia(), isDemo);
         generateAndSaveErrors(street, AddressCategory.CALLE_NUMERO,
-                a -> a.getNombreVia(), a -> " " + a.getNumPuerta(), isDemo);
+                Address::getNombreVia, a -> " " + a.getNumPuerta(), isDemo);
         generateAndSaveAbbreviations(street, AddressCategory.CALLE_NUMERO,
                 a -> StreetAbbreviator.abbreviate(a.getNombreVia()) + " " + a.getNumPuerta(), isDemo);
         addIdPoints(ids, street);
@@ -142,7 +143,7 @@ public class AddressDataImpl implements AddressDataService {
         generateAndSave(streetNumberLocality, AddressCategory.CALLE_NUMERO_LOCALIDAD, AddressType.PERMUTACION,
                 a -> a.getNumPuerta() + " " + a.getNombreVia() + "," + a.getLocalidad(), isDemo);
         generateAndSaveErrors(streetNumberLocality, AddressCategory.CALLE_NUMERO_LOCALIDAD,
-                a -> a.getNombreVia(), a -> " " + a.getNumPuerta() + "," + a.getLocalidad(), isDemo);
+                Address::getNombreVia, a -> " " + a.getNumPuerta() + "," + a.getLocalidad(), isDemo);
         addIdPoints(ids, streetNumberLocality);
 
         List<Address> streetNumberDepartament = getStreetNumberDepartament(ids, lim);
@@ -153,7 +154,7 @@ public class AddressDataImpl implements AddressDataService {
         generateAndSave(streetNumberDepartament, AddressCategory.CALLE_NUMERO_DEPARTAMENTO, AddressType.PERMUTACION,
                 a -> a.getNumPuerta() + " " + a.getNombreVia() + "," + a.getDepartamento(), isDemo);
         generateAndSaveErrors(streetNumberDepartament, AddressCategory.CALLE_NUMERO_DEPARTAMENTO,
-                a -> a.getNombreVia(), a -> " " + a.getNumPuerta() + "," + a.getDepartamento(), isDemo);
+                Address::getNombreVia, a -> " " + a.getNumPuerta() + "," + a.getDepartamento(), isDemo);
         addIdPoints(ids, streetNumberDepartament);
 
         List<Address> streetNumberlocalityDepartament = getStreetNumberDepartamentlocality(ids, lim);
@@ -164,21 +165,21 @@ public class AddressDataImpl implements AddressDataService {
         generateAndSave(streetNumberlocalityDepartament, AddressCategory.CALLE_NUMERO_LOCALIDAD_DEPARTAMENTO, AddressType.PERMUTACION,
                 a -> a.getNumPuerta() + " " + a.getNombreVia() + "," + a.getLocalidad() + "," + a.getDepartamento(), isDemo);
         generateAndSaveErrors(streetNumberlocalityDepartament, AddressCategory.CALLE_NUMERO_LOCALIDAD_DEPARTAMENTO,
-                a -> a.getNombreVia(), a -> " " + a.getNumPuerta() + "," + a.getLocalidad() + "," + a.getDepartamento(), isDemo);
+                Address::getNombreVia, a -> " " + a.getNumPuerta() + "," + a.getLocalidad() + "," + a.getDepartamento(), isDemo);
         addIdPoints(ids, streetNumberlocalityDepartament);
 
         List<Address> routeKilometer = getRouteKilometer(ids, lim);
         generateAndSave(routeKilometer, AddressCategory.RUTA_KILOMETRO, AddressType.COMUN,
                 a -> a.getNombreVia() + " " + a.getKm(), isDemo);
         generateAndSaveErrors(routeKilometer, AddressCategory.RUTA_KILOMETRO,
-                a -> a.getNombreVia(), a -> " " + a.getKm(), isDemo);
+                Address::getNombreVia, a -> " " + a.getKm(), isDemo);
         addIdPoints(ids, routeKilometer);
 
         List<Address> interestPoint = getInterestPoint(ids, lim);
         generateAndSave(interestPoint, AddressCategory.PUNTO_DE_INTERES, AddressType.COMUN,
                 Address::getNombreInmueble, isDemo);
         generateAndSaveErrors(interestPoint, AddressCategory.PUNTO_DE_INTERES,
-                a -> a.getNombreInmueble(), a -> "", isDemo);
+                Address::getNombreInmueble, a -> "", isDemo);
         addIdPoints(ids, interestPoint);
 
         List<Address> lotBlock = getLotBlock(ids, lim);
@@ -192,7 +193,14 @@ public class AddressDataImpl implements AddressDataService {
                         ? " " + a.getSolar() + " Manzana " + a.getManzana()
                         : " Solar " + a.getSolar() + " " + a.getManzana(), isDemo);
         addIdPoints(ids, lotBlock);
+        List<Address> intersectionsAddresses=getIntersectionsAddresses(lim);
 
+        generateAndSave(intersectionsAddresses, AddressCategory.INTERSECCION_CALLE, AddressType.COMUN,
+                Address::getNombreVia, isDemo);
+
+        generateAndSaveErrors(intersectionsAddresses, AddressCategory.INTERSECCION_CALLE,
+                Address::getNombreVia, a -> "", isDemo);
+        addIdPoints(ids, intersectionsAddresses);
         geocoderProcces(isDemo);
         return ids.stream().filter(id -> !id.equals("__NO_MATCH__")).toList();
     }
@@ -290,6 +298,14 @@ public class AddressDataImpl implements AddressDataService {
 
     private List<Address> getInterestPoint(List<String> ids, int lim) {
         return new ArrayList<>(addresRepository.findInterestPoint(ids, lim));
+    }
+    private List<Address> getIntersectionsAddresses (int lim){
+        return new ArrayList<>(
+                addresRepository.findByAddressIdContaining(
+                        "MONTEVIDEO_CRUCE",
+                        PageRequest.of(0, lim)
+                )
+        );
     }
 
     private List<Address> getLotBlock(List<String> ids, int lim) {

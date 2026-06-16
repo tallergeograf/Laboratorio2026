@@ -1,5 +1,6 @@
 package uy.edu.taller.sige.geo_api.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Repository
 public interface AddressJpaRepository extends JpaRepository<Address, String> {
-
+    List<Address> findByAddressIdContaining(String text, Pageable pageable);
     @Query(value = """
     SELECT *
     FROM (
@@ -19,7 +20,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
         WHERE nombre_via IS NOT NULL AND nombre_via ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
             AND num_puerta IS NOT NULL
             AND departamento IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
-            AND address_key NOT IN (:ids)
+            AND address_key NOT IN (:ids) AND lower(address_key) not like '%cruce'
         ORDER BY md5(punto_wkb)
         LIMIT :lim
     ) urban
@@ -50,7 +51,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND localidad IS NOT NULL AND localidad ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
             AND departamento IS NOT NULL AND departamento ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
             AND departamento IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
-            AND address_key NOT IN (:ids)
+            AND address_key NOT IN (:ids) AND lower(address_key) not like '%cruce'
         ORDER BY md5(punto_wkb)
         LIMIT :lim
     ) urban
@@ -79,7 +80,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
         WHERE nombre_via IS NOT NULL AND nombre_via ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
             AND km IS NOT NULL AND km <>'N/A'
             AND departamento IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
-            AND address_key NOT IN (:ids)
+            AND address_key NOT IN (:ids) AND lower(address_key) not like '%cruce'
         ORDER BY md5(punto_wkb)
         LIMIT :lim
     ) urban
@@ -105,7 +106,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
         FROM vista_uruguay
         WHERE nombre_inmueble IS NOT NULL AND nombre_inmueble ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$' AND nombre_inmueble ~ '[A-ZÁÉÍÓÚ]'
             AND departamento IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
-            AND address_key NOT IN (:ids)
+            AND address_key NOT IN (:ids) AND lower(address_key) not like '%cruce'
         ORDER BY md5(punto_wkb)
         LIMIT :lim
     ) urban
@@ -134,7 +135,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND departamento IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
             AND nombre_via ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
             AND localidad  ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
-            AND address_key NOT IN (:ids)
+            AND address_key NOT IN (:ids) AND lower(address_key) not like '%cruce'
         ORDER BY md5(punto_wkb)
         LIMIT :lim
     ) urban
@@ -168,7 +169,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND departamento IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
             AND nombre_via ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
             AND departamento  ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
-            AND address_key NOT IN (:ids)
+            AND address_key NOT IN (:ids) AND lower(address_key) not like '%cruce'
         ORDER BY md5(punto_wkb)
         LIMIT :lim
     ) urban
@@ -202,7 +203,7 @@ public interface AddressJpaRepository extends JpaRepository<Address, String> {
             AND departamento IN ('MONTEVIDEO', 'CANELONES', 'MALDONADO')
             AND solar   ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
             AND manzana ~ '^[A-ZÁÉÍÓÚ0-9 .''-]+$'
-            AND address_key NOT IN (:ids)
+            AND address_key NOT IN (:ids) AND lower(address_key) not like '%cruce'
         ORDER BY md5(punto_wkb)
         LIMIT :lim
     ) urban
