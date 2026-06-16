@@ -1,17 +1,17 @@
 'use client'
 
 import type { Monumento } from '@/lib/models/monumentos'
-import type { WikipediaSummary } from '@/lib/wikipedia'
+import type { MonumentInfo } from '@/lib/monument-info'
 import XIcon from '@/lib/icons/XIcon'
 
 type MonumentoModalProps = {
   monumento: Monumento
-  wikiData: WikipediaSummary | null
+  info: MonumentInfo | null
   loading: boolean
   onClose: () => void
 }
 
-export default function MonumentoModal({ monumento, wikiData, loading, onClose }: MonumentoModalProps) {
+export default function MonumentoModal({ monumento, info, loading, onClose }: MonumentoModalProps) {
   return (
     <div
       className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4 cursor-pointer"
@@ -35,11 +35,11 @@ export default function MonumentoModal({ monumento, wikiData, loading, onClose }
           </div>
         )}
 
-        {!loading && wikiData?.thumbnail && (
+        {!loading && info?.image && (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={wikiData.thumbnail.source}
-            alt={monumento.nombre}
+            src={info.image.url}
+            alt={info.image.alt}
             className="w-full h-48 object-cover"
           />
         )}
@@ -55,9 +55,9 @@ export default function MonumentoModal({ monumento, wikiData, loading, onClose }
             </p>
           )}
 
-          {!loading && wikiData?.extract && (
+          {!loading && info?.extract && (
             <p className="text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed line-clamp-5">
-              {wikiData.extract}
+              {info.extract}
             </p>
           )}
         </div>

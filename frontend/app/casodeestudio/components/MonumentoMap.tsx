@@ -101,7 +101,7 @@ const MonumentoMap = memo(function MonumentoMap({ monumentos, nearestIds, search
     <MapContainer
       center={MONTEVIDEO_CENTER}
       zoom={13}
-      style={{ height: '520px', width: '100%', borderRadius: '0.5rem' }}
+      style={{ height: '70vh', minHeight: '400px', width: '100%', borderRadius: '0.5rem' }}
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'

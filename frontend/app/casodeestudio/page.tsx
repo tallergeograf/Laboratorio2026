@@ -11,8 +11,12 @@ export default async function CasoDeEstudioPage() {
           Caso de Estudio — Monumentos de Montevideo
         </h1>
         <p className="text-sm text-zinc-500 dark:text-zinc-400 mt-1">
-          Ingresá una dirección para encontrar los monumentos históricos más cercanos.
-          {monumentos.length > 0 && ` (${monumentos.length} monumentos cargados)`}
+          Ingresá una dirección para encontrar los monumentos históricos más cercanos  
+          {monumentos.length > 0 && (
+             <>
+               {" · "}<b>{monumentos.length}</b> monumentos cargados
+            </>
+          )}
         </p>
       </div>
       <CasoDeEstudioClient initialMonumentos={monumentos} />
