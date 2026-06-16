@@ -130,6 +130,11 @@
   }
 }
 
+/* Sidebar right border invisible — matches sidebar bg to avoid visual gap */
+[data-slot="sidebar-container"][data-side="left"] {
+  border-right-color: var(--sidebar);
+}
+
 /* Active nav indicator — teal left bar */
 [data-sidebar="menu-button"][data-active="true"] {
   position: relative;
