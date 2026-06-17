@@ -114,7 +114,14 @@ public class StatisticsServiceImpl implements StatisticsService {
         int coverage = entries.size();
 
         int totalErrorsTypographic = (int) filtered.stream()
-                .filter(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.ERROR))
+                .filter(r -> !r.getIsResult() && List.of(
+                        AddressType.ERR1_S, 
+                        AddressType.ERR1_B, 
+                        AddressType.ERR2_SS, 
+                        AddressType.ERR2_SB, 
+                        AddressType.ERR2_BS, 
+                        AddressType.ERR2_BB
+                ).contains(r.getDireccion().getTipoDireccion()))
                 .count();
 
         int totalErrorsPermutation = (int) filtered.stream()
