@@ -17,26 +17,25 @@ export function BenchmarkClient({ children }: { children: React.ReactNode }) {
 
   const [open, setOpen] = useState(true);
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
-  const [appliedFilters, setAppliedFilters] = useState<Filters>({
-    ...DEFAULT_FILTERS,
-    variacion: isMap ? ["COMUN"] : [],
-  });
+  const [appliedFilters, setAppliedFilters] = useState<Filters>(DEFAULT_FILTERS);
+
+  const effectiveFilters: Filters = isMap
+    ? { ...appliedFilters, variacion: ["COMUN"] }
+    : appliedFilters;
 
   const handleChange = (key: FilterKey, value: string[]) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
   };
 
   const handleApply = (current: Filters) => {
-    setAppliedFilters(
-      isMap ? { ...current, variacion: ["COMUN"] } : current
-    );
+    setAppliedFilters(current);
   };
 
-  const activeCount = Object.values(appliedFilters).flat().length;
+  const activeCount = Object.values(effectiveFilters).flat().length;
   const visibleKeys = isMap ? MAP_FILTERS : ALL_FILTERS;
 
   return (
-    <FiltersContext.Provider value={appliedFilters}>
+    <FiltersContext.Provider value={effectiveFilters}>
       <div className={cn("relative min-h-svh transition-[padding-right] duration-300", showSidebar && open ? "pr-72" : "")}>
         {children}
         {showSidebar && (
