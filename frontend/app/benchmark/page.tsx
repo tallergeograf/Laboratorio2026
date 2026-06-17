@@ -16,7 +16,7 @@ export default function BenchmarkPage() {
           </div>
           <div>
             <p className="text-sm font-medium text-white mb-1">Análisis</p>
-            <p className="text-xs text-white/40 leading-relaxed">Comparativa de métricas entre geocoders: precisión, cobertura y confiabilidad.</p>
+            <p className="text-xs text-white/40 leading-relaxed">Comparativa de métricas entre geocoders: precisión, cobertura, latencia y confiabilidad.</p>
           </div>
           <span className="text-xs text-blue-400 flex items-center gap-1 mt-auto">
             Ver análisis →

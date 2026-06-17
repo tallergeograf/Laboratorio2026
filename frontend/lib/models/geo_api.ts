@@ -29,12 +29,19 @@ export const GeoAPIReliabilityStatsSchema = z.object({
   totalErrorsUrban: z.number(),
 })
 
+export const GeoAPILatencyStatsSchema = z.object({
+  averageLatencyMs: z.number(),
+  medianLatencyMs: z.number(),
+  maxLatencyMs: z.number(),
+})
+
 export const GeoAPIStatsResponseElementSchema = z.object({
   provider: z.string(),
   sampleSize: z.number(),
   accuracyStats: GeoAPIAccuracyStatsSchema,
   coverageStats: GeoAPICoverageStatsSchema,
   reliabilityStats: GeoAPIReliabilityStatsSchema,
+  latencyStats: GeoAPILatencyStatsSchema,
   addresses: z.array(GeoAPIAddressSchema),
 })
 export type GeoAPIStatsResponseElement = z.infer<typeof GeoAPIStatsResponseElementSchema>

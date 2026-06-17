@@ -7,7 +7,7 @@ import { useFilters } from '@/app/benchmark/FiltersContext';
 import type { GeoAPIStatsResponse } from '@/lib/models/geo_api';
 import { Provider } from '@/app/constants/providers';
 
-type Tab = 'accuracy' | 'coverage' | 'reliability';
+type Tab = 'accuracy' | 'coverage' | 'reliability' | 'latency';
 
 function capitalize(s: string): string {
   return s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
@@ -20,7 +20,7 @@ function buildMetrics(
     label: string;
     unit: string;
     description: string;
-    group: 'accuracyStats' | 'coverageStats' | 'reliabilityStats';
+    group: 'accuracyStats' | 'coverageStats' | 'reliabilityStats'  | 'latencyStats';
   }>
 ) {
   return items.map(({ key, label, unit, description, group }) => ({
@@ -52,10 +52,16 @@ const RELIABILITY_ITEMS = [
   { key: 'totalErrorsUrban',       label: 'Errores Urbanos',        unit: 'err', description: 'Errores en direcciones de zonas urbanas',                  group: 'reliabilityStats' as const },
 ];
 
+const LATENCY_ITEMS = [
+  { key: 'averageLatencyMs', label: 'Latencia Promedio', unit: 'ms', description: 'Tiempo promedio de respuesta del geocoder', group: 'latencyStats' as const },
+  { key: 'maxLatencyMs',     label: 'Latencia Máxima',   unit: 'ms', description: 'Peor tiempo de respuesta observado',        group: 'latencyStats' as const },
+];
+
 const TABS: Array<{ id: Tab; label: string }> = [
   { id: 'accuracy',    label: 'Precisión' },
   { id: 'coverage',   label: 'Cobertura' },
   { id: 'reliability', label: 'Confiabilidad' },
+  { id: 'latency', label: 'Latencia' },
 ];
 
 export default function Page() {
@@ -66,7 +72,7 @@ export default function Page() {
   const accuracyData    = useMemo(() => buildMetrics(stats, ACCURACY_ITEMS),    [stats]);
   const coverageData    = useMemo(() => buildMetrics(stats, COVERAGE_ITEMS),    [stats]);
   const reliabilityData = useMemo(() => buildMetrics(stats, RELIABILITY_ITEMS), [stats]);
-
+  const latencyData     = useMemo(() => buildMetrics(stats, LATENCY_ITEMS),     [stats]);
   if (loading) {
     return (
       <main className="flex items-center justify-center min-h-screen bg-black text-white/40 text-sm">
@@ -86,7 +92,8 @@ export default function Page() {
   const activeData =
     tab === 'accuracy'    ? accuracyData    :
     tab === 'coverage'    ? coverageData    :
-                            reliabilityData;
+    tab === 'reliability' ? reliabilityData :
+                            latencyData;
 
   return (
     <main className="bg-black min-h-screen">
