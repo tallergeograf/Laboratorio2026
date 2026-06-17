@@ -66,7 +66,7 @@ const ACCURACY_ITEMS = [
 ];
 
 const COVERAGE_ITEMS = [
-  { key: 'coverage', label: 'Cobertura', unit: '%', description: 'Porcentaje de direcciones geocodificadas exitosamente', group: 'coverageStats' as const },
+  { key: 'coverage', label: 'Cobertura', unit: '%', description: 'Porcentaje de direcciones del dataset que el geocoder logró resolver — una dirección se considera resuelta si devolvió al menos un resultado', group: 'coverageStats' as const },
 ];
 
 const RELIABILITY_ITEMS = [
@@ -97,7 +97,7 @@ export default function Page() {
   const coverageData = useMemo(() => [{
     metric: 'Cobertura',
     unit: '%',
-    description: 'Porcentaje de direcciones geocodificadas exitosamente',
+    description: 'Porcentaje de direcciones del dataset que el geocoder logró resolver — una dirección se considera resuelta si devolvió al menos un resultado',
     values: stats.map((s) => ({
       provider: capitalize(s.provider) as Provider,
       value: s.sampleSize > 0
