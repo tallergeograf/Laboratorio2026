@@ -6,6 +6,7 @@ import uy.edu.taller.sige.geo_api.dto.stats.StatsAccuracyResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsAddressResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsCoverageResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsFilterRequest;
+import uy.edu.taller.sige.geo_api.dto.stats.StatsLatencyResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsReliabilityResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsRequest;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsResponse;
@@ -82,6 +83,19 @@ public class StatisticsServiceImpl implements StatisticsService {
                 ))
                 .toList();
 
+        List<Double> latencies = filtered.stream()
+                .map(SpecificAddressResult::getLatencia)
+                .filter(l -> l != null)
+                .sorted()
+                .toList();
+
+        double avgLatency = latencies.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+        double maxLatency = latencies.stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
+        double medianLatency = latencies.isEmpty() ? 0.0
+                : latencies.size() % 2 == 1
+                        ? latencies.get(latencies.size() / 2)
+                        : (latencies.get(latencies.size() / 2 - 1) + latencies.get(latencies.size() / 2)) / 2.0;
+
         List<Double> errors = entries.stream()
                 .map(StatsAddressResponse::errorMeters)
                 .sorted()
@@ -122,6 +136,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 new StatsAccuracyResponse(avg, max, median, porcentageErrors),
                 new StatsCoverageResponse(coverage),
                 new StatsReliabilityResponse(totalErrorsTypographic, totalErrorsPermutation, totalErrorsRural, totalErrorsUrban),
+                new StatsLatencyResponse(avgLatency, medianLatency, maxLatency),
                 entries
         );
     }
