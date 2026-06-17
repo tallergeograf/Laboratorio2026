@@ -34,6 +34,7 @@ export function useGeoPoints(filters: Filters): {
     async function load() {
       try {
         const data = await GeoAPI.stats(filtersToRequest(filters));
+        console.log('stats response:', JSON.stringify(data, null, 2));
         if (!mounted) return;
         setStats(data);
         setPoints(statsToGeoPoints(data));

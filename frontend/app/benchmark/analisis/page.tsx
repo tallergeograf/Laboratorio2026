@@ -35,10 +35,34 @@ function buildMetrics(
 }
 
 const ACCURACY_ITEMS = [
-  { key: 'averageError',           label: 'Error Promedio',   unit: 'm',   description: 'Media del error sobre todas las mediciones',        group: 'accuracyStats' as const },
-  { key: 'medianError',            label: 'Error Mediano',    unit: 'm',   description: 'Mediana del error de geocodificación',               group: 'accuracyStats' as const },
-  { key: 'maxError',               label: 'Error Máximo',     unit: 'm',   description: 'Peor caso observado en la muestra',                  group: 'accuracyStats' as const },
-  { key: 'percentageWithinMeters', label: '% Dentro de 13 m', unit: '%',  description: 'Proporción de resultados dentro del umbral de 13 m', group: 'accuracyStats' as const },
+  { 
+    key: 'averageError', 
+    label: 'Error Promedio', 
+    unit: 'm', 
+    description: 'Distancia promedio entre la coordenada devuelta y la ubicación real verificada', 
+    group: 'accuracyStats' as const 
+  },
+  { 
+    key: 'medianError', 
+    label: 'Error Mediano', 
+    unit: 'm', 
+    description: 'Si ordenás todos los errores de menor a mayor, este es el valor del medio — no se distorsiona por casos extremos como sí lo hace el promedio', 
+    group: 'accuracyStats' as const 
+  },
+  { 
+    key: 'maxError', 
+    label: 'Error Máximo', 
+    unit: 'm', 
+    description: 'El peor resultado obtenido — indica qué tan mal puede fallar el geocoder en el caso extremo', 
+    group: 'accuracyStats' as const 
+  },
+  { 
+    key: 'percentageWithinMeters', 
+    label: 'Resultados exactos', 
+    unit: '%', 
+    description: 'Porcentaje de direcciones geocodificadas con menos de 13 m de error — umbral calculado a partir de imágenes aéreas 2024', 
+    group: 'accuracyStats' as const 
+  },
 ];
 
 const COVERAGE_ITEMS = [
