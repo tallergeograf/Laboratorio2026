@@ -70,7 +70,17 @@ export default function Page() {
   const [tab, setTab] = useState<Tab>('accuracy');
 
   const accuracyData    = useMemo(() => buildMetrics(stats, ACCURACY_ITEMS),    [stats]);
-  const coverageData    = useMemo(() => buildMetrics(stats, COVERAGE_ITEMS),    [stats]);
+  const coverageData = useMemo(() => [{
+    metric: 'Cobertura',
+    unit: '%',
+    description: 'Porcentaje de direcciones geocodificadas exitosamente',
+    values: stats.map((s) => ({
+      provider: capitalize(s.provider) as Provider,
+      value: s.sampleSize > 0
+        ? parseFloat(((s.coverageStats.coverage / s.sampleSize) * 100).toFixed(1))
+        : 0,
+    })),
+  }], [stats]);
   const reliabilityData = useMemo(() => buildMetrics(stats, RELIABILITY_ITEMS), [stats]);
   const latencyData     = useMemo(() => buildMetrics(stats, LATENCY_ITEMS),     [stats]);
   if (loading) {
