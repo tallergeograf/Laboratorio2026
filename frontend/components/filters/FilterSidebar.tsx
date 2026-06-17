@@ -1,5 +1,4 @@
 "use client";
-
 import { X, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -19,6 +18,7 @@ interface FilterSidebarProps {
   filters: Filters;
   onChange: (key: FilterKey, value: string[]) => void;
   onApply: (filters: Filters) => void;
+  visibleKeys: FilterKey[];
 }
 
 export function FilterSidebar({
@@ -27,35 +27,30 @@ export function FilterSidebar({
   filters,
   onChange,
   onApply,
+  visibleKeys,
 }: FilterSidebarProps) {
   const activeCount = Object.values(filters).flat().length;
 
   const handleClear = () => {
-    (Object.keys(FILTER_CONFIG) as FilterKey[]).forEach((key) =>
-      onChange(key, [])
-    );
+    visibleKeys.forEach((key) => onChange(key, []));
   };
 
   return (
     <>
-      {/* Overlay mobile */}
       {open && (
         <div
           className="fixed inset-0 z-20 bg-black/50 lg:hidden"
           onClick={onClose}
         />
       )}
-
-      {/* Panel */}
       <aside
         className={cn(
           "fixed right-0 top-0 z-30 h-full w-72 bg-[#111] border-l border-white/10",
-          "flex flex-col transition-transform duration-300 ease-in-out",
+          "flex flex-col overflow-hidden transition-transform duration-300 ease-in-out",
           open ? "translate-x-0" : "translate-x-full"
         )}
       >
-        {/* Header */}
-        <div className="flex items-center justify-between px-4 py-4 border-b border-white/10">
+        <div className="flex items-center justify-between px-4 py-4 border-b border-white/10 flex-shrink-0">
           <div className="flex items-center gap-2">
             <SlidersHorizontal size={14} className="text-white/40" />
             <span className="text-sm font-medium text-white/80">Filtros</span>
@@ -73,10 +68,9 @@ export function FilterSidebar({
           </button>
         </div>
 
-        {/* Groups */}
-        <ScrollArea className="flex-1 px-4 py-4">
+        <ScrollArea className="flex-1 min-h-0 px-4 py-4">
           <div className="space-y-5">
-            {(Object.keys(FILTER_CONFIG) as FilterKey[]).map((key, i, arr) => (
+            {visibleKeys.map((key, i, arr) => (
               <div key={key}>
                 <FilterGroup
                   label={FILTER_LABELS[key]}
@@ -92,8 +86,7 @@ export function FilterSidebar({
           </div>
         </ScrollArea>
 
-        {/* Footer */}
-        <div className="px-4 py-4 border-t border-white/10 space-y-2">
+        <div className="px-4 py-4 border-t border-white/10 space-y-2 flex-shrink-0">
           {activeCount > 0 && (
             <button
               onClick={handleClear}
