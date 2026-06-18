@@ -72,6 +72,7 @@ const COVERAGE_ITEMS = [
 const RELIABILITY_ITEMS = [
   { key: 'totalErrorsTypographic', label: 'Errores Tipográficos',   unit: 'err', description: 'Errores por variaciones tipográficas en la dirección',    group: 'reliabilityStats' as const },
   { key: 'totalErrorsPermutation', label: 'Errores de Permutación', unit: 'err', description: 'Errores por reordenamiento de palabras en la dirección',  group: 'reliabilityStats' as const },
+  { key: 'totalErrorsAbbreviation', label: 'Errores por Abreviación', unit: 'err', description: 'Direcciones que fallaron al usar abreviaciones en el nombre de la vía', group: 'reliabilityStats' as const },
   { key: 'totalErrorsRural',       label: 'Errores Rurales',        unit: 'err', description: 'Errores en direcciones de zonas rurales',                  group: 'reliabilityStats' as const },
   { key: 'totalErrorsUrban',       label: 'Errores Urbanos',        unit: 'err', description: 'Errores en direcciones de zonas urbanas',                  group: 'reliabilityStats' as const },
 ];

@@ -128,7 +128,10 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .filter(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.PERMUTACION))
                 .count();
 
-        // Rural/urban siempre sobre el dataset completo (sin filtros)
+        int totalErrorsAbbreviation = (int) filtered.stream()
+                .filter(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.ABREVIACION))
+                .count();        
+
         int totalErrorsRural = (int) allResults.stream()
                 .filter(r -> !r.getIsResult() && !URBAN_DEPARTMENTS.contains(r.getDireccion().getDepartamento()))
                 .count();
@@ -142,7 +145,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 filtered.size(),
                 new StatsAccuracyResponse(avg, max, median, porcentageErrors),
                 new StatsCoverageResponse(coverage),
-                new StatsReliabilityResponse(totalErrorsTypographic, totalErrorsPermutation, totalErrorsRural, totalErrorsUrban),
+                new StatsReliabilityResponse(totalErrorsTypographic, totalErrorsPermutation, totalErrorsRural, totalErrorsUrban, totalErrorsAbbreviation),
                 new StatsLatencyResponse(avgLatency, medianLatency, maxLatency),
                 entries
         );

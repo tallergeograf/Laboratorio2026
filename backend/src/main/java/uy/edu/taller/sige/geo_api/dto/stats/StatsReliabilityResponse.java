@@ -4,7 +4,9 @@ public record StatsReliabilityResponse(
     int totalErrorsTypographic,
     int totalErrorsPermutation,
     int totalErrorsRural,
-    int totalErrorsUrban
+    int totalErrorsUrban,
+    int totalErrorsAbbreviation
+
 ) {
 
 }
