@@ -6,6 +6,7 @@ import { useGeoPoints } from '@/hooks/useGeoPoints';
 import { useFilters } from '@/app/benchmark/FiltersContext';
 import type { GeoAPIStatsResponse } from '@/lib/models/geo_api';
 import { Provider } from '@/app/constants/providers';
+import { GroupedMetricChart } from '@/components/analysis/GroupedMetricChart';
 
 type Tab = 'accuracy' | 'coverage' | 'reliability' | 'latency';
 
@@ -73,9 +74,8 @@ const RELIABILITY_ITEMS = [
   { key: 'totalErrorsTypographic', label: 'Errores Tipográficos',   unit: 'err', description: 'Errores por variaciones tipográficas en la dirección',    group: 'reliabilityStats' as const },
   { key: 'totalErrorsPermutation', label: 'Errores de Permutación', unit: 'err', description: 'Errores por reordenamiento de palabras en la dirección',  group: 'reliabilityStats' as const },
   { key: 'totalErrorsAbbreviation', label: 'Errores por Abreviación', unit: 'err', description: 'Direcciones que fallaron al usar abreviaciones en el nombre de la vía', group: 'reliabilityStats' as const },
-  { key: 'totalErrorsRural',       label: 'Errores Rurales',        unit: 'err', description: 'Errores en direcciones de zonas rurales',                  group: 'reliabilityStats' as const },
-  { key: 'totalErrorsUrban',       label: 'Errores Urbanos',        unit: 'err', description: 'Errores en direcciones de zonas urbanas',                  group: 'reliabilityStats' as const },
-];
+  { key: 'totalErrorsComun', label: 'Errores Comunes', unit: 'err', description: 'Direcciones que fallaron con su formato estándar sin ninguna variación', group: 'reliabilityStats' as const },
+ ];
 
 const LATENCY_ITEMS = [
   { key: 'averageLatencyMs', label: 'Latencia Promedio', unit: 'ms', description: 'Tiempo promedio de respuesta del geocoder', group: 'latencyStats' as const },
@@ -149,20 +149,24 @@ export default function Page() {
         ))}
       </div>
 
-      <div className={[
-        'grid gap-5 p-8',
-        tab === 'coverage' ? 'grid-cols-1 max-w-lg' : 'grid-cols-2',
-      ].join(' ')}>
-        {activeData.map(({ metric, unit, description, values }) => (
-          <MetricChart
-            key={metric}
-            label={metric}
-            description={description}
-            unit={unit}
-            values={values}
-          />
-        ))}
-      </div>
+       <div className={[
+          'grid gap-5 p-8',
+          tab === 'coverage' ? 'grid-cols-1 max-w-lg' : 'grid-cols-2',
+        ].join(' ')}>
+          {activeData.map(({ metric, unit, description, values }) => (
+            <MetricChart key={metric} label={metric} description={description} unit={unit} values={values} />
+          ))}
+          {tab === 'reliability' && (
+            <GroupedMetricChart
+              label="Errores por Zona"
+              description="Comparación de errores en zonas rurales vs urbanas por geocoder"
+              unit="err"
+              providers={stats.map(s => capitalize(s.provider) as Provider)}
+              ruralValues={stats.map(s => s.reliabilityStats.totalErrorsRural)}
+              urbanValues={stats.map(s => s.reliabilityStats.totalErrorsUrban)}
+            />
+          )}
+        </div>
     </main>
   );
 }

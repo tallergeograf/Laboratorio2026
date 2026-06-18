@@ -5,6 +5,7 @@ public record StatsReliabilityResponse(
     int totalErrorsPermutation,
     int totalErrorsRural,
     int totalErrorsUrban,
+    int totalErrorsComun,
     int totalErrorsAbbreviation
 
 ) {

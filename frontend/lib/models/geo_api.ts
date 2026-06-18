@@ -28,6 +28,7 @@ export const GeoAPIReliabilityStatsSchema = z.object({
   totalErrorsRural: z.number(),
   totalErrorsUrban: z.number(),
   totalErrorsAbbreviation: z.number(),
+  totalErrorsComun: z.number(),
 })
 
 export const GeoAPILatencyStatsSchema = z.object({

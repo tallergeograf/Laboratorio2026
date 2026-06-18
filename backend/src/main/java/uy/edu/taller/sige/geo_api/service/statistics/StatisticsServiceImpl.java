@@ -128,6 +128,10 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .filter(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.PERMUTACION))
                 .count();
 
+        int totalErrorsComun = (int) filtered.stream()
+                .filter(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.COMUN))
+                .count();        
+
         int totalErrorsAbbreviation = (int) filtered.stream()
                 .filter(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.ABREVIACION))
                 .count();        
@@ -145,7 +149,7 @@ public class StatisticsServiceImpl implements StatisticsService {
                 filtered.size(),
                 new StatsAccuracyResponse(avg, max, median, porcentageErrors),
                 new StatsCoverageResponse(coverage),
-                new StatsReliabilityResponse(totalErrorsTypographic, totalErrorsPermutation, totalErrorsRural, totalErrorsUrban, totalErrorsAbbreviation),
+                new StatsReliabilityResponse(totalErrorsTypographic, totalErrorsPermutation, totalErrorsRural, totalErrorsUrban, totalErrorsAbbreviation, totalErrorsComun),
                 new StatsLatencyResponse(avgLatency, medianLatency, maxLatency),
                 entries
         );
