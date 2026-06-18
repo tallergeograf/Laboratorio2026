@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import uy.edu.taller.sige.geo_api.client.GeoCoderFactory;
+import uy.edu.taller.sige.geo_api.client.GeocoderSearchResult;
 import uy.edu.taller.sige.geo_api.model.enums.GeocoderProvider;
 import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestReverse;
 import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestSearch;
@@ -21,7 +22,8 @@ public class GeocodingServiceImpl implements GeocodingService {
 
     @Override
     public List<GeocodeResponse> search(GeocoderProvider provider, GeocodeRequestSearch request) {
-        return factory.getGeoCoder(provider).search(request);
+        List<GeocoderSearchResult> results = factory.getGeoCoder(provider).searchBatch(List.of(request));
+        return results.isEmpty() ? List.of() : results.get(0).results();
     }
 
     @Override

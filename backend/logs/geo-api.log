@@ -1,0 +1,336 @@
+2026-06-17T20:16:43.421-03:00  INFO 18092 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : Starting GeoApiApplication using Java 25.0.3 with PID 18092 (C:\Users\bryan\Desktop\fing\taller de sistemnas geograficos\Laboratorio2026\backend\target\classes started by bryan in C:\Users\bryan\Desktop\fing\taller de sistemnas geograficos\Laboratorio2026\backend)
+2026-06-17T20:16:43.423-03:00  INFO 18092 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-06-17T20:16:43.463-03:00  INFO 18092 --- [geo-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-17T20:16:43.473-03:00  INFO 18092 --- [geo-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-17T20:16:43.938-03:00  INFO 18092 --- [geo-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-17T20:16:43.999-03:00  INFO 18092 --- [geo-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 55 ms. Found 4 JPA repository interfaces.
+2026-06-17T20:16:44.485-03:00  INFO 18092 --- [geo-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-06-17T20:16:44.541-03:00  INFO 18092 --- [geo-api] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1067 ms
+2026-06-17T20:16:44.681-03:00  INFO 18092 --- [geo-api] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-17T20:16:44.718-03:00  INFO 18092 --- [geo-api] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.49.Final
+2026-06-17T20:16:44.741-03:00  INFO 18092 --- [geo-api] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-17T20:16:44.946-03:00  INFO 18092 --- [geo-api] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-17T20:16:44.966-03:00  INFO 18092 --- [geo-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-17T20:16:45.122-03:00  INFO 18092 --- [geo-api] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@44bc6515
+2026-06-17T20:16:45.123-03:00  INFO 18092 --- [geo-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-17T20:16:45.175-03:00  INFO 18092 --- [geo-api] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 18.4
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-17T20:16:45.891-03:00  INFO 18092 --- [geo-api] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-17T20:16:45.893-03:00  INFO 18092 --- [geo-api] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-17T20:16:46.110-03:00  INFO 18092 --- [geo-api] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-17T20:16:46.447-03:00  WARN 18092 --- [geo-api] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-17T20:16:46.681-03:00  INFO 18092 --- [geo-api] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-06-17T20:16:46.704-03:00  INFO 18092 --- [geo-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-06-17T20:16:46.710-03:00  INFO 18092 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : Started GeoApiApplication in 3.664 seconds (process running for 4.033)
+2026-06-17T20:16:46.712-03:00  INFO 18092 --- [geo-api] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-17T20:16:46.716-03:00  INFO 18092 --- [geo-api] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-06-17T20:16:46.719-03:00  INFO 18092 --- [geo-api] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-06-17T20:16:46.722-03:00  INFO 18092 --- [geo-api] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-06-17T20:16:46.724-03:00  INFO 18092 --- [geo-api] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-06-17T20:16:48.302-03:00  INFO 14804 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : Starting GeoApiApplication using Java 25.0.3 with PID 14804 (C:\Users\bryan\Desktop\fing\taller de sistemnas geograficos\Laboratorio2026\backend\target\classes started by bryan in C:\Users\bryan\Desktop\fing\taller de sistemnas geograficos\Laboratorio2026\backend)
+2026-06-17T20:16:48.303-03:00  INFO 14804 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-06-17T20:16:48.340-03:00  INFO 14804 --- [geo-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-17T20:16:48.340-03:00  INFO 14804 --- [geo-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-17T20:16:48.811-03:00  INFO 14804 --- [geo-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-17T20:16:48.878-03:00  INFO 14804 --- [geo-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 61 ms. Found 4 JPA repository interfaces.
+2026-06-17T20:16:49.272-03:00  INFO 14804 --- [geo-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-06-17T20:16:49.281-03:00  INFO 14804 --- [geo-api] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-17T20:16:49.282-03:00  INFO 14804 --- [geo-api] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.54]
+2026-06-17T20:16:49.323-03:00  INFO 14804 --- [geo-api] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-06-17T20:16:49.323-03:00  INFO 14804 --- [geo-api] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 983 ms
+2026-06-17T20:16:49.442-03:00  INFO 14804 --- [geo-api] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-17T20:16:49.477-03:00  INFO 14804 --- [geo-api] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.49.Final
+2026-06-17T20:16:49.501-03:00  INFO 14804 --- [geo-api] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-17T20:16:49.704-03:00  INFO 14804 --- [geo-api] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-17T20:16:49.725-03:00  INFO 14804 --- [geo-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-17T20:16:49.858-03:00  INFO 14804 --- [geo-api] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@137b18ae
+2026-06-17T20:16:49.859-03:00  INFO 14804 --- [geo-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-17T20:16:49.907-03:00  INFO 14804 --- [geo-api] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 18.4
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-17T20:16:50.569-03:00  INFO 14804 --- [geo-api] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-17T20:16:50.571-03:00  INFO 14804 --- [geo-api] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-17T20:16:50.787-03:00  INFO 14804 --- [geo-api] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-17T20:16:51.158-03:00  WARN 14804 --- [geo-api] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-17T20:16:51.395-03:00  INFO 14804 --- [geo-api] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-06-17T20:16:51.420-03:00  INFO 14804 --- [geo-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-06-17T20:16:51.427-03:00  INFO 14804 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : Started GeoApiApplication in 3.541 seconds (process running for 4.034)
+2026-06-17T20:16:58.249-03:00  INFO 14804 --- [geo-api] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-17T20:16:58.249-03:00  INFO 14804 --- [geo-api] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-17T20:16:58.249-03:00  INFO 14804 --- [geo-api] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-06-17T20:17:19.648-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 1/15 (150 addresses)
+2026-06-17T20:17:19.648-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 1/15 (150 addresses)
+2026-06-17T20:17:19.648-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 1/15 (150 addresses)
+2026-06-17T20:17:57.579-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 1/15 saved
+2026-06-17T20:17:57.579-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 2/15 (150 addresses)
+2026-06-17T20:18:20.835-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 2/15 saved
+2026-06-17T20:18:20.835-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 3/15 (150 addresses)
+2026-06-17T20:18:36.938-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 3/15 saved
+2026-06-17T20:18:36.938-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 4/15 (150 addresses)
+2026-06-17T20:19:01.056-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 4/15 saved
+2026-06-17T20:19:01.056-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 5/15 (150 addresses)
+2026-06-17T20:19:19.175-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 5/15 saved
+2026-06-17T20:19:19.175-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 6/15 (150 addresses)
+2026-06-17T20:19:41.625-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 6/15 saved
+2026-06-17T20:19:41.625-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 7/15 (150 addresses)
+2026-06-17T20:19:59.617-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 7/15 saved
+2026-06-17T20:19:59.617-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 8/15 (150 addresses)
+2026-06-17T20:20:04.008-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 1/15 saved
+2026-06-17T20:20:04.008-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 2/15 (150 addresses)
+2026-06-17T20:20:12.425-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 8/15 saved
+2026-06-17T20:20:12.425-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 9/15 (150 addresses)
+2026-06-17T20:20:23.371-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 1/15 saved
+2026-06-17T20:20:23.371-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 2/15 (150 addresses)
+2026-06-17T20:20:24.803-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 9/15 saved
+2026-06-17T20:20:24.804-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 10/15 (150 addresses)
+2026-06-17T20:20:53.404-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 10/15 saved
+2026-06-17T20:20:53.404-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 11/15 (150 addresses)
+2026-06-17T20:21:29.557-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 11/15 saved
+2026-06-17T20:21:29.557-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 12/15 (150 addresses)
+2026-06-17T20:21:56.637-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 12/15 saved
+2026-06-17T20:21:56.637-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 13/15 (150 addresses)
+2026-06-17T20:22:05.802-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 13/15 saved
+2026-06-17T20:22:05.803-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 14/15 (150 addresses)
+2026-06-17T20:22:10.631-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 14/15 saved
+2026-06-17T20:22:10.631-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 15/15 (131 addresses)
+2026-06-17T20:22:29.075-03:00  INFO 14804 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 15/15 saved
+2026-06-17T20:22:49.830-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 2/15 saved
+2026-06-17T20:22:49.830-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 3/15 (150 addresses)
+2026-06-17T20:23:24.018-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 2/15 saved
+2026-06-17T20:23:24.018-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 3/15 (150 addresses)
+2026-06-17T20:25:35.369-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 3/15 saved
+2026-06-17T20:25:35.369-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 4/15 (150 addresses)
+2026-06-17T20:26:28.819-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 3/15 saved
+2026-06-17T20:26:28.819-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 4/15 (150 addresses)
+2026-06-17T20:28:20.546-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 4/15 saved
+2026-06-17T20:28:20.547-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 5/15 (150 addresses)
+2026-06-17T20:29:37.399-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 4/15 saved
+2026-06-17T20:29:37.399-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 5/15 (150 addresses)
+2026-06-17T20:31:06.529-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 5/15 saved
+2026-06-17T20:31:06.529-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 6/15 (150 addresses)
+2026-06-17T20:32:45.576-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 5/15 saved
+2026-06-17T20:32:45.576-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 6/15 (150 addresses)
+2026-06-17T20:33:52.249-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 6/15 saved
+2026-06-17T20:33:52.249-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 7/15 (150 addresses)
+2026-06-17T20:35:55.136-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 6/15 saved
+2026-06-17T20:35:55.136-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 7/15 (150 addresses)
+2026-06-17T20:36:39.263-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 7/15 saved
+2026-06-17T20:36:39.263-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 8/15 (150 addresses)
+2026-06-17T20:39:04.619-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 7/15 saved
+2026-06-17T20:39:04.619-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 8/15 (150 addresses)
+2026-06-17T20:39:24.836-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 8/15 saved
+2026-06-17T20:39:24.836-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 9/15 (150 addresses)
+2026-06-17T20:42:11.440-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 9/15 saved
+2026-06-17T20:42:11.440-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 10/15 (150 addresses)
+2026-06-17T20:42:11.936-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 8/15 saved
+2026-06-17T20:42:11.936-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 9/15 (150 addresses)
+2026-06-17T20:44:59.975-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 10/15 saved
+2026-06-17T20:44:59.976-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 11/15 (150 addresses)
+2026-06-17T20:45:20.092-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 9/15 saved
+2026-06-17T20:45:20.092-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 10/15 (150 addresses)
+2026-06-17T20:47:44.947-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 11/15 saved
+2026-06-17T20:47:44.947-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 12/15 (150 addresses)
+2026-06-17T20:48:25.824-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 10/15 saved
+2026-06-17T20:48:25.824-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 11/15 (150 addresses)
+2026-06-17T20:50:30.361-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 12/15 saved
+2026-06-17T20:50:30.361-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 13/15 (150 addresses)
+2026-06-17T20:51:36.358-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 11/15 saved
+2026-06-17T20:51:36.358-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 12/15 (150 addresses)
+2026-06-17T20:53:16.869-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 13/15 saved
+2026-06-17T20:53:16.869-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 14/15 (150 addresses)
+2026-06-17T20:54:42.326-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 12/15 saved
+2026-06-17T20:54:42.326-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 13/15 (150 addresses)
+2026-06-17T20:56:03.399-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 14/15 saved
+2026-06-17T20:56:03.399-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 15/15 (131 addresses)
+2026-06-17T20:57:51.983-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 13/15 saved
+2026-06-17T20:57:51.985-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 14/15 (150 addresses)
+2026-06-17T20:58:28.405-03:00  INFO 14804 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 15/15 saved
+2026-06-17T21:01:02.570-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 14/15 saved
+2026-06-17T21:01:02.570-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 15/15 (131 addresses)
+2026-06-17T21:03:48.457-03:00  INFO 14804 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 15/15 saved
+2026-06-17T21:42:14.034-03:00  INFO 14804 --- [geo-api] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-17T21:42:14.040-03:00  INFO 14804 --- [geo-api] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2026-06-17T21:42:14.043-03:00  INFO 14804 --- [geo-api] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-06-17T21:42:14.050-03:00  INFO 14804 --- [geo-api] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-06-17T21:42:14.054-03:00  INFO 14804 --- [geo-api] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-06-17T21:44:32.701-03:00  INFO 22200 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : Starting GeoApiApplication using Java 25.0.3 with PID 22200 (C:\Users\bryan\Desktop\fing\taller de sistemnas geograficos\Laboratorio2026\backend\target\classes started by bryan in C:\Users\bryan\Desktop\fing\taller de sistemnas geograficos\Laboratorio2026\backend)
+2026-06-17T21:44:32.702-03:00  INFO 22200 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-06-17T21:44:32.744-03:00  INFO 22200 --- [geo-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-17T21:44:32.745-03:00  INFO 22200 --- [geo-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-17T21:44:33.338-03:00  INFO 22200 --- [geo-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-17T21:44:33.420-03:00  INFO 22200 --- [geo-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 75 ms. Found 4 JPA repository interfaces.
+2026-06-17T21:44:33.886-03:00  INFO 22200 --- [geo-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-06-17T21:44:33.898-03:00  INFO 22200 --- [geo-api] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-17T21:44:33.898-03:00  INFO 22200 --- [geo-api] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.54]
+2026-06-17T21:44:33.937-03:00  INFO 22200 --- [geo-api] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-06-17T21:44:33.937-03:00  INFO 22200 --- [geo-api] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1192 ms
+2026-06-17T21:44:34.071-03:00  INFO 22200 --- [geo-api] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-17T21:44:34.107-03:00  INFO 22200 --- [geo-api] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.49.Final
+2026-06-17T21:44:34.132-03:00  INFO 22200 --- [geo-api] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-17T21:44:34.378-03:00  INFO 22200 --- [geo-api] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-17T21:44:34.398-03:00  INFO 22200 --- [geo-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-17T21:44:34.733-03:00  INFO 22200 --- [geo-api] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@137b18ae
+2026-06-17T21:44:34.735-03:00  INFO 22200 --- [geo-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-17T21:44:34.793-03:00  INFO 22200 --- [geo-api] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 18.4
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-17T21:44:35.532-03:00  INFO 22200 --- [geo-api] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-17T21:44:35.535-03:00  INFO 22200 --- [geo-api] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-17T21:44:35.752-03:00  INFO 22200 --- [geo-api] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-17T21:44:36.073-03:00  WARN 22200 --- [geo-api] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-17T21:44:36.314-03:00  INFO 22200 --- [geo-api] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-06-17T21:44:36.338-03:00  INFO 22200 --- [geo-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-06-17T21:44:36.344-03:00  INFO 22200 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : Started GeoApiApplication in 4.129 seconds (process running for 4.637)
+2026-06-17T21:45:00.833-03:00  INFO 22200 --- [geo-api] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-17T21:45:00.833-03:00  INFO 22200 --- [geo-api] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-17T21:45:00.833-03:00  INFO 22200 --- [geo-api] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-06-17T21:45:20.939-03:00  INFO 22200 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 1/15 (150 addresses)
+2026-06-17T21:45:20.939-03:00  INFO 22200 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 1/15 (150 addresses)
+2026-06-17T21:45:20.939-03:00  INFO 22200 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 1/15 (150 addresses)
+2026-06-17T21:45:22.518-03:00  INFO 22200 --- [geo-api] [virtual-81] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 1/1 (124 addresses)
+2026-06-17T21:45:22.518-03:00  INFO 22200 --- [geo-api] [virtual-79] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 1/1 (124 addresses)
+2026-06-17T21:45:22.518-03:00  INFO 22200 --- [geo-api] [virtual-80] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 1/1 (124 addresses)
+2026-06-17T21:45:39.011-03:00  INFO 22200 --- [geo-api] [virtual-80] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 1/1 saved
+2026-06-17T21:46:03.787-03:00  INFO 22200 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 1/15 saved
+2026-06-17T21:46:03.787-03:00  INFO 22200 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 2/15 (150 addresses)
+2026-06-17T21:46:31.283-03:00  INFO 22200 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 2/15 saved
+2026-06-17T21:46:31.283-03:00  INFO 22200 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 3/15 (150 addresses)
+2026-06-17T21:46:50.889-03:00  INFO 22200 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 3/15 saved
+2026-06-17T21:46:50.889-03:00  INFO 22200 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 4/15 (150 addresses)
+2026-06-17T21:47:18.559-03:00  INFO 22200 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 4/15 saved
+2026-06-17T21:47:18.559-03:00  INFO 22200 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 5/15 (150 addresses)
+2026-06-17T21:47:33.266-03:00  INFO 22200 --- [geo-api] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-17T21:47:37.738-03:00  INFO 22200 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 5/15 saved
+2026-06-17T21:47:37.738-03:00  INFO 22200 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 6/15 (150 addresses)
+2026-06-17T21:47:41.988-03:00  INFO 17384 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : Starting GeoApiApplication using Java 25.0.3 with PID 17384 (C:\Users\bryan\Desktop\fing\taller de sistemnas geograficos\Laboratorio2026\backend\target\classes started by bryan in C:\Users\bryan\Desktop\fing\taller de sistemnas geograficos\Laboratorio2026\backend)
+2026-06-17T21:47:41.990-03:00  INFO 17384 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-06-17T21:47:42.036-03:00  INFO 17384 --- [geo-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-17T21:47:42.037-03:00  INFO 17384 --- [geo-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-17T21:47:42.629-03:00  INFO 17384 --- [geo-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-17T21:47:42.711-03:00  INFO 17384 --- [geo-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 71 ms. Found 4 JPA repository interfaces.
+2026-06-17T21:47:43.130-03:00  INFO 17384 --- [geo-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-06-17T21:47:43.140-03:00  INFO 17384 --- [geo-api] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-17T21:47:43.141-03:00  INFO 17384 --- [geo-api] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.54]
+2026-06-17T21:47:43.174-03:00  INFO 17384 --- [geo-api] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-06-17T21:47:43.175-03:00  INFO 17384 --- [geo-api] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1137 ms
+2026-06-17T21:47:43.293-03:00  INFO 17384 --- [geo-api] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-17T21:47:43.326-03:00  INFO 17384 --- [geo-api] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.49.Final
+2026-06-17T21:47:43.352-03:00  INFO 17384 --- [geo-api] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-17T21:47:43.553-03:00  INFO 17384 --- [geo-api] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-17T21:47:43.576-03:00  INFO 17384 --- [geo-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-17T21:47:43.710-03:00  INFO 17384 --- [geo-api] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@137b18ae
+2026-06-17T21:47:43.712-03:00  INFO 17384 --- [geo-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-17T21:47:43.768-03:00  INFO 17384 --- [geo-api] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 18.4
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-17T21:47:44.424-03:00  INFO 17384 --- [geo-api] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-17T21:47:44.426-03:00  INFO 17384 --- [geo-api] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-17T21:47:44.618-03:00  INFO 17384 --- [geo-api] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-17T21:47:44.995-03:00  WARN 17384 --- [geo-api] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-17T21:47:45.222-03:00  INFO 17384 --- [geo-api] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-06-17T21:47:45.244-03:00  INFO 17384 --- [geo-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-06-17T21:47:45.250-03:00  INFO 17384 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : Started GeoApiApplication in 3.679 seconds (process running for 4.142)
+2026-06-17T21:47:45.293-03:00  INFO 17384 --- [geo-api] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-17T21:47:45.293-03:00  INFO 17384 --- [geo-api] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-17T21:47:45.294-03:00  INFO 17384 --- [geo-api] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-06-17T21:47:47.202-03:00  INFO 17384 --- [geo-api] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-17T21:47:51.863-03:00  INFO 5428 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : Starting GeoApiApplication using Java 25.0.3 with PID 5428 (C:\Users\bryan\Desktop\fing\taller de sistemnas geograficos\Laboratorio2026\backend\target\classes started by bryan in C:\Users\bryan\Desktop\fing\taller de sistemnas geograficos\Laboratorio2026\backend)
+2026-06-17T21:47:51.864-03:00  INFO 5428 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-06-17T21:47:51.903-03:00  INFO 5428 --- [geo-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-17T21:47:51.903-03:00  INFO 5428 --- [geo-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-17T21:47:52.441-03:00  INFO 5428 --- [geo-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-17T21:47:52.504-03:00  INFO 5428 --- [geo-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 56 ms. Found 4 JPA repository interfaces.
+2026-06-17T21:47:52.909-03:00  INFO 5428 --- [geo-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-06-17T21:47:52.919-03:00  INFO 5428 --- [geo-api] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-17T21:47:52.919-03:00  INFO 5428 --- [geo-api] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.54]
+2026-06-17T21:47:52.951-03:00  INFO 5428 --- [geo-api] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-06-17T21:47:52.951-03:00  INFO 5428 --- [geo-api] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1048 ms
+2026-06-17T21:47:53.077-03:00  INFO 5428 --- [geo-api] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-17T21:47:53.111-03:00  INFO 5428 --- [geo-api] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.49.Final
+2026-06-17T21:47:53.133-03:00  INFO 5428 --- [geo-api] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-17T21:47:53.327-03:00  INFO 5428 --- [geo-api] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-17T21:47:53.348-03:00  INFO 5428 --- [geo-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-17T21:47:53.482-03:00  INFO 5428 --- [geo-api] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@137b18ae
+2026-06-17T21:47:53.484-03:00  INFO 5428 --- [geo-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-17T21:47:53.534-03:00  INFO 5428 --- [geo-api] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 18.4
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-17T21:47:54.195-03:00  INFO 5428 --- [geo-api] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-17T21:47:54.197-03:00  INFO 5428 --- [geo-api] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-17T21:47:54.388-03:00  INFO 5428 --- [geo-api] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-17T21:47:54.697-03:00  WARN 5428 --- [geo-api] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-17T21:47:54.938-03:00  INFO 5428 --- [geo-api] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-06-17T21:47:54.958-03:00  INFO 5428 --- [geo-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-06-17T21:47:54.964-03:00  INFO 5428 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : Started GeoApiApplication in 3.535 seconds (process running for 3.959)
+2026-06-17T21:47:55.013-03:00  INFO 5428 --- [geo-api] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-17T21:47:55.014-03:00  INFO 5428 --- [geo-api] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-17T21:47:55.014-03:00  INFO 5428 --- [geo-api] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-06-17T21:47:59.876-03:00  INFO 5428 --- [geo-api] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2026-06-17T21:48:06.731-03:00  INFO 6192 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : Starting GeoApiApplication using Java 25.0.3 with PID 6192 (C:\Users\bryan\Desktop\fing\taller de sistemnas geograficos\Laboratorio2026\backend\target\classes started by bryan in C:\Users\bryan\Desktop\fing\taller de sistemnas geograficos\Laboratorio2026\backend)
+2026-06-17T21:48:06.732-03:00  INFO 6192 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-06-17T21:48:06.768-03:00  INFO 6192 --- [geo-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2026-06-17T21:48:06.768-03:00  INFO 6192 --- [geo-api] [restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2026-06-17T21:48:07.338-03:00  INFO 6192 --- [geo-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-17T21:48:07.406-03:00  INFO 6192 --- [geo-api] [restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 60 ms. Found 4 JPA repository interfaces.
+2026-06-17T21:48:07.894-03:00  INFO 6192 --- [geo-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-06-17T21:48:07.905-03:00  INFO 6192 --- [geo-api] [restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-17T21:48:07.905-03:00  INFO 6192 --- [geo-api] [restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.54]
+2026-06-17T21:48:07.943-03:00  INFO 6192 --- [geo-api] [restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-06-17T21:48:07.943-03:00  INFO 6192 --- [geo-api] [restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1175 ms
+2026-06-17T21:48:08.071-03:00  INFO 6192 --- [geo-api] [restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-17T21:48:08.107-03:00  INFO 6192 --- [geo-api] [restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.49.Final
+2026-06-17T21:48:08.131-03:00  INFO 6192 --- [geo-api] [restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-17T21:48:08.334-03:00  INFO 6192 --- [geo-api] [restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-17T21:48:08.356-03:00  INFO 6192 --- [geo-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-17T21:48:08.489-03:00  INFO 6192 --- [geo-api] [restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@ba4d69c
+2026-06-17T21:48:08.491-03:00  INFO 6192 --- [geo-api] [restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-17T21:48:08.542-03:00  INFO 6192 --- [geo-api] [restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 18.4
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-06-17T21:48:09.206-03:00  INFO 6192 --- [geo-api] [restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-17T21:48:09.208-03:00  INFO 6192 --- [geo-api] [restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-17T21:48:09.410-03:00  INFO 6192 --- [geo-api] [restartedMain] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-06-17T21:48:09.736-03:00  WARN 6192 --- [geo-api] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-17T21:48:09.955-03:00  INFO 6192 --- [geo-api] [restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2026-06-17T21:48:09.975-03:00  INFO 6192 --- [geo-api] [restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-06-17T21:48:09.981-03:00  INFO 6192 --- [geo-api] [restartedMain] u.e.t.sige.geo_api.GeoApiApplication     : Started GeoApiApplication in 3.588 seconds (process running for 3.953)
+2026-06-17T21:48:14.236-03:00  INFO 6192 --- [geo-api] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-06-17T21:48:14.236-03:00  INFO 6192 --- [geo-api] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-06-17T21:48:14.236-03:00  INFO 6192 --- [geo-api] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-06-17T21:48:34.597-03:00  INFO 6192 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 1/1 (124 addresses)
+2026-06-17T21:48:34.597-03:00  INFO 6192 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 1/1 (124 addresses)
+2026-06-17T21:48:34.597-03:00  INFO 6192 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 1/1 (124 addresses)
+2026-06-17T21:48:53.818-03:00  INFO 6192 --- [geo-api] [virtual-64] u.e.t.s.g.s.address.AddressDataImpl      : [sudir] batch 1/1 saved
+2026-06-17T21:50:51.759-03:00  INFO 6192 --- [geo-api] [virtual-66] u.e.t.s.g.s.address.AddressDataImpl      : [nominatim] batch 1/1 saved
+2026-06-17T21:51:10.984-03:00  INFO 6192 --- [geo-api] [virtual-62] u.e.t.s.g.s.address.AddressDataImpl      : [photon] batch 1/1 saved

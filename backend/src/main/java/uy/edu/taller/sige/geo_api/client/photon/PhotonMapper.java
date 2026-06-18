@@ -28,7 +28,7 @@ public class PhotonMapper {
             case NONE -> URUGUAY_BBOX;
         };
         return new PhotonSearchParamsDTO(
-                request.full_address(), null, null, 5, null, bbox, null, null, null, null, null
+                request.full_address(), null, null, 5, null, bbox, null, null, null, null, null, "UY"
             );
     }
 
