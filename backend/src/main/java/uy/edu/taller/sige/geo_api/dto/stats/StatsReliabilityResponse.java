@@ -2,12 +2,16 @@ package uy.edu.taller.sige.geo_api.dto.stats;
 
 public record StatsReliabilityResponse(
     int totalErrorsTypographic,
+    int totalTypographic,
     int totalErrorsPermutation,
-    int totalErrorsRural,
-    int totalErrorsUrban,
+    int totalPermutation,
+    int totalErrorsAbbreviation,
+    int totalAbbreviation,
     int totalErrorsComun,
-    int totalErrorsAbbreviation
-
+    int totalComun,
+    int totalErrorsRural,
+    int totalRural,
+    int totalErrorsUrban,
+    int totalUrban
 ) {
-
 }

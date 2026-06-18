@@ -106,7 +106,52 @@ export default function Page() {
         : 0,
     })),
   }], [stats]);
-  const reliabilityData = useMemo(() => buildMetrics(stats, RELIABILITY_ITEMS), [stats]);
+  const reliabilityData = useMemo(() => [
+    {
+      metric: 'Errores Tipográficos',
+      unit: '%',
+      description: 'Porcentaje de direcciones que fallaron al introducir errores tipográficos',
+      values: stats.map(s => ({
+        provider: capitalize(s.provider) as Provider,
+        value: s.reliabilityStats.totalTypographic > 0
+          ? parseFloat(((s.reliabilityStats.totalErrorsTypographic / s.reliabilityStats.totalTypographic) * 100).toFixed(1))
+          : 0,
+      })),
+    },
+    {
+      metric: 'Errores de Permutación',
+      unit: '%',
+      description: 'Porcentaje de direcciones que fallaron al invertir el orden de los componentes',
+      values: stats.map(s => ({
+        provider: capitalize(s.provider) as Provider,
+        value: s.reliabilityStats.totalPermutation > 0
+          ? parseFloat(((s.reliabilityStats.totalErrorsPermutation / s.reliabilityStats.totalPermutation) * 100).toFixed(1))
+          : 0,
+      })),
+    },
+    {
+      metric: 'Errores por Abreviación',
+      unit: '%',
+      description: 'Porcentaje de direcciones que fallaron al usar abreviaciones en el nombre de la vía',
+      values: stats.map(s => ({
+        provider: capitalize(s.provider) as Provider,
+        value: s.reliabilityStats.totalAbbreviation > 0
+          ? parseFloat(((s.reliabilityStats.totalErrorsAbbreviation / s.reliabilityStats.totalAbbreviation) * 100).toFixed(1))
+          : 0,
+      })),
+    },
+    {
+      metric: 'Errores Comunes',
+      unit: '%',
+      description: 'Porcentaje de direcciones que fallaron con su formato estándar sin ninguna variación',
+      values: stats.map(s => ({
+        provider: capitalize(s.provider) as Provider,
+        value: s.reliabilityStats.totalComun > 0
+          ? parseFloat(((s.reliabilityStats.totalErrorsComun / s.reliabilityStats.totalComun) * 100).toFixed(1))
+          : 0,
+      })),
+    },
+  ], [stats]);
   const latencyData     = useMemo(() => buildMetrics(stats, LATENCY_ITEMS),     [stats]);
   if (loading) {
     return (
@@ -115,6 +160,7 @@ export default function Page() {
       </main>
     );
   }
+  
 
   if (error) {
     return (
@@ -160,10 +206,18 @@ export default function Page() {
             <GroupedMetricChart
               label="Errores por Zona"
               description="Comparación de errores en zonas rurales vs urbanas por geocoder"
-              unit="err"
+              unit="%"
               providers={stats.map(s => capitalize(s.provider) as Provider)}
-              ruralValues={stats.map(s => s.reliabilityStats.totalErrorsRural)}
-              urbanValues={stats.map(s => s.reliabilityStats.totalErrorsUrban)}
+              ruralValues={stats.map(s =>
+                s.reliabilityStats.totalRural > 0
+                  ? parseFloat(((s.reliabilityStats.totalErrorsRural / s.reliabilityStats.totalRural) * 100).toFixed(1))
+                  : 0
+              )}
+              urbanValues={stats.map(s =>
+                s.reliabilityStats.totalUrban > 0
+                  ? parseFloat(((s.reliabilityStats.totalErrorsUrban / s.reliabilityStats.totalUrban) * 100).toFixed(1))
+                  : 0
+              )}
             />
           )}
         </div>

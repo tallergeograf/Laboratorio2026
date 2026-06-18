@@ -24,11 +24,17 @@ export const GeoAPICoverageStatsSchema = z.object({
 
 export const GeoAPIReliabilityStatsSchema = z.object({
   totalErrorsTypographic: z.number(),
+  totalTypographic: z.number(),
   totalErrorsPermutation: z.number(),
-  totalErrorsRural: z.number(),
-  totalErrorsUrban: z.number(),
+  totalPermutation: z.number(),
   totalErrorsAbbreviation: z.number(),
+  totalAbbreviation: z.number(),
   totalErrorsComun: z.number(),
+  totalComun: z.number(),
+  totalErrorsRural: z.number(),
+  totalRural: z.number(),
+  totalErrorsUrban: z.number(),
+  totalUrban: z.number(),
 })
 
 export const GeoAPILatencyStatsSchema = z.object({

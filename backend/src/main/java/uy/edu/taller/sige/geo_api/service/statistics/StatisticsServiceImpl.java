@@ -144,12 +144,37 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .filter(r -> !r.getIsResult() && URBAN_DEPARTMENTS.contains(r.getDireccion().getDepartamento()))
                 .count();
 
+        int totalTypographic = (int) filtered.stream()
+        .filter(r -> List.of(AddressType.ERR1_S, AddressType.ERR1_B, AddressType.ERR2_SS, AddressType.ERR2_SB, AddressType.ERR2_BS, AddressType.ERR2_BB)
+        .contains(r.getDireccion().getTipoDireccion()))
+        .count();
+
+        int totalPermutation = (int) filtered.stream()
+        .filter(r -> r.getDireccion().getTipoDireccion().equals(AddressType.PERMUTACION))
+        .count();
+
+        int totalAbbreviation = (int) filtered.stream()
+        .filter(r -> r.getDireccion().getTipoDireccion().equals(AddressType.ABREVIACION))
+        .count();
+
+        int totalComun = (int) filtered.stream()
+        .filter(r -> r.getDireccion().getTipoDireccion().equals(AddressType.COMUN))
+        .count();
+
+        int totalRural = (int) allResults.stream()
+        .filter(r -> !URBAN_DEPARTMENTS.contains(r.getDireccion().getDepartamento()))
+        .count();
+
+        int totalUrban = (int) allResults.stream()
+        .filter(r -> URBAN_DEPARTMENTS.contains(r.getDireccion().getDepartamento()))
+        .count();        
+
         return new StatsResponse(
                 provider,
                 filtered.size(),
                 new StatsAccuracyResponse(avg, max, median, porcentageErrors),
                 new StatsCoverageResponse(coverage),
-                new StatsReliabilityResponse(totalErrorsTypographic, totalErrorsPermutation, totalErrorsRural, totalErrorsUrban, totalErrorsAbbreviation, totalErrorsComun),
+                new StatsReliabilityResponse(totalErrorsTypographic, totalTypographic, totalErrorsPermutation, totalPermutation, totalErrorsAbbreviation, totalAbbreviation, totalErrorsComun, totalComun, totalErrorsRural, totalRural, totalErrorsUrban, totalUrban),
                 new StatsLatencyResponse(avgLatency, medianLatency, maxLatency),
                 entries
         );

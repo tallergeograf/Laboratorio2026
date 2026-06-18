@@ -38,7 +38,14 @@ export function MetricChart({ label, description, unit, values }: MetricChartPro
         <ResponsiveContainer width="100%" height={220}>
           <BarChart data={values}>
             <XAxis dataKey="provider" tick={{ fill: 'rgba(255,255,255,0.4)', fontSize: 12 }} axisLine={false} tickLine={false} />
-            <YAxis tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 11 }} axisLine={false} tickLine={false} />
+            <YAxis
+  tick={{ fill: 'rgba(255,255,255,0.3)', fontSize: 11 }}
+  axisLine={false}
+  tickLine={false}
+  domain={[0, 100]}
+  ticks={[0, 25, 50, 75, 100]}
+  tickFormatter={(v) => `${v}%`}
+/>
             <Tooltip
               contentStyle={{ background: '#2a2a2a', border: '0.5px solid rgba(255,255,255,0.1)', borderRadius: 8 }}
               labelStyle={{ color: '#f0f0f0' }}
