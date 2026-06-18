@@ -50,8 +50,8 @@ export function GroupedMetricChart({ label, description, unit, providers, ruralV
               formatter={(value) => [`${Number(value ?? 0).toFixed(1)}%`]}
             />
             <Legend wrapperStyle={{ color: 'rgba(255,255,255,0.4)', fontSize: 12 }} />
-            <Bar dataKey="Rural" fill="#f97316" radius={[4, 4, 0, 0]} />
-            <Bar dataKey="Urbano" fill="#a78bfa" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="Rural" fill="#22c55e" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="Urbano" fill="#f87171" radius={[4, 4, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>
