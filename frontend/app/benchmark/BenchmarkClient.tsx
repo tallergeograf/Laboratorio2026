@@ -7,8 +7,8 @@ import { SidebarToggle } from "@/components/filters/SidebarToggle";
 import { Filters, FilterKey, DEFAULT_FILTERS } from "@/components/filters/types";
 import { FiltersContext } from "./FiltersContext";
 
-const MAP_FILTERS: FilterKey[] = ["providers", "departments", "category"];
-const ALL_FILTERS: FilterKey[] = ["departments", "category", "variacion"];
+const MAP_FILTERS: FilterKey[] = ["demo", "providers", "departments", "category"];
+const ANALYSIS_FILTERS: FilterKey[] = ["demo", "providers", "departments", "category", "variacion"];
 
 export function BenchmarkClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -32,7 +32,7 @@ export function BenchmarkClient({ children }: { children: React.ReactNode }) {
   };
 
   const activeCount = Object.values(effectiveFilters).flat().length;
-  const visibleKeys = isMap ? MAP_FILTERS : ALL_FILTERS;
+  const visibleKeys = isMap ? MAP_FILTERS : ANALYSIS_FILTERS;
 
   return (
     <FiltersContext.Provider value={effectiveFilters}>

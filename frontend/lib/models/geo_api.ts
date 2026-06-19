@@ -55,7 +55,9 @@ export const GeoAPIStatsResponseElementSchema = z.object({
 export type GeoAPIStatsResponseElement = z.infer<typeof GeoAPIStatsResponseElementSchema>
 
 // -- Process --
-export const GeoAPIProcessRequestSchema = z.object({})
+export const GeoAPIProcessRequestSchema = z.object({
+  demo: z.boolean(),
+})
 export type GeoAPIProcessRequest = z.infer<typeof GeoAPIProcessRequestSchema>
 
 // export const GeoAPIProcessResponseSchema = z.array(GeoAPIProcessResponseElementSchema)

@@ -12,19 +12,16 @@ import {
 
 
 export const GeoAPI = {
-  async process(request: GeoAPIProcessRequest): Promise<void> {
-    const res = await fetch(`${BASE_URL}${ENDPOINTS.process}`, {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify(request),
-    })
+  async process(request: GeoAPIProcessRequest): Promise<string[]> {
+    const params = new URLSearchParams({ demo: String(request.demo) })
+    const res = await fetch(`${BASE_URL}${ENDPOINTS.process}?${params}`)
     if (!res.ok) {
       const msg = res.status === 429
         ? `Rate limited (429) — slow down requests`
         : `HTTP ${res.status}: ${res.statusText}`
       throw new Error(msg)
     }
-    // No response body expected for /process
+    return res.json()
   },
 
   async stats(request?: GeoAPIStatsRequest): Promise<GeoAPIStatsResponse> {

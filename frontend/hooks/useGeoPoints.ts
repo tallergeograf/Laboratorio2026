@@ -7,6 +7,7 @@ import type { Filters } from '@/components/filters/types';
 
 function filtersToRequest(filters: Filters) {
   return {
+    demo: filters.demo.length > 0,
     filters: {
       departments: filters.departments.length ? filters.departments : undefined,
       category: filters.category.length ? filters.category : undefined,
@@ -26,7 +27,7 @@ export function useGeoPoints(filters: Filters): {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const { departments, category, variacion } = filters;
+  const { demo, departments, category, variacion } = filters;
 
   useEffect(() => {
     let mounted = true;
@@ -51,7 +52,7 @@ export function useGeoPoints(filters: Filters): {
       mounted = false;
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [departments, category, variacion]);
+  }, [demo, departments, category, variacion]);
 
   return { points, stats, loading, error };
 }

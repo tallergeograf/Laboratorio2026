@@ -1,11 +1,12 @@
 import Link from 'next/link'
 import { ChartBar, Map } from 'lucide-react'
+import { ProcessCard } from './ProcessCard'
 
 export default function BenchmarkPage() {
   return (
     <div className="p-8">
       <p className="text-sm text-white/40 mb-6">Seleccioná una sección para comenzar</p>
-      <div className="grid grid-cols-2 gap-3 max-w-lg">
+      <div className="grid grid-cols-3 gap-3 max-w-2xl">
 
         <Link
           href="/benchmark/analisis"
@@ -38,6 +39,8 @@ export default function BenchmarkPage() {
             Ver mapa →
           </span>
         </Link>
+
+        <ProcessCard />
 
       </div>
     </div>

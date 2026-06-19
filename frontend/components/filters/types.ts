@@ -1,4 +1,5 @@
 export const FILTER_CONFIG = {
+  demo: ["Demo"],
   providers: ["Photon", "Sudir", "Nominatim"],
   departments: [
     "ARTIGAS",
@@ -45,6 +46,7 @@ export const FILTER_CONFIG = {
 } as const;
 
 export const FILTER_LABELS: Record<keyof typeof FILTER_CONFIG, string> = {
+  demo:        "Datos",
   providers:   "Proveedor",
   departments: "Departamento",
   category:    "Categoría",
@@ -58,6 +60,7 @@ export type Filters = {
 };
 
 export const DEFAULT_FILTERS: Filters = {
+  demo:        [],
   providers:   [],
   departments: [],
   category:    [],
