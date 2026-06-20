@@ -1,5 +1,4 @@
 'use client';
-
 import { useMemo, useState } from 'react';
 import { MetricChart } from '@/components/analysis/MetricChart';
 import { useGeoPoints } from '@/hooks/useGeoPoints';
@@ -21,7 +20,7 @@ function buildMetrics(
     label: string;
     unit: string;
     description: string;
-    group: 'accuracyStats' | 'coverageStats' | 'reliabilityStats'  | 'latencyStats';
+    group: 'accuracyStats' | 'coverageStats' | 'reliabilityStats' | 'latencyStats';
   }>
 ) {
   return items.map(({ key, label, unit, description, group }) => ({
@@ -36,55 +35,21 @@ function buildMetrics(
 }
 
 const ACCURACY_ITEMS = [
-  { 
-    key: 'averageError', 
-    label: 'Error Promedio', 
-    unit: 'm', 
-    description: 'Distancia promedio entre la coordenada devuelta y la ubicación real verificada', 
-    group: 'accuracyStats' as const 
-  },
-  { 
-    key: 'medianError', 
-    label: 'Error Mediano', 
-    unit: 'm', 
-    description: 'Si ordenás todos los errores de menor a mayor, este es el valor del medio — no se distorsiona por casos extremos como sí lo hace el promedio', 
-    group: 'accuracyStats' as const 
-  },
-  { 
-    key: 'maxError', 
-    label: 'Error Máximo', 
-    unit: 'm', 
-    description: 'El peor resultado obtenido — indica qué tan mal puede fallar el geocoder en el caso extremo', 
-    group: 'accuracyStats' as const 
-  },
-  { 
-    key: 'percentageWithinMeters', 
-    label: 'Resultados exactos', 
-    unit: '%', 
-    description: 'Porcentaje de direcciones geocodificadas con menos de 13 m de error — umbral calculado a partir de imágenes aéreas 2024', 
-    group: 'accuracyStats' as const 
-  },
+  { key: 'averageError', label: 'Error Promedio', unit: 'm', description: 'Distancia promedio entre la coordenada devuelta y la ubicación real verificada', group: 'accuracyStats' as const },
+  { key: 'medianError', label: 'Error Mediano', unit: 'm', description: 'Si ordenás todos los errores de menor a mayor, este es el valor del medio — no se distorsiona por casos extremos como sí lo hace el promedio', group: 'accuracyStats' as const },
+  { key: 'maxError', label: 'Error Máximo', unit: 'm', description: 'El peor resultado obtenido — indica qué tan mal puede fallar el geocoder en el caso extremo', group: 'accuracyStats' as const },
+  { key: 'percentageWithinMeters', label: 'Resultados exactos', unit: '%', description: 'Porcentaje de direcciones geocodificadas con menos de 13 m de error — umbral calculado a partir de imágenes aéreas 2024', group: 'accuracyStats' as const },
 ];
-
-const COVERAGE_ITEMS = [
-  { key: 'coverage', label: 'Cobertura', unit: '%', description: 'Porcentaje de direcciones del dataset que el geocoder logró resolver — una dirección se considera resuelta si devolvió al menos un resultado', group: 'coverageStats' as const },
-];
-
-const RELIABILITY_ITEMS = [
-  { key: 'totalErrorsTypographic', label: 'Errores Tipográficos',   unit: 'err', description: 'Errores por variaciones tipográficas en la dirección',    group: 'reliabilityStats' as const },
-  { key: 'totalErrorsPermutation', label: 'Errores de Permutación', unit: 'err', description: 'Errores por reordenamiento de palabras en la dirección',  group: 'reliabilityStats' as const },
-  { key: 'totalErrorsAbbreviation', label: 'Errores por Abreviación', unit: 'err', description: 'Direcciones que fallaron al usar abreviaciones en el nombre de la vía', group: 'reliabilityStats' as const },
-  { key: 'totalErrorsComun', label: 'Errores Comunes', unit: 'err', description: 'Direcciones que fallaron con su formato estándar sin ninguna variación', group: 'reliabilityStats' as const },
- ];
 
 const LATENCY_ITEMS = [
   { key: 'averageLatencyMs', label: 'Latencia Promedio', unit: 'ms', description: 'Tiempo promedio de respuesta del geocoder', group: 'latencyStats' as const },
-  { key: 'maxLatencyMs',     label: 'Latencia Máxima',   unit: 'ms', description: 'Peor tiempo de respuesta observado',        group: 'latencyStats' as const },
+  { key: 'medianLatencyMs', label: 'Latencia Mediana', unit: 'ms', description: 'Mediana del tiempo de respuesta del geocoder', group: 'latencyStats' as const },
+  { key: 'maxLatencyMs', label: 'Latencia Máxima', unit: 'ms', description: 'Peor tiempo de respuesta observado', group: 'latencyStats' as const },
 ];
 
 const TABS: Array<{ id: Tab; label: string }> = [
-  { id: 'accuracy',    label: 'Precisión' },
-  { id: 'coverage',   label: 'Cobertura' },
+  { id: 'accuracy', label: 'Precisión' },
+  { id: 'coverage', label: 'Cobertura' },
   { id: 'reliability', label: 'Confiabilidad' },
   { id: 'latency', label: 'Latencia' },
 ];
@@ -94,7 +59,8 @@ export default function Page() {
   const { stats, loading, error } = useGeoPoints(filters);
   const [tab, setTab] = useState<Tab>('accuracy');
 
-  const accuracyData    = useMemo(() => buildMetrics(stats, ACCURACY_ITEMS),    [stats]);
+  const accuracyData = useMemo(() => buildMetrics(stats, ACCURACY_ITEMS), [stats]);
+
   const coverageData = useMemo(() => [{
     metric: 'Cobertura',
     unit: '%',
@@ -106,6 +72,7 @@ export default function Page() {
         : 0,
     })),
   }], [stats]);
+
   const reliabilityData = useMemo(() => [
     {
       metric: 'Errores Tipográficos',
@@ -152,7 +119,11 @@ export default function Page() {
       })),
     },
   ], [stats]);
-  const latencyData     = useMemo(() => buildMetrics(stats, LATENCY_ITEMS),     [stats]);
+
+  const latencyData = useMemo(() => buildMetrics(stats, LATENCY_ITEMS), [stats]);
+
+  const reliabilityMax = 100;
+
   if (loading) {
     return (
       <main className="flex items-center justify-center min-h-screen bg-black text-white/40 text-sm">
@@ -160,7 +131,6 @@ export default function Page() {
       </main>
     );
   }
-  
 
   if (error) {
     return (
@@ -171,8 +141,8 @@ export default function Page() {
   }
 
   const activeData =
-    tab === 'accuracy'    ? accuracyData    :
-    tab === 'coverage'    ? coverageData    :
+    tab === 'accuracy' ? accuracyData :
+    tab === 'coverage' ? coverageData :
     tab === 'reliability' ? reliabilityData :
                             latencyData;
 
@@ -195,32 +165,40 @@ export default function Page() {
         ))}
       </div>
 
-       <div className={[
-          'grid gap-5 p-8',
-          tab === 'coverage' ? 'grid-cols-1 max-w-lg' : 'grid-cols-2',
-        ].join(' ')}>
-          {activeData.map(({ metric, unit, description, values }) => (
-            <MetricChart key={metric} label={metric} description={description} unit={unit} values={values} />
-          ))}
-          {tab === 'reliability' && (
-            <GroupedMetricChart
-              label="Errores por Zona"
-              description="Comparación de errores en zonas rurales vs urbanas por geocoder"
-              unit="%"
-              providers={stats.map(s => capitalize(s.provider) as Provider)}
-              ruralValues={stats.map(s =>
-                s.reliabilityStats.totalRural > 0
-                  ? parseFloat(((s.reliabilityStats.totalErrorsRural / s.reliabilityStats.totalRural) * 100).toFixed(1))
-                  : 0
-              )}
-              urbanValues={stats.map(s =>
-                s.reliabilityStats.totalUrban > 0
-                  ? parseFloat(((s.reliabilityStats.totalErrorsUrban / s.reliabilityStats.totalUrban) * 100).toFixed(1))
-                  : 0
-              )}
-            />
-          )}
-        </div>
+      <div className={[
+        'grid gap-5 p-8',
+        tab === 'coverage' ? 'grid-cols-1 max-w-lg' : 'grid-cols-2',
+      ].join(' ')}>
+        {activeData.map(({ metric, unit, description, values }, i) => (
+          <MetricChart
+            key={`${tab}-${metric}`}
+            label={metric}
+            description={description}
+            unit={unit}
+            values={values}
+            fullWidth={tab === 'reliability' && i === 3}
+            yMax={unit === '%' ? 100 : undefined}
+          />
+        ))}
+        {tab === 'reliability' && (
+          <GroupedMetricChart
+            label="Errores por Zona"
+            description="Comparación de errores en zonas rurales vs urbanas por geocoder"
+            unit="%"
+            providers={stats.map(s => capitalize(s.provider) as Provider)}
+            ruralValues={stats.map(s =>
+              s.reliabilityStats.totalRural > 0
+                ? parseFloat(((s.reliabilityStats.totalErrorsRural / s.reliabilityStats.totalRural) * 100).toFixed(1))
+                : 0
+            )}
+            urbanValues={stats.map(s =>
+              s.reliabilityStats.totalUrban > 0
+                ? parseFloat(((s.reliabilityStats.totalErrorsUrban / s.reliabilityStats.totalUrban) * 100).toFixed(1))
+                : 0
+            )}
+          />
+        )}
+      </div>
     </main>
   );
 }
