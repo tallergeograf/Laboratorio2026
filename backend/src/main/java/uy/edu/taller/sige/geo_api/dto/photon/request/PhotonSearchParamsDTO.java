@@ -17,7 +17,8 @@ public record PhotonSearchParamsDTO(
     @JsonProperty("osm_tag")              List<String> osmTag,
     @JsonProperty("layer")                List<String> layer,
     @JsonProperty("dedupe")               Integer dedupe,     // solo acepta 0
-    @JsonProperty("debug")                Integer debug       // solo acepta 1
+    @JsonProperty("debug")                Integer debug,      // solo acepta 1
+    @JsonProperty("countrycode")          String countrycode  // ISO 3166-1 alpha-2
 ) {
 
     public Map<String, String> toMap(){
@@ -30,6 +31,7 @@ public record PhotonSearchParamsDTO(
         if (locationBiasScale != null) params.put("location_bias_scale", locationBiasScale.toString());
         if (dedupe != null) params.put("dedupe", dedupe.toString());
         if (debug != null) params.put("debug", debug.toString());
+        if (countrycode != null) params.put("countrycode", countrycode);
         return params;
     }
 

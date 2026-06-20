@@ -8,5 +8,6 @@ public record StatsResponse(
     StatsAccuracyResponse accuracyStats,
     StatsCoverageResponse coverageStats,
     StatsReliabilityResponse reliabilityStats,
+    StatsLatencyResponse latencyStats,
     List<StatsAddressResponse> addresses
 ) {}

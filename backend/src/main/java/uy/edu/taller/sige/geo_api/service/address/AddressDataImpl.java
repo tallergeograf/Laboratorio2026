@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import uy.edu.taller.sige.geo_api.client.GeoCoderFactory;
+import uy.edu.taller.sige.geo_api.client.GeocoderSearchResult;
 import uy.edu.taller.sige.geo_api.client.IGeoCoder;
 import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestSearch;
 import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
@@ -91,6 +92,7 @@ public class AddressDataImpl implements AddressDataService {
 
     private static final int FULL_LIMIT = 50;
     private static final int DEMO_LIMIT = 3;
+    private static final int BATCH_SIZE = 150;
 
     @Override
     public List<String> processAddress() {
@@ -222,50 +224,45 @@ public class AddressDataImpl implements AddressDataService {
 
         ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 
-        Future<?> f1 = executor.submit(() -> {
-            for (GeocodeRequestSearch oneAddress : addresses) {
-                trySearch(geoPhoton, "photon", oneAddress, isDemo);
-                try { Thread.sleep(1000); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
-            }
-        });
+        Future<?> f1 = executor.submit(() -> processBatches(geoPhoton,    "photon",    addresses, isDemo));
+        Future<?> f2 = executor.submit(() -> processBatches(geoSudir,     "sudir",     addresses, isDemo));
+        Future<?> f3 = executor.submit(() -> processBatches(geoNominatim, "nominatim", addresses, isDemo));
 
-        Future<?> f2 = executor.submit(() -> {
-            for (GeocodeRequestSearch oneAddress : addresses) {
-                trySearch(geoSudir, "sudir", oneAddress, isDemo);
-            }
-        });
-
-        Future<?> f3 = executor.submit(() -> {
-            for (GeocodeRequestSearch oneAddress : addresses) {
-                trySearch(geoNominatim, "nominatim", oneAddress, isDemo);
-                try { Thread.sleep(1100); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
-            }
-        });
-
-        try { f1.get(); } catch (Exception e) { log.error("photon error: {}", e.getMessage()); }
-        try { f2.get(); } catch (Exception e) { log.error("sudir error: {}", e.getMessage()); }
+        try { f1.get(); } catch (Exception e) { log.error("photon error: {}",    e.getMessage()); }
+        try { f2.get(); } catch (Exception e) { log.error("sudir error: {}",     e.getMessage()); }
         try { f3.get(); } catch (Exception e) { log.error("nominatim error: {}", e.getMessage()); }
 
         executor.shutdown();
     }
 
-    private void trySearch(IGeoCoder geocoder, String providerId, GeocodeRequestSearch oneAddress, boolean isDemo) {
-        try {
-            saveFirstResult(providerId, geocoder.search(oneAddress), oneAddress, isDemo);
-        } catch (Exception e) {
-            log.warn("Geocoder {} failed for address id={}: {}", providerId, oneAddress.id(), e.getMessage());
+    private void processBatches(IGeoCoder geocoder, String providerId, List<GeocodeRequestSearch> addresses, boolean isDemo) {
+        int total = (int) Math.ceil((double) addresses.size() / BATCH_SIZE);
+        for (int i = 0; i < addresses.size(); i += BATCH_SIZE) {
+            List<GeocodeRequestSearch> batch = addresses.subList(i, Math.min(i + BATCH_SIZE, addresses.size()));
+            log.info("[{}] batch {}/{} ({} addresses)", providerId, i / BATCH_SIZE + 1, total, batch.size());
+            try {
+                List<GeocoderSearchResult> results = geocoder.searchBatch(batch);
+                List<SpecificAddressResult> toSave = new ArrayList<>();
+                for (int j = 0; j < batch.size(); j++)
+                    toSave.add(buildResult(providerId, results.get(j), batch.get(j), isDemo));
+                specificAddressResultRepository.saveAll(toSave);
+                log.info("[{}] batch {}/{} saved", providerId, i / BATCH_SIZE + 1, total);
+            } catch (Exception e) {
+                log.error("[{}] batch {} failed: {}", providerId, i / BATCH_SIZE + 1, e.getMessage());
+            }
         }
     }
 
-    private void saveFirstResult(String providerId, List<GeocodeResponse> results, GeocodeRequestSearch oneAddress, boolean isDemo) {
+    private SpecificAddressResult buildResult(String providerId, GeocoderSearchResult searchResult, GeocodeRequestSearch oneAddress, boolean isDemo) {
         SpecificAddressResult entity = new SpecificAddressResult();
         entity.setDireccion(specificAddressRepository.getReferenceById(oneAddress.id()));
+        entity.setStatusCode(searchResult.statusCode());
 
-        if (results.isEmpty()) {
+        if (searchResult.results().isEmpty()) {
             entity.setId(new SpecificAddressResultId(oneAddress.id(), providerId, isDemo));
             entity.setIsResult(false);
         } else {
-            GeocodeResponse first = results.get(0);
+            GeocodeResponse first = searchResult.results().get(0);
             entity.setId(new SpecificAddressResultId(oneAddress.id(), first.source(), isDemo));
             entity.setLatitud(first.lat());
             entity.setLongitud(first.lon());
@@ -273,7 +270,7 @@ public class AddressDataImpl implements AddressDataService {
             entity.setLatencia(first.latencyMs());
         }
 
-        specificAddressResultRepository.save(entity);
+        return entity;
     }
 
     private List<Address> getStreetNumbers(List<String> ids, int lim) {

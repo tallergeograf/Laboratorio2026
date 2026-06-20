@@ -26,6 +26,9 @@ public class SpecificAddressResult {
     @Column(name = "latencia")
     private Double latencia;
 
+    @Column(name = "status_code")
+    private Integer statusCode;
+
     public SpecificAddressResult() {}
 
     public SpecificAddressResultId getId() {
@@ -74,5 +77,13 @@ public class SpecificAddressResult {
 
     public void setLatencia(Double latencia) {
         this.latencia = latencia;
+    }
+
+    public Integer getStatusCode() {
+        return statusCode;
+    }
+
+    public void setStatusCode(Integer statusCode) {
+        this.statusCode = statusCode;
     }
 }

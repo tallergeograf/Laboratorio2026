@@ -6,6 +6,7 @@ import uy.edu.taller.sige.geo_api.dto.stats.StatsAccuracyResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsAddressResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsCoverageResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsFilterRequest;
+import uy.edu.taller.sige.geo_api.dto.stats.StatsLatencyResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsReliabilityResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsRequest;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsResponse;
@@ -82,6 +83,19 @@ public class StatisticsServiceImpl implements StatisticsService {
                 ))
                 .toList();
 
+        List<Double> latencies = filtered.stream()
+                .map(SpecificAddressResult::getLatencia)
+                .filter(l -> l != null)
+                .sorted()
+                .toList();
+
+        double avgLatency = latencies.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
+        double maxLatency = latencies.stream().mapToDouble(Double::doubleValue).max().orElse(0.0);
+        double medianLatency = latencies.isEmpty() ? 0.0
+                : latencies.size() % 2 == 1
+                        ? latencies.get(latencies.size() / 2)
+                        : (latencies.get(latencies.size() / 2 - 1) + latencies.get(latencies.size() / 2)) / 2.0;
+
         List<Double> errors = entries.stream()
                 .map(StatsAddressResponse::errorMeters)
                 .sorted()
@@ -100,14 +114,28 @@ public class StatisticsServiceImpl implements StatisticsService {
         int coverage = entries.size();
 
         int totalErrorsTypographic = (int) filtered.stream()
-                .filter(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.ERROR))
+                .filter(r -> !r.getIsResult() && List.of(
+                        AddressType.ERR1_S, 
+                        AddressType.ERR1_B, 
+                        AddressType.ERR2_SS, 
+                        AddressType.ERR2_SB, 
+                        AddressType.ERR2_BS, 
+                        AddressType.ERR2_BB
+                ).contains(r.getDireccion().getTipoDireccion()))
                 .count();
 
         int totalErrorsPermutation = (int) filtered.stream()
                 .filter(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.PERMUTACION))
                 .count();
 
-        // Rural/urban siempre sobre el dataset completo (sin filtros)
+        int totalErrorsComun = (int) filtered.stream()
+                .filter(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.COMUN))
+                .count();        
+
+        int totalErrorsAbbreviation = (int) filtered.stream()
+                .filter(r -> !r.getIsResult() && r.getDireccion().getTipoDireccion().equals(AddressType.ABREVIACION))
+                .count();        
+
         int totalErrorsRural = (int) allResults.stream()
                 .filter(r -> !r.getIsResult() && !URBAN_DEPARTMENTS.contains(r.getDireccion().getDepartamento()))
                 .count();
@@ -116,12 +144,38 @@ public class StatisticsServiceImpl implements StatisticsService {
                 .filter(r -> !r.getIsResult() && URBAN_DEPARTMENTS.contains(r.getDireccion().getDepartamento()))
                 .count();
 
+        int totalTypographic = (int) filtered.stream()
+        .filter(r -> List.of(AddressType.ERR1_S, AddressType.ERR1_B, AddressType.ERR2_SS, AddressType.ERR2_SB, AddressType.ERR2_BS, AddressType.ERR2_BB)
+        .contains(r.getDireccion().getTipoDireccion()))
+        .count();
+
+        int totalPermutation = (int) filtered.stream()
+        .filter(r -> r.getDireccion().getTipoDireccion().equals(AddressType.PERMUTACION))
+        .count();
+
+        int totalAbbreviation = (int) filtered.stream()
+        .filter(r -> r.getDireccion().getTipoDireccion().equals(AddressType.ABREVIACION))
+        .count();
+
+        int totalComun = (int) filtered.stream()
+        .filter(r -> r.getDireccion().getTipoDireccion().equals(AddressType.COMUN))
+        .count();
+
+        int totalRural = (int) allResults.stream()
+        .filter(r -> !URBAN_DEPARTMENTS.contains(r.getDireccion().getDepartamento()))
+        .count();
+
+        int totalUrban = (int) allResults.stream()
+        .filter(r -> URBAN_DEPARTMENTS.contains(r.getDireccion().getDepartamento()))
+        .count();        
+
         return new StatsResponse(
                 provider,
                 filtered.size(),
                 new StatsAccuracyResponse(avg, max, median, porcentageErrors),
                 new StatsCoverageResponse(coverage),
-                new StatsReliabilityResponse(totalErrorsTypographic, totalErrorsPermutation, totalErrorsRural, totalErrorsUrban),
+                new StatsReliabilityResponse(totalErrorsTypographic, totalTypographic, totalErrorsPermutation, totalPermutation, totalErrorsAbbreviation, totalAbbreviation, totalErrorsComun, totalComun, totalErrorsRural, totalRural, totalErrorsUrban, totalUrban),
+                new StatsLatencyResponse(avgLatency, medianLatency, maxLatency),
                 entries
         );
     }

@@ -7,6 +7,6 @@ import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestSearch;
 import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
 
 public interface IGeoCoder {
-    List<GeocodeResponse> search(GeocodeRequestSearch request);
+    List<GeocoderSearchResult> searchBatch(List<GeocodeRequestSearch> requests);
     List<GeocodeResponse> reverse(GeocodeRequestReverse request);
 }

@@ -12,14 +12,21 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
   SidebarSeparator,
 } from "@/components/ui/sidebar"
 
 const navItems = [
   {
-    label: "BranchMark",
+    label: "BenchMark",
     href: "/benchmark",
     icon: BarChart2,
+    children: [
+      { label: "Análisis", href: "/benchmark/analisis" },
+      { label: "Mapa", href: "/benchmark/map" },
+    ],
   },
   {
     label: "Caso de Estudio",
@@ -53,7 +60,7 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {navItems.map(({ label, href, icon: Icon }) => {
+              {navItems.map(({ label, href, icon: Icon, children }) => {
                 const isActive =
                   pathname === href || pathname.startsWith(href + "/")
                 return (
@@ -67,6 +74,21 @@ export function AppSidebar() {
                       <Icon />
                       <span>{label}</span>
                     </SidebarMenuButton>
+
+                    {children?.length ? (
+                      <SidebarMenuSub>
+                        {children.map(({ label: childLabel, href: childHref }) => (
+                          <SidebarMenuSubItem key={childHref}>
+                            <SidebarMenuSubButton
+                              render={<Link href={childHref} />}
+                              isActive={pathname === childHref}
+                            >
+                              <span>{childLabel}</span>
+                            </SidebarMenuSubButton>
+                          </SidebarMenuSubItem>
+                        ))}
+                      </SidebarMenuSub>
+                    ) : null}
                   </SidebarMenuItem>
                 )
               })}

@@ -5,3 +5,4 @@ CLAUDE.md
 AGENTS.md
 skills-lock.json
 .vscode
+backend/logs/geo-api.log
