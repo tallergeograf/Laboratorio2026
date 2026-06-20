@@ -26,6 +26,7 @@ public class SudirClient implements IGeoCoder {
 
     private static final Logger log = LoggerFactory.getLogger(SudirClient.class);
     private static final int RETRY_WAIT_MS = 5000;
+    private static final int MAX_RETRIES = 2;
 
     private final RestClient restClient;
     private final SudirProperties properties;
@@ -50,6 +51,10 @@ public class SudirClient implements IGeoCoder {
     }
 
     private GeocoderSearchResult searchOne(GeocodeRequestSearch request) {
+        return searchWithRetry(request, 0);
+    }
+
+    private GeocoderSearchResult searchWithRetry(GeocodeRequestSearch request, int attempt) {
         try {
             String url = buildSearchUrl(request);
             long start = System.nanoTime();
@@ -57,24 +62,20 @@ public class SudirClient implements IGeoCoder {
             double latencyMs = (System.nanoTime() - start) / 1_000_000.0;
             return GeocoderSearchResult.ok(mapper.fromGeocodeList(raw, latencyMs));
         } catch (HttpClientErrorException e) {
-            if (e.getStatusCode().value() == 429) {
-                log.warn("Sudir rate limited for '{}', retrying after {}ms", request.full_address(), RETRY_WAIT_MS);
+            if (e.getStatusCode().value() == 429 && attempt < MAX_RETRIES) {
+                log.warn("Sudir rate limited for '{}', retrying after {}ms (attempt {}/{})", request.full_address(), RETRY_WAIT_MS, attempt + 1, MAX_RETRIES);
                 sleep(RETRY_WAIT_MS);
-                try {
-                    String url = buildSearchUrl(request);
-                    long start = System.nanoTime();
-                    List<SudirGeocodeResultDTO> raw = restClient.get(url, new ParameterizedTypeReference<List<SudirGeocodeResultDTO>>() {}, headers);
-                    double latencyMs = (System.nanoTime() - start) / 1_000_000.0;
-                    return GeocoderSearchResult.ok(mapper.fromGeocodeList(raw, latencyMs));
-                } catch (Exception retryEx) {
-                    log.warn("Sudir retry failed for '{}': {}", request.full_address(), retryEx.getMessage());
-                    return GeocoderSearchResult.error(429);
-                }
+                return searchWithRetry(request, attempt + 1);
             }
             log.warn("Sudir HTTP {} for '{}'", e.getStatusCode().value(), request.full_address());
             return GeocoderSearchResult.error(e.getStatusCode().value());
         } catch (Exception e) {
-            log.warn("Sudir error for '{}': {}", request.full_address(), e.getMessage());
+            if (attempt < MAX_RETRIES) {
+                log.warn("Sudir error for '{}': {}, retrying after {}ms (attempt {}/{})", request.full_address(), e.getMessage(), RETRY_WAIT_MS, attempt + 1, MAX_RETRIES);
+                sleep(RETRY_WAIT_MS);
+                return searchWithRetry(request, attempt + 1);
+            }
+            log.warn("Sudir error for '{}' after {} attempts: {}", request.full_address(), attempt + 1, e.getMessage());
             return GeocoderSearchResult.error(0);
         }
     }

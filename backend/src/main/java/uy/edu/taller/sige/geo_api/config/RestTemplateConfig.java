@@ -1,5 +1,4 @@
 package uy.edu.taller.sige.geo_api.config;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -9,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 public class RestTemplateConfig {
 
     private static final int CONNECT_TIMEOUT_MS = 5_000;
-    private static final int READ_TIMEOUT_MS    = 10_000;
+    private static final int READ_TIMEOUT_MS    = 20_000;
 
     @Bean
     public RestTemplate restTemplate() {
