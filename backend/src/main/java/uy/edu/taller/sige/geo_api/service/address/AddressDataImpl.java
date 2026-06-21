@@ -192,8 +192,9 @@ public class AddressDataImpl implements AddressDataService {
         generateAndSaveErrors(lotBlock, AddressCategory.SOLAR_MANZANA,
                 a -> Math.abs((a.getSolar() + "-" + a.getManzana()).hashCode()) % 2 == 0 ? "Solar" : "Manzana",
                 a -> Math.abs((a.getSolar() + "-" + a.getManzana()).hashCode()) % 2 == 0
-                        ? " " + a.getSolar() + " Manzana " + a.getManzana()
-                        : " Solar " + a.getSolar() + " " + a.getManzana(), isDemo);
+                        ? " " + a.getSolar() + " Manzana " + a.getManzana()   
+                        : " " + a.getManzana() + " Solar " + a.getSolar(),  
+                isDemo);
         addIdPoints(ids, lotBlock);
         List<Address> intersectionsAddresses=getIntersectionsAddresses(lim);
 
