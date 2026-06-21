@@ -8,7 +8,7 @@ import java.util.Random;
 
 public class StreetMutator {
 
-    private static final String LETTERS = "abcdefghijklmnopqrstuvwxyz";
+    private static final String LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public record MutationResult(String mutated, AddressType type) {}
 
@@ -23,7 +23,7 @@ public class StreetMutator {
 
         int distance = streetName.length() > 10 ? 2 : 1;
         Random random = new Random(streetName.hashCode());
-        String result = streetName;
+        String result = streetName.toUpperCase();
         StringBuilder ops = new StringBuilder();
 
         for (int i = 0; i < distance; i++) {
