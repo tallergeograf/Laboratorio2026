@@ -3,6 +3,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.DefaultUriBuilderFactory;
 
 @Configuration
 public class RestTemplateConfig {
@@ -15,6 +16,11 @@ public class RestTemplateConfig {
         SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(CONNECT_TIMEOUT_MS);
         factory.setReadTimeout(READ_TIMEOUT_MS);
-        return new RestTemplate(factory);
+        RestTemplate restTemplate = new RestTemplate(factory);
+        // URLs are pre-encoded by UrlBuilder (URLEncoder); tell Spring not to re-encode them.
+        DefaultUriBuilderFactory handler = new DefaultUriBuilderFactory();
+        handler.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.NONE);
+        restTemplate.setUriTemplateHandler(handler);
+        return restTemplate;
     }
 }

@@ -18,16 +18,28 @@ public class NominatimMapper {
 
     public NominatimSearchParamsDTO toNominatimSearchParamsDTO(GeocodeRequestSearch request) {
         String city = request.geoScope() == GeoScope.MONTEVIDEO ? "Montevideo" : request.department();
+        String query = request.full_address() + ", " + city + ", Uruguay";
         return new NominatimSearchParamsDTO(
-                null,
-                request.full_address(),
-                city,
+                query,
                 null,
                 null,
-                "Uruguay",
+                null,
+                null,
+                null,
                 null,
                 "jsonv2", 5, "uy", 1, null, null, null, null, "es"
             );
+        
+        // return new NominatimSearchParamsDTO(
+        //         null,
+        //         request.full_address(),
+        //         city,
+        //         null,
+        //         null,
+        //         "Uruguay",
+        //         null,
+        //         "jsonv2", 5, "uy", 1, null, null, null, null, "es"
+        //     );
     }
 
     public NominatimReverseParamsDTO toNominatimReverseParamsDTO(GeocodeRequestReverse request) {

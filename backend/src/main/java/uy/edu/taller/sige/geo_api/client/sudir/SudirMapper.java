@@ -79,7 +79,10 @@ public class SudirMapper {
     }
 
     public List<GeocodeResponse> fromGeocodeList(List<SudirGeocodeResultDTO> results, double latencyMs) {
-        return results.stream().map(r -> fromGeocode(r, latencyMs)).toList();
+        return results.stream()
+            .filter(r -> r.direccion() != null && r.direccion().calle() != null)
+            .map(r -> fromGeocode(r, latencyMs))
+            .toList();
     }
 
     public List<GeocodeResponse> fromReverseList(List<SudirReverseResultDTO> results, double latencyMs) {
