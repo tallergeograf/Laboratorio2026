@@ -176,7 +176,7 @@ export default function Page() {
             description={description}
             unit={unit}
             values={values}
-            fullWidth={tab === 'reliability' && i === 3}
+            fullWidth={false}
             yMax={unit === '%' ? 100 : undefined}
           />
         ))}
