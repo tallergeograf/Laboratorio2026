@@ -108,8 +108,8 @@ public class StatisticsServiceImpl implements StatisticsService {
                         ? errors.get(errors.size() / 2)
                         : (errors.get(errors.size() / 2 - 1) + errors.get(errors.size() / 2)) / 2.0;
 
-        double porcentageErrors = errors.isEmpty() ? 0.0
-                : (double) errors.stream().filter(e -> e > 13).count() / errors.size() * 100.0;
+        double porcentageSuccess = errors.isEmpty() ? 0.0
+                : (double) errors.stream().filter(e -> e < 13).count() / errors.size() * 100.0;
 
         int coverage = entries.size();
 
@@ -172,7 +172,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         return new StatsResponse(
                 provider,
                 filtered.size(),
-                new StatsAccuracyResponse(avg, max, median, porcentageErrors),
+                new StatsAccuracyResponse(avg, max, median, porcentageSuccess),
                 new StatsCoverageResponse(coverage),
                 new StatsReliabilityResponse(totalErrorsTypographic, totalTypographic, totalErrorsPermutation, totalPermutation, totalErrorsAbbreviation, totalAbbreviation, totalErrorsComun, totalComun, totalErrorsRural, totalRural, totalErrorsUrban, totalUrban),
                 new StatsLatencyResponse(avgLatency, medianLatency, maxLatency),
