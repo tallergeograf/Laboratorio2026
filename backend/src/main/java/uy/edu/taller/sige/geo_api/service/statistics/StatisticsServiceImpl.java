@@ -7,6 +7,7 @@ import uy.edu.taller.sige.geo_api.dto.stats.StatsAddressResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsCoverageResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsFilterRequest;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsLatencyResponse;
+import uy.edu.taller.sige.geo_api.dto.stats.StatsRealPointResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsReliabilityResponse;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsRequest;
 import uy.edu.taller.sige.geo_api.dto.stats.StatsResponse;
@@ -169,6 +170,11 @@ public class StatisticsServiceImpl implements StatisticsService {
         .filter(r -> URBAN_DEPARTMENTS.contains(r.getDireccion().getDepartamento()))
         .count();        
 
+        List<StatsRealPointResponse> realPoints = filtered.stream()
+                .filter(r -> r.getDireccion().getLatitud() != null && r.getDireccion().getLongitud() != null)
+                .map(r -> new StatsRealPointResponse(r.getDireccion().getLatitud(), r.getDireccion().getLongitud()))
+                .toList();
+
         return new StatsResponse(
                 provider,
                 filtered.size(),
@@ -176,7 +182,8 @@ public class StatisticsServiceImpl implements StatisticsService {
                 new StatsCoverageResponse(coverage),
                 new StatsReliabilityResponse(totalErrorsTypographic, totalTypographic, totalErrorsPermutation, totalPermutation, totalErrorsAbbreviation, totalAbbreviation, totalErrorsComun, totalComun, totalErrorsRural, totalRural, totalErrorsUrban, totalUrban),
                 new StatsLatencyResponse(avgLatency, medianLatency, maxLatency),
-                entries
+                entries,
+                realPoints
         );
     }
 }

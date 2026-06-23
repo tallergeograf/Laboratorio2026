@@ -43,6 +43,12 @@ export const GeoAPILatencyStatsSchema = z.object({
   maxLatencyMs: z.number(),
 })
 
+export const GeoAPIRealPointSchema = z.object({
+  lat: z.number(),
+  lon: z.number(),
+})
+export type GeoAPIRealPoint = z.infer<typeof GeoAPIRealPointSchema>
+
 export const GeoAPIStatsResponseElementSchema = z.object({
   provider: z.string(),
   sampleSize: z.number(),
@@ -51,6 +57,7 @@ export const GeoAPIStatsResponseElementSchema = z.object({
   reliabilityStats: GeoAPIReliabilityStatsSchema,
   latencyStats: GeoAPILatencyStatsSchema,
   addresses: z.array(GeoAPIAddressSchema),
+  realPoints: z.array(GeoAPIRealPointSchema),
 })
 export type GeoAPIStatsResponseElement = z.infer<typeof GeoAPIStatsResponseElementSchema>
 

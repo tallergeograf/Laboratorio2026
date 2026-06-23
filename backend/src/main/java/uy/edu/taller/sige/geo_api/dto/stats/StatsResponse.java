@@ -9,5 +9,6 @@ public record StatsResponse(
     StatsCoverageResponse coverageStats,
     StatsReliabilityResponse reliabilityStats,
     StatsLatencyResponse latencyStats,
-    List<StatsAddressResponse> addresses
+    List<StatsAddressResponse> addresses,
+    List<StatsRealPointResponse> realPoints
 ) {}
