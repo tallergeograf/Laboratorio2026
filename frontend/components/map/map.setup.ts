@@ -52,7 +52,7 @@ export function registerLayers(map: maplibregl.Map) {
       source: GEO_SOURCE_ID,
       filter: ['has', 'point_count'],
       paint: {
-        'circle-color': '#51bbd6',
+        'circle-color': '#22C55E',
         'circle-radius': ['step', ['get', 'point_count'], 18, 10, 24, 30, 30],
         'circle-opacity': 0.8,
         'circle-stroke-color': '#000',

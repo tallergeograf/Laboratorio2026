@@ -7,15 +7,20 @@ type GeoAPIStatsResponseElement = GeoAPIStatsResponse[number];
 export function statsToGeoPoints(stats: GeoAPIStatsResponse): GeoPoint[] {
   if (!Array.isArray(stats) || stats.length === 0) return [];
 
-  const realPoints = stats[0].addresses.map((addr: GeoAPIAddress) => ({
-    id: `real-${addr.addressId}`,
-    latitude: addr.realLat,
-    longitude: addr.realLon,
-    title: `Posición real · ${addr.addressText}`,
-    colour: '#33FFF6',
-    pointType: 'real' as const,
-    addressText: addr.addressText,
-  }));
+  const seenReal = new Set<number>();
+  const realPoints = stats.flatMap((providerStats: GeoAPIStatsResponseElement) =>
+    providerStats.realPoints
+      .filter((rp) => !seenReal.has(rp.addressId) && seenReal.add(rp.addressId))
+      .map((rp) => ({
+        id: `real-${rp.addressId}`,
+        latitude: rp.lat,
+        longitude: rp.lon,
+        title: `Posición real · ${rp.addressText}`,
+        colour: '#33FFF6',
+        pointType: 'real' as const,
+        addressText: rp.addressText,
+      }))
+  );
 
   const providerPoints = stats.flatMap((providerStats: GeoAPIStatsResponseElement) => {
     const colour = providerColourByName[providerStats.provider] ?? '#888888';
@@ -40,4 +45,3 @@ export function statsToGeoPoints(stats: GeoAPIStatsResponse): GeoPoint[] {
 
   return [...realPoints, ...providerPoints];
 }
-

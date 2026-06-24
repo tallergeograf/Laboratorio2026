@@ -18,7 +18,7 @@ export default function Map() {
   const filteredPointsRef = useRef<GeoPoint[]>([]);
 
   const filters = useFilters();
-  const { points, stats, loading, error } = useGeoPoints(filters);
+  const { points, loading, error } = useGeoPoints(filters);
 
   const selectedProviders = useMemo(
     () => new Set(filters.providers.map((p) => p.toLowerCase())),
@@ -34,6 +34,19 @@ export default function Map() {
       }),
     [points, selectedProviders]
   );
+
+  const { realCount, providerCounts } = useMemo(() => {
+    let realCount = 0;
+    const providerCounts: Record<string, number> = {};
+    for (const point of filteredPoints) {
+      if (point.pointType === 'real') {
+        realCount++;
+      } else if (point.provider) {
+        providerCounts[point.provider] = (providerCounts[point.provider] ?? 0) + 1;
+      }
+    }
+    return { realCount, providerCounts };
+  }, [filteredPoints]);
 
   // Init map once
   useEffect(() => {
@@ -91,22 +104,20 @@ export default function Map() {
           <div className="flex flex-wrap gap-4 items-center">
             <div className="flex items-center gap-2">
               <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: REAL_MARKER_COLOUR }} />
-              <span className="text-white/80">Posiciones reales</span>
+              <span className="text-white/80">
+                Posiciones reales
+                <span className="text-white/40 text-xs ml-1">({realCount})</span>
+              </span>
             </div>
-            {PROVIDERS.map((provider) => {
-              const count = stats.find((s) => s.provider === provider.provider)?.sampleSize;
-              return (
-                <div key={provider.provider} className="flex items-center gap-2">
-                  <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: provider.colour }} />
-                  <span className="text-white/80">
-                    {provider.label}
-                    {count != null && (
-                      <span className="text-white/40 text-xs ml-1">({count})</span>
-                    )}
-                  </span>
-                </div>
-              );
-            })}
+            {PROVIDERS.map((provider) => (
+              <div key={provider.provider} className="flex items-center gap-2">
+                <span className="inline-block h-3 w-3 rounded-full" style={{ backgroundColor: provider.colour }} />
+                <span className="text-white/80">
+                  {provider.label}
+                  <span className="text-white/40 text-xs ml-1">({providerCounts[provider.provider] ?? 0})</span>
+                </span>
+              </div>
+            ))}
           </div>
         </aside>
       </div>

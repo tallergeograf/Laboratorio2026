@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { FilterSidebar } from "@/components/filters/FilterSidebar";
@@ -19,9 +19,15 @@ export function BenchmarkClient({ children }: { children: React.ReactNode }) {
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [appliedFilters, setAppliedFilters] = useState<Filters>(DEFAULT_FILTERS);
 
-  const effectiveFilters: Filters = isMap
-    ? { ...appliedFilters, variacion: ["COMUN"] }
-    : appliedFilters;
+  const effectiveFilters = useMemo<Filters>(
+    () => isMap ? { ...appliedFilters, variacion: ["COMUN"] } : appliedFilters,
+    [isMap, appliedFilters]
+  );
+
+  const liveEffectiveFilters = useMemo<Filters>(
+    () => isMap ? { ...filters, variacion: ["COMUN"] } : filters,
+    [isMap, filters]
+  );
 
   const handleChange = (key: FilterKey, value: string[]) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -35,7 +41,7 @@ export function BenchmarkClient({ children }: { children: React.ReactNode }) {
   const visibleKeys = isMap ? MAP_FILTERS : ANALYSIS_FILTERS;
 
   return (
-    <FiltersContext.Provider value={effectiveFilters}>
+    <FiltersContext.Provider value={{ applied: effectiveFilters, live: liveEffectiveFilters }}>
       <div className={cn("relative min-h-svh transition-[padding-right] duration-300", showSidebar && open ? "pr-72" : "")}>
         {children}
         {showSidebar && (
