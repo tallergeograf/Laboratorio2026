@@ -1,0 +1,9 @@
+/mvnw text eol=lf
+*.cmd text eol=crlf
+* text=auto eol=crlf
+*.ts text eol=crlf
+*.js text eol=crlf
+*.json text eol=crlf
+*.env text eol=crlf
+*.bat text eol=crlf
+*.hex binary

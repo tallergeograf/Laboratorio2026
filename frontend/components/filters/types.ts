@@ -1,0 +1,68 @@
+export const FILTER_CONFIG = {
+  demo: ["Demo"],
+  providers: ["Photon", "Sudir", "Nominatim"],
+  departments: [
+    "ARTIGAS",
+    "CANELONES",
+    "CERRO LARGO",
+    "COLONIA",
+    "DURAZNO",
+    "FLORES",
+    "FLORIDA",
+    "LAVALLEJA",
+    "MALDONADO",
+    "MONTEVIDEO",
+    "PAYSANDU",
+    "RIO NEGRO",
+    "RIVERA",
+    "ROCHA",
+    "SALTO",
+    "SAN JOSE",
+    "SORIANO",
+    "TACUAREMBO",
+    "TREINTA Y TRES",
+  ],
+  category: [
+    "CALLE_NUMERO",
+    "CALLE_NUMERO_LOCALIDAD",
+    "CALLE_NUMERO_DEPARTAMENTO",
+    "CALLE_NUMERO_LOCALIDAD_DEPARTAMENTO",
+    "RUTA_KILOMETRO",
+    "SOLAR_MANZANA",
+    "PUNTO_DE_INTERES",
+    "INTERSECCION_CALLE",
+  ],
+  variacion: [
+    "COMUN",
+    "ABREVIACION",
+    "PERMUTACION",
+    "ERR1_S",
+    "ERR1_B",
+    "ERR2_SS",
+    "ERR2_SB",
+    "ERR2_BS",
+    "ERR2_BB",
+  ],
+} as const;
+
+export const FILTER_LABELS: Record<keyof typeof FILTER_CONFIG, string> = {
+  demo:        "Datos",
+  providers:   "Proveedor",
+  departments: "Departamento",
+  category:    "Categoría",
+  variacion:   "Variación",
+};
+
+export type FilterKey = keyof typeof FILTER_CONFIG;
+
+export type Filters = {
+  [K in FilterKey]: string[];
+};
+
+export const DEFAULT_FILTERS: Filters = {
+  demo:        [],
+  providers:   [],
+  departments: [],
+  category:    [],
+  variacion:   [],
+};

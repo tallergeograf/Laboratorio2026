@@ -1,0 +1,109 @@
+package uy.edu.taller.sige.geo_api.client.nominatim;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
+
+import uy.edu.taller.sige.geo_api.client.GeocoderSearchResult;
+import uy.edu.taller.sige.geo_api.client.IGeoCoder;
+import uy.edu.taller.sige.geo_api.client.properties.NominatimProperties;
+import uy.edu.taller.sige.geo_api.dto.nominatim.response.NominatimPlaceDTO;
+import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestReverse;
+import uy.edu.taller.sige.geo_api.dto.request.GeocodeRequestSearch;
+import uy.edu.taller.sige.geo_api.dto.response.GeocodeResponse;
+import uy.edu.taller.sige.geo_api.utils.RestClient;
+import uy.edu.taller.sige.geo_api.utils.UrlBuilder;
+
+@Component
+public class NominatimClient implements IGeoCoder {
+
+    private static final Logger log = LoggerFactory.getLogger(NominatimClient.class);
+    private static final int RETRY_WAIT_MS = 5000;
+
+    private final RestClient restClient;
+    private final NominatimProperties properties;
+    private final NominatimMapper mapper;
+    private final NominatimRateLimiter rateLimiter;
+    private final HttpHeaders headers;
+
+    public NominatimClient(RestClient restClient, NominatimProperties properties, NominatimMapper mapper, NominatimRateLimiter rateLimiter) {
+        this.restClient = restClient;
+        this.properties = properties;
+        this.mapper = mapper;
+        this.rateLimiter = rateLimiter;
+        this.headers = new HttpHeaders();
+        this.headers.set(HttpHeaders.USER_AGENT, properties.getUserAgent());
+    }
+
+    @Override
+    public List<GeocoderSearchResult> searchBatch(List<GeocodeRequestSearch> requests) {
+        List<GeocoderSearchResult> results = new ArrayList<>();
+        for (GeocodeRequestSearch request : requests) {
+            rateLimiter.acquire();
+            results.add(searchOne(request));
+        }
+        return results;
+    }
+
+    private GeocoderSearchResult searchOne(GeocodeRequestSearch request) {
+        try {
+            String url = buildSearchUrl(request);
+            long start = System.nanoTime();
+            List<NominatimPlaceDTO> raw = restClient.get(url, new ParameterizedTypeReference<List<NominatimPlaceDTO>>() {}, headers);
+            double latencyMs = (System.nanoTime() - start) / 1_000_000.0;
+            return GeocoderSearchResult.ok(mapper.toGeocodeResponseList(raw, latencyMs));
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode().value() == 429) {
+                log.warn("Nominatim rate limited for '{}', retrying after {}ms", request.full_address(), RETRY_WAIT_MS);
+                sleep(RETRY_WAIT_MS);
+                try {
+                    String url = buildSearchUrl(request);
+                    long start = System.nanoTime();
+                    List<NominatimPlaceDTO> raw = restClient.get(url, new ParameterizedTypeReference<List<NominatimPlaceDTO>>() {}, headers);
+                    double latencyMs = (System.nanoTime() - start) / 1_000_000.0;
+                    return GeocoderSearchResult.ok(mapper.toGeocodeResponseList(raw, latencyMs));
+                } catch (Exception retryEx) {
+                    log.warn("Nominatim retry failed for '{}': {}", request.full_address(), retryEx.getMessage());
+                    return GeocoderSearchResult.error(429);
+                }
+            }
+            log.warn("Nominatim HTTP {} for '{}'", e.getStatusCode().value(), request.full_address());
+            return GeocoderSearchResult.error(e.getStatusCode().value());
+        } catch (Exception e) {
+            log.warn("Nominatim error for '{}': {}", request.full_address(), e.getMessage());
+            return GeocoderSearchResult.error(0);
+        }
+    }
+
+    private String buildSearchUrl(GeocodeRequestSearch request) {
+        return new UrlBuilder()
+            .baseUrl(properties.getBaseUrl())
+            .path(properties.getEndpoints().getSearch())
+            .params(mapper.toNominatimSearchParamsDTO(request).toMap())
+            .build();
+    }
+
+    @Override
+    public List<GeocodeResponse> reverse(GeocodeRequestReverse request) {
+        rateLimiter.acquire();
+        String url = new UrlBuilder()
+            .baseUrl(properties.getBaseUrl())
+            .path(properties.getEndpoints().getReverse())
+            .params(mapper.toNominatimReverseParamsDTO(request).toMap())
+            .build();
+        long start = System.nanoTime();
+        NominatimPlaceDTO raw = restClient.get(url, NominatimPlaceDTO.class, headers);
+        double latencyMs = (System.nanoTime() - start) / 1_000_000.0;
+        return List.of(mapper.toGeocodeResponse(raw, latencyMs));
+    }
+
+    private void sleep(int ms) {
+        try { Thread.sleep(ms); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+    }
+}
