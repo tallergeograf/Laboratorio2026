@@ -44,6 +44,8 @@ export const GeoAPILatencyStatsSchema = z.object({
 })
 
 export const GeoAPIRealPointSchema = z.object({
+  addressId: z.number(),
+  addressText: z.string(),
   lat: z.number(),
   lon: z.number(),
 })

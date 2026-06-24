@@ -172,7 +172,7 @@ public class StatisticsServiceImpl implements StatisticsService {
 
         List<StatsRealPointResponse> realPoints = filtered.stream()
                 .filter(r -> r.getDireccion().getLatitud() != null && r.getDireccion().getLongitud() != null)
-                .map(r -> new StatsRealPointResponse(r.getDireccion().getLatitud(), r.getDireccion().getLongitud()))
+                .map(r -> new StatsRealPointResponse(r.getDireccion().getId(), r.getDireccion().getDireccionCompleta(), r.getDireccion().getLatitud(), r.getDireccion().getLongitud()))
                 .toList();
 
         return new StatsResponse(
